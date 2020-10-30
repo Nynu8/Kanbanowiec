@@ -3,13 +3,14 @@ import * as express from "express";
 import { loginActionValidation } from "./actions/login.action";
 import { usersActionValidation } from "./actions/users.action";
 import { loginRefreshActionValidation } from "./actions/login-refresh.action";
+import { registerActionValidation } from "./actions/register.action";
 // VALIDATION_IMPORTS
 
 export interface UsersRoutingDependencies {
   loginAction: express.RequestHandler;
   usersAction: express.RequestHandler;
-  registerAction: express.RequestHandler;
   loginRefreshAction: express.RequestHandler;
+  registerAction: express.RequestHandler;
   // ACTIONS_IMPORTS
 }
 
@@ -19,6 +20,7 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
   router.post("/login", [loginActionValidation], actions.loginAction);
   router.get("/users", [usersActionValidation], actions.usersAction);
   router.post("/login-refresh", [loginRefreshActionValidation], actions.loginRefreshAction);
+  router.post("/register", [registerActionValidation], actions.registerAction);
   // ACTIONS_SETUP
 
   return router;

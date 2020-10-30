@@ -4,7 +4,6 @@ interface UserModelProps {
   id: string;
   email: string;
   password: string;
-  salt: string;
 }
 
 @Entity({
@@ -22,4 +21,7 @@ export class UserModel {
 
   @Column()
   email: string;
+
+  @Column()
+  password: string;
 }

@@ -1,0 +1,31 @@
+version: '3.4'
+
+x-common:
+  volumes: &volumes
+    - ./server/build:/app/build/
+    - ./server:/app:delegated
+    - ./server/.env.dist:/app/build/.env.dist
+    - ./server/.env:/app/build/.env
+
+services:
+  builder:
+    volumes: *volumes
+
+  js:
+    volumes: *volumes
+
+  server:
+    volumes: *volumes
+    depends_on:
+      - adminer
+      - postgres
+
+  adminer:
+    image: adminer
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - 8080:8080
+    networks:
+      - app

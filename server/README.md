@@ -4,18 +4,23 @@
 
 After checkout of a repository, please perform the following steps in exact sequence:
 
-1. Create `.env` file from `.env.dist`
+1. Copy docker-compose.override
+    ```
+    $ cp docker-compose.override.yml.dist docker-compose.override.yml
+    ```
+
+2. Create `.env` file from `.env.dist`
     ```
     $ cp .env.dist .env
     ```
 
     Remember to fill up required values in `.env`
 
-2. Run `npm i`
+3. Run `npm i`
 
-3. Run `npm run docker-build`
+4. Run `npm run docker-build`
 
-4. Run watch - `npm run watch`
+5. Run watch - `npm run watch`
 
 ## Dev setup
 
