@@ -11,6 +11,7 @@ import { winstonLogger } from "./shared/logger";
 import { QueryBus } from "./shared/query-bus";
 import { EventDispatcher } from "./shared/event-dispatcher";
 import { UserModel } from "./app/features/users/models/user.model";
+import { DwadwaModel } from "./app/features/users/models/dwadwa.model";
 // MODELS_IMPORTS
 
 import { usersRouting } from "./app/features/users/routing";
@@ -79,6 +80,7 @@ export async function createContainer(): Promise<AwilixContainer> {
     ]),
 
     userRepository: awilix.asValue(dbConnection.getRepository(UserModel)),
+    dwadwaRepository: awilix.asValue(dbConnection.getRepository(DwadwaModel)),
     // MODELS_SETUP
   });
 

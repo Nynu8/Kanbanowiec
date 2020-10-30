@@ -5,6 +5,6 @@ export default class UsersQueryHandler implements QueryHandler<UsersQuery, Users
   public queryType: string = USERS_QUERY_TYPE;
 
   async execute(_query: UsersQuery): Promise<UsersQueryResult> {
-    return new UsersQueryResult("temp");
+    return new UsersQueryResult("no");
   }
 }

@@ -4,23 +4,18 @@
 
 After checkout of a repository, please perform the following steps in exact sequence:
 
-1. Copy docker-compose.override
-    ```
-    $ cp docker-compose.override.yml.dist docker-compose.override.yml
-    ```
-
-2. Create `.env` file from `.env.dist`
+1. Create `.env` file from `.env.dist`
     ```
     $ cp .env.dist .env
     ```
 
     Remember to fill up required values in `.env`
 
-3. Run `npm i`
+2. Run `npm i`
 
-4. Run `npm run docker-build`
+3. Run `npm run docker-build`
 
-5. Run watch - `npm run watch`
+4. Run watch - `npm run watch`
 
 ## Dev setup
 
@@ -91,24 +86,6 @@ Database: app
 ```
 
 Of course, if any of this is changed via configuration or otherwise, then these changes must be reflected here as well.
-
-## GraphQL
-Boilerplate has GraphQL support. Apollo server runs as a middleware and should be available locally under:
-```
-http://localhost:1337/graphql
-```
-
-To add new query/mutation run relevant `plop` commands and then:
-
-1. Modify `schema.gql` under `graphql/schema.gql`
-2. Run codegen: `npm run generate-schema`
-3. Restart watcher / API
-
-## Debugging
-
-### VS Code
-
-There is `launch.json` configuration inside `editors/vsc` directory. Just copy it and create new debugger to make it work with vsc :) 
 
 ## Tests
 

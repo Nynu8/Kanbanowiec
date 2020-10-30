@@ -16,3 +16,4 @@ config/all.override.yaml
 tmp
 /.npmrc
 */graphql/types/*
+ou
