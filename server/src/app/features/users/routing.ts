@@ -2,7 +2,6 @@ import * as express from "express";
 
 import { loginActionValidation } from "./actions/login.action";
 import { usersActionValidation } from "./actions/users.action";
-import { registerActionValidation } from "./actions/register.action";
 import { loginRefreshActionValidation } from "./actions/login-refresh.action";
 // VALIDATION_IMPORTS
 
@@ -19,7 +18,6 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
 
   router.post("/login", [loginActionValidation], actions.loginAction);
   router.get("/users", [usersActionValidation], actions.usersAction);
-  router.post("/register", [registerActionValidation], actions.registerAction);
   router.post("/login-refresh", [loginRefreshActionValidation], actions.loginRefreshAction);
   // ACTIONS_SETUP
 
