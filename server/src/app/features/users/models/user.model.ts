@@ -35,7 +35,7 @@ export class UserModel {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   surname?: string;
 
   public setPassword(password: string) {
