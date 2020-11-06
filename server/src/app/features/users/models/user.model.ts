@@ -1,9 +1,13 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import UserPassword from "../services/user-password.service";
 
 interface UserModelProps {
   id: string;
-  email: string;
+  username: string;
   password: string;
+  salt: string;
+  name: string;
+  surname?: string;
 }
 
 @Entity({
@@ -20,8 +24,23 @@ export class UserModel {
   id: string;
 
   @Column()
-  email: string;
+  username: string;
 
   @Column()
   password: string;
+
+  @Column()
+  salt: string;
+
+  @Column()
+  name: string;
+
+  @Column({ nullable: true })
+  surname?: string;
+
+  public setPassword(password: string) {
+    const { saltyPassword, salt } = UserPassword.generate(password);
+    this.password = saltyPassword;
+    this.salt = salt;
+  }
 }
