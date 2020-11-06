@@ -15,13 +15,16 @@ export default class RegisterHandler implements CommandHandler<RegisterCommand> 
 
   async execute({ payload }: RegisterCommand) {
     const { userRepository } = this.dependencies;
-    const { email, password } = payload;
+    const { username, password, name, surname } = payload;
 
-    const user = await userRepository.findOne({ email });
+    const user = await userRepository.findOne({ username });
     if (user) {
       throw new Error("User already exists");
     }
 
-    await userRepository.save(UserModel.create({ id: uuid(), email, password }));
+    const newUser = UserModel.create({ id: uuid(), username, name, surname });
+    newUser.setPassword(password);
+
+    await userRepository.save(newUser);
   }
 }

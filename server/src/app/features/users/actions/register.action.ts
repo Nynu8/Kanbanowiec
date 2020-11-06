@@ -11,9 +11,11 @@ export const registerActionValidation = celebrate(
   {
     headers: Joi.object(),
     body: Joi.object({
-      email: Joi.string().email().required(),
+      username: Joi.string().min(4).required(),
       password: Joi.string().min(8).required(),
       confirmPassword: Joi.string().valid(Joi.ref("password")).required(),
+      name: Joi.string().min(3).required(),
+      surname: Joi.string().min(3),
     }),
   },
   { abortEarly: false },
@@ -27,8 +29,10 @@ const registerAction = ({ commandBus }: RegisterActionDependencies) => (
   commandBus
     .execute(
       new RegisterCommand({
-        email: req.body.email,
+        username: req.body.username,
         password: req.body.password,
+        name: req.body.name,
+        surname: req.body.surname,
       }),
     )
     .then(() => {
