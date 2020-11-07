@@ -12,8 +12,11 @@ export default class UserPassword {
     return { saltyPassword, salt };
   }
 
-  public static compare(password: string, salt: string): boolean {
-    crypto.pbkdf2Sync(password, salt, 10000, 64, "sha512").toString("hex");
-    return true;
+  /**
+   * Return true if password is the same like userPassword from database
+   */
+  public static compare(password: string, salt: string, userPassword: string): boolean {
+    const tmpPassword = crypto.pbkdf2Sync(password, salt, 10000, 64, "sha512").toString("hex");
+    return tmpPassword == userPassword;
   }
 }

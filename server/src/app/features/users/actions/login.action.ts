@@ -9,40 +9,26 @@ export interface LoginActionDependencies {
 
 export const loginActionValidation = celebrate(
   {
-    body: Joi.object().keys({
-      email: Joi.string().email().required(),
-      password: Joi.string().required(),
+    headers: Joi.object(),
+    body: Joi.object({
+      username: Joi.string().min(4).required(),
+      password: Joi.string().min(8).required(),
     }),
   },
   { abortEarly: false },
 );
 
-/**
- * @swagger
- *
- * /api/users/login:
- *   post:
- *     description: desc
- *     responses:
- *       201:
- *         description: desc
- *       400:
- *         description: Validation Error
- *       500:
- *         description: Internal Server Error
- */
 const loginAction = ({ commandBus }: LoginActionDependencies) => (req: Request, res: Response, next: NextFunction) => {
   commandBus
     .execute(
       new LoginCommand({
-        email: req.body.email,
+        username: req.body.username,
         password: req.body.password,
       }),
     )
     .then((commandResult) => {
-      res.json(commandResult);
+      res.json(commandResult.result);
     })
     .catch(next);
 };
-
 export default loginAction;
