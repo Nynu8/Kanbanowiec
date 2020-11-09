@@ -8,9 +8,10 @@ let userRepository: Repository<UserModel>;
 let app: Application;
 
 const requestTemplate = {
-  email: "test@email.com",
+  username: "testusername",
   password: "123456789",
   confirmPassword: "123456789",
+  name: "Test name 123",
 };
 
 type requestType = typeof requestTemplate;
@@ -31,9 +32,10 @@ describe("register handler", () => {
     await request(app).post("/api/users/register").send(requestData).expect(200);
 
     const user = await userRepository.findOne({});
-    expect(user!.email).to.equal(requestData.email);
+    expect(user!.username).to.equal(requestData.username);
     expect(user!.password).to.not.equal(undefined);
     expect(user!.salt).to.not.equal(undefined);
+    expect(user!.name).to.equal(requestData.name);
   });
 
   it("should fail because of not matching passwords", async () => {
