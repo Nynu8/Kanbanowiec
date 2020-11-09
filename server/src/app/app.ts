@@ -6,9 +6,10 @@ import { NotFoundError } from "../errors/not-found.error";
 
 export interface AppDependencies {
   router: express.Router;
+  errorHandler: MiddlewareType;
 }
 
-function createApp({ router }: AppDependencies) {
+function createApp({ router, errorHandler }: AppDependencies) {
   const app = express();
   app.use(cors());
   app.use(helmet());
@@ -22,6 +23,7 @@ function createApp({ router }: AppDependencies) {
 
   app.use("/api", router);
   app.use("*", (req, res, next) => next(new NotFoundError("Page not found")));
+  app.use(errorHandler);
 
   return app;
 }
