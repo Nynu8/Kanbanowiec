@@ -13,6 +13,7 @@ import { errorHandler } from "./middleware/error-handler";
 import { winstonLogger } from "./shared/logger";
 import { QueryBus } from "./shared/query-bus";
 import { EventDispatcher } from "./shared/event-dispatcher";
+import { isLoggedIn } from "./middleware/is-logged-in";
 import AccessTokenService from "./app/features/users/services/access-token.service";
 
 import { UserModel } from "./app/features/users/models/user.model";
@@ -100,7 +101,7 @@ export async function createContainer(): Promise<AwilixContainer> {
 
   container.register({
     accessTokenService: awilix.asClass(AccessTokenService).singleton(),
-    // SERVICES
+    isLoggedInMiddleware: awilix.asFunction(isLoggedIn),
   });
 
   container.register({
