@@ -2,9 +2,35 @@ import React from "react";
 import { Type } from "typescript";
 import { boolean } from "yargs";
 import "../assets/styles/App.css";
-import { Login, Register } from "../components/login/index"
+import { Login, Register } from "../components/login/index";
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import {Navbar} from '../components/navbar'
 
-type AppState = {
+
+
+export function App(){
+  return(
+    <main>
+      <Navbar/>
+      <Switch>
+      <Route path='/login' component={Login} />
+      <Route path='/register' component={Register} />
+      </Switch>
+    </main>
+  )
+}
+
+const RightSide = (props: any) =>{
+  return (
+    <div className="right-side" ref={props.containerRef} onClick={props.onClick}>
+      <div className="inner-container">
+  <div className="text">{props.current}</div>
+      </div>
+    </div>
+  );
+}
+
+/*type AppState = {
   isLogginActive: boolean;
 }
 
@@ -44,7 +70,16 @@ class App extends React.Component<{},AppState>{
   }
 
   render(){
-    const isLogginActive = this.state;
+    return(
+      <main>
+        <Switch>
+          <Route path='/login' component={Login} />
+          <Route path='/register' component={Register} />
+        </Switch>
+      </main>
+    )
+    */
+    /*const isLogginActive = this.state;
     this.current = isLogginActive ? "Register" : "Login";
     const currentActive = isLogginActive ? "login" : "register";
     return(
@@ -75,3 +110,4 @@ const RightSide = (props: any) =>{
 }
 
 export default App;
+*/
