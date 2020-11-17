@@ -10,6 +10,8 @@ import { CommandBus } from "./shared/command-bus";
 import { winstonLogger } from "./shared/logger";
 import { QueryBus } from "./shared/query-bus";
 import { EventDispatcher } from "./shared/event-dispatcher";
+import AccessTokenService from "./app/features/users/services/access-token.service";
+
 import { UserModel } from "./app/features/users/models/user.model";
 // MODELS_IMPORTS
 
@@ -84,6 +86,18 @@ export async function createContainer(): Promise<AwilixContainer> {
 
     userRepository: awilix.asValue(dbConnection.getRepository(UserModel)),
     // MODELS_SETUP
+  });
+
+  container.register({
+    secret: awilix.asValue(process.env.SECRET),
+    accessTokenLifetime: awilix.asValue(process.env.ACCESS_TOKEN_LIFETIME),
+    refreshTokenLifetime: awilix.asValue(process.env.REFRESH_TOKEN_LIFETIME),
+    // ENVS
+  });
+
+  container.register({
+    accessTokenService: awilix.asClass(AccessTokenService).singleton(),
+    // SERVICES
   });
 
   container.register({
