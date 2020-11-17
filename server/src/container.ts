@@ -7,6 +7,9 @@ import { makeApiConfig } from "../config/services";
 import { createApp } from "./app/app";
 import { createRouter } from "./app/router";
 import { CommandBus } from "./shared/command-bus";
+import * as db from "../config/db";
+import { Translation } from "./shared/translations/translation";
+import { errorHandler } from "./middleware/error-handler";
 import { winstonLogger } from "./shared/logger";
 import { QueryBus } from "./shared/query-bus";
 import { EventDispatcher } from "./shared/event-dispatcher";
@@ -25,8 +28,6 @@ import LoginCommandHandler from "./app/features/users/handlers/login.handler";
 // HANDLERS_IMPORTS
 
 // SUBSCRIBERS_IMPORTS
-
-import * as db from "../config/db";
 
 const config = makeApiConfig();
 
@@ -64,6 +65,8 @@ export async function createContainer(): Promise<AwilixContainer> {
 
   container.register({
     router: awilix.asFunction(createRouter),
+    errorHandler: awilix.asFunction(errorHandler),
+    translationService: awilix.asClass(Translation),
 
     eventDispatcher: awilix.asClass(EventDispatcher).classic().singleton(),
     eventSubscribers: asArray<any>([
