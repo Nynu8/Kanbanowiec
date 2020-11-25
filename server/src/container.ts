@@ -17,6 +17,7 @@ import { isLoggedIn } from "./middleware/is-logged-in";
 import AccessTokenService from "./app/features/users/services/access-token.service";
 
 import { UserModel } from "./app/features/users/models/user.model";
+import { TokenModel } from "./app/features/users/models/token.model";
 // MODELS_IMPORTS
 
 import { usersRouting } from "./app/features/users/routing";
@@ -89,6 +90,7 @@ export async function createContainer(): Promise<AwilixContainer> {
     ]),
 
     userRepository: awilix.asValue(dbConnection.getRepository(UserModel)),
+    tokenRepository: awilix.asValue(dbConnection.getRepository(TokenModel)),
     // MODELS_SETUP
   });
 
