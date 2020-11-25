@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import AccessToken from "../services/access-token.service";
 
 interface TokenModelProps {
   id: string;
