@@ -26,18 +26,16 @@ export default class LoginHandler implements CommandHandler<LoginCommand> {
     if (!user || !UserPassword.compare(password, user.salt, user.password)) {
       throw new Error("Invalid credentials");
     }
-    //v refreshToken v
-    const token = accessTokenService.generateRefreshToken(username);
-    //^ refreshToke ^
-    const accessToken = accessTokenService.generateAccessToken(username);
-    let userId = user.id;
 
-    const newToken = TokenModel.create({ id: uuid(), userId, token });
+    const userId = user.id;
+    const refreshToken = accessTokenService.generateRefreshToken(userId);
+    const accessToken = accessTokenService.generateAccessToken(userId);
+
+    const newToken = TokenModel.create({ id: uuid(), userId, token: refreshToken });
     await tokenRepository.save(newToken);
 
     return {
-      result: true,
-      tokens: { token, accessToken },
+      result: { refreshToken, accessToken },
     };
   }
 }
