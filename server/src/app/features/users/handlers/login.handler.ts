@@ -27,7 +27,7 @@ export default class LoginHandler implements CommandHandler<LoginCommand> {
       throw new Error("Invalid credentials");
     }
 
-    const userId = user.id;
+    const { id: userId } = user;
     const refreshToken = accessTokenService.generateRefreshToken(userId);
     const accessToken = accessTokenService.generateAccessToken(userId);
 
