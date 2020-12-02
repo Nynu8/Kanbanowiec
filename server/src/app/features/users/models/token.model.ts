@@ -1,10 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import AccessToken from "../services/access-token.service";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { UserModel } from "./user.model";
 
 interface TokenModelProps {
   id: string;
-  userId: string;
   token: string;
+  user: UserModel;
 }
 
 @Entity({
@@ -25,4 +25,8 @@ export class TokenModel {
 
   @Column()
   token: string;
+
+  @OneToOne((type) => UserModel)
+  @JoinColumn()
+  user: UserModel;
 }
