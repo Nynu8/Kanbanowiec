@@ -10,4 +10,10 @@ declare global {
       dbConnection: Connection;
     }
   }
+
+  namespace Express {
+    interface Request {
+      userId: string;
+    }
+  }
 }

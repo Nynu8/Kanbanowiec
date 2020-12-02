@@ -3,7 +3,7 @@ import { Command } from "../../../../shared/command-bus";
 export const LOGIN_COMMAND_TYPE = "users/LOGIN";
 
 export interface LoginCommandPayload {
-  email: string;
+  username: string;
   password: string;
 }
 

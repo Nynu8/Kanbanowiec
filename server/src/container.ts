@@ -13,8 +13,11 @@ import { errorHandler } from "./middleware/error-handler";
 import { winstonLogger } from "./shared/logger";
 import { QueryBus } from "./shared/query-bus";
 import { EventDispatcher } from "./shared/event-dispatcher";
+import { isLoggedIn } from "./middleware/is-logged-in";
+import AccessTokenService from "./app/features/users/services/access-token.service";
 
 import { UserModel } from "./app/features/users/models/user.model";
+import { TokenModel } from "./app/features/users/models/token.model";
 // MODELS_IMPORTS
 
 import { usersRouting } from "./app/features/users/routing";
@@ -23,6 +26,7 @@ import { usersRouting } from "./app/features/users/routing";
 import UsersQueryHandler from "./app/features/users/query-handlers/users.query.handler";
 import DeleteUserCommandHandler from "./app/features/users/handlers/delete-user.handler";
 import RegisterCommandHandler from "./app/features/users/handlers/register.handler";
+import LoginCommandHandler from "./app/features/users/handlers/login.handler";
 // HANDLERS_IMPORTS
 
 // SUBSCRIBERS_IMPORTS
@@ -75,6 +79,7 @@ export async function createContainer(): Promise<AwilixContainer> {
     commandHandlers: asArray<any>([
       awilix.asClass(DeleteUserCommandHandler),
       awilix.asClass(RegisterCommandHandler),
+      awilix.asClass(LoginCommandHandler),
       // COMMAND_HANDLERS_SETUP
     ]),
 
@@ -85,7 +90,20 @@ export async function createContainer(): Promise<AwilixContainer> {
     ]),
 
     userRepository: awilix.asValue(dbConnection.getRepository(UserModel)),
+    tokenRepository: awilix.asValue(dbConnection.getRepository(TokenModel)),
     // MODELS_SETUP
+  });
+
+  container.register({
+    secret: awilix.asValue(process.env.SECRET),
+    accessTokenLifetime: awilix.asValue(process.env.ACCESS_TOKEN_LIFETIME),
+    refreshTokenLifetime: awilix.asValue(process.env.REFRESH_TOKEN_LIFETIME),
+    // ENVS
+  });
+
+  container.register({
+    accessTokenService: awilix.asClass(AccessTokenService).singleton(),
+    isLoggedInMiddleware: awilix.asFunction(isLoggedIn),
   });
 
   container.register({
