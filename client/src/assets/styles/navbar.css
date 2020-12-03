@@ -1,0 +1,16 @@
+#loginNavbar {
+  background-color: blanchedalmond;
+  display: block;
+  padding: 20px;
+  text-align: right;
+}
+
+a {
+  text-decoration: none;
+  color: darkslategrey;
+  font-size: large;
+}
+
+a:hover {
+  font-weight: bold;
+}

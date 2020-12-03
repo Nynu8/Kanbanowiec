@@ -1,26 +1,113 @@
 import React from "react";
-import logo from "../assets/images/logo.svg";
+import { Type } from "typescript";
+import { boolean } from "yargs";
 import "../assets/styles/App.css";
+import { Login, Register } from "../components/login/index";
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import {Navbar} from '../components/navbar'
 
-function App() {
+
+
+export function App(){
+  return(
+    <main>
+      <Navbar/>
+      <Switch>
+      <Route path='/login' component={Login} />
+      <Route path='/register' component={Register} />
+      </Switch>
+    </main>
+  )
+}
+
+const RightSide = (props: any) =>{
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="right-side" ref={props.containerRef} onClick={props.onClick}>
+      <div className="inner-container">
+  <div className="text">{props.current}</div>
+      </div>
+    </div>
+  );
+}
+
+/*type AppState = {
+  isLogginActive: boolean;
+}
+
+class App extends React.Component<{},AppState>{
+
+  public rightSide: any;
+  public container: any;
+  public current: any;
+
+  constructor(props: any){
+    super(props);
+    this.state = {
+      isLogginActive: true,
+    }
+    this.rightSide = React.createRef();
+    this.container = React.createRef();
+    this.current = React.createRef();
+    //this.componentDidMount();
+  }
+
+  componentDidMount() {
+    this.rightSide.classList.add("right");
+  }
+
+  changeState(){
+    const {isLogginActive} = this.state;
+    if(isLogginActive) {
+      this.rightSide.classList.remove("right");
+      this.rightSide.classList.add("left");
+    }
+    else{
+      this.rightSide.classList.remove("left");
+      this.rightSide.classList.add("right");
+    }
+
+    this.setState((prevState) => ({ isLogginActive: !prevState.isLogginActive }));
+  }
+
+  render(){
+    return(
+      <main>
+        <Switch>
+          <Route path='/login' component={Login} />
+          <Route path='/register' component={Register} />
+        </Switch>
+      </main>
+    )
+    */
+    /*const isLogginActive = this.state;
+    this.current = isLogginActive ? "Register" : "Login";
+    const currentActive = isLogginActive ? "login" : "register";
+    return(
+      <div className="App">
+      <div className="login">
+        <div className="container" ref={ref => (this.container = ref)}>
+          {isLogginActive && <Login containerRef={(ref: any) => (this.current = ref)} />}
+          {!isLogginActive && <Register containerRef={(ref: any) => this.current = ref}/>}
+        </div>
+        <RightSide current={this.current} 
+                   currentActive={currentActive}
+                   containerRef={(ref: any)=>(this.rightSide = ref)} 
+                   onClick={this.changeState.bind(this)}/>
+      </div>
+      </div>
+    )
+  }
+}
+
+const RightSide = (props: any) =>{
+  return (
+    <div className="right-side" ref={props.containerRef} onClick={props.onClick}>
+      <div className="inner-container">
+  <div className="text">{props.current}</div>
+      </div>
     </div>
   );
 }
 
 export default App;
+*/
