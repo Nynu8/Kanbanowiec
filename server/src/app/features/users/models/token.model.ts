@@ -21,9 +21,6 @@ export class TokenModel {
   id: string;
 
   @Column()
-  userId: string;
-
-  @Column()
   token: string;
 
   @OneToOne((type) => UserModel)
