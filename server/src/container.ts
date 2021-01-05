@@ -27,6 +27,7 @@ import UsersQueryHandler from "./app/features/users/query-handlers/users.query.h
 import DeleteUserCommandHandler from "./app/features/users/handlers/delete-user.handler";
 import RegisterCommandHandler from "./app/features/users/handlers/register.handler";
 import LoginCommandHandler from "./app/features/users/handlers/login.handler";
+import GetUserDetailsQueryHandler from "./app/features/users/query-handlers/get-user-details.query.handler";
 // HANDLERS_IMPORTS
 
 // SUBSCRIBERS_IMPORTS
@@ -86,6 +87,7 @@ export async function createContainer(): Promise<AwilixContainer> {
     queryBus: awilix.asClass(QueryBus).classic().singleton(),
     queryHandlers: asArray<any>([
       awilix.asClass(UsersQueryHandler),
+      awilix.asClass(GetUserDetailsQueryHandler),
       // QUERY_HANDLERS_SETUP
     ]),
 
