@@ -21,10 +21,12 @@ export default class GetUserDetailsQueryHandler
     const { userRepository } = this.dependencies;
     const { id } = query.payload;
     const user = await userRepository.findOne({ id });
+
     if (user) {
       const { username, name, surname } = user;
       return new GetUserDetailsQueryResult({ username, name, surname });
     }
+
     throw new Error("User does not exist");
   }
 }
