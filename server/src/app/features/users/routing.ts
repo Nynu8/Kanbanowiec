@@ -4,6 +4,7 @@ import { usersActionValidation } from "./actions/users.action";
 import { loginRefreshActionValidation } from "./actions/login-refresh.action";
 import { registerActionValidation } from "./actions/register.action";
 import { loginActionValidation } from "./actions/login.action";
+import { changeUserDetailsActionValidation } from "./actions/change-user-details.action";
 // VALIDATION_IMPORTS
 
 export interface UsersRoutingDependencies {
@@ -13,6 +14,7 @@ export interface UsersRoutingDependencies {
   loginAction: express.RequestHandler;
   getUserDetailsAction: express.RequestHandler;
   isLoggedInMiddleware: any;
+  changeUserDetailsAction: express.RequestHandler;
   // ACTIONS_IMPORTS
 }
 
@@ -24,6 +26,11 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
   router.post("/register", [registerActionValidation], actions.registerAction);
   router.post("/login", [loginActionValidation], actions.loginAction);
   router.get("/get-user-details", [actions.isLoggedInMiddleware], actions.getUserDetailsAction);
+  router.post(
+    "/change-user-details",
+    [changeUserDetailsActionValidation, actions.isLoggedInMiddleware],
+    actions.changeUserDetailsAction,
+  );
   // ACTIONS_SETUP
 
   return router;
