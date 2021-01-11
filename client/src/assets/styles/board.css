@@ -75,6 +75,7 @@ select {
 
 .item:hover {
   cursor: pointer;
+  background-color: #ebeae6;
 }
 
 .item-title {
@@ -103,8 +104,15 @@ select {
   flex-direction: column;
   margin: 20px;
   padding: 20px;
-  background-color: var(--background-color);
+  background-color: rgb(252, 243, 221);
   border-radius: 5px;
+  max-width: 180px;
+  width: 180px;
+}
+
+.col-header-div {
+  display: inline-flex;
+  flex-direction: row;
 }
 
 .col-header {
@@ -112,6 +120,22 @@ select {
   font-weight: 600;
   margin-bottom: 20px;
   margin-top: 0;
+  width: 150px;
+  text-align: left;
+}
+
+.col-icon-button {
+  align-self: flex-end;
+  margin-top: 0;
+  margin-bottom: 20px;
+  right: 0px;
+}
+
+.col-icon-button:hover {
+  border: black;
+  background-color: #c2beb5;
+  border-radius: 15px;
+  font-size: medium;
 }
 
 .col {
@@ -121,6 +145,10 @@ select {
 }
 
 .highlight-region {
+  background-color: yellow;
+}
+
+.highlight-region:hover {
   background-color: yellow;
 }
 
@@ -170,4 +198,45 @@ select {
 
 .close-btn:hover {
   background-color: #dcdcdc;
+}
+
+#add-item-btn {
+  width: 100%;
+  background-color: #f4f5f7;
+  padding: 10px;
+}
+
+#add-item-btn:hover {
+  background-color: #dad8d1;
+}
+
+*[contenteditable="true"]:focus {
+  border-radius: 10px;
+  border-width: 0.5px;
+  border-style: dashed;
+  padding: 5px;
+  border-color: yellow;
+}
+
+#delete-task-btn {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 15px;
+  font-size: large;
+  background-color: #e6e6e6;
+  margin-top: 100px;
+}
+#delete-task-btn:hover {
+  background-color: #cecece;
+}
+
+#window-color-bar {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 10px;
+  border-radius: 10px;
+  color: transparent;
+  opacity: 0.8;
 }

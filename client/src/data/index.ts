@@ -1,42 +1,42 @@
 const statuses=[{
     status: "open",
-    icon: "💛",
-    color: "#e6e600"
+    icon: "🔴",
+    color: "red"
 }, {
     status: "in progress",
-    icon: "💙",
-    color: "#00C2E0"
+    icon: "🟠",
+    color: "orange"
 }, {
     status: "in review",
-    icon: "💜",
-    color: "#C377E0"
+    icon: "🟡",
+    color: "yellow"
 }, {
     status: "done",
-    icon: "💚",
-    color: "#33cc33"
+    icon: "🟢",
+    color: "green"
 }];
 
 const data=[{
     id:0,
-    icon: "💛",
+    icon: "🔴",
     status: "open",
     title: "Zrobic rzecz 1",
     content: "No musze zrobic ją"
 }, {
     id:1,
-    icon: "💛",
+    icon: "🔴",
     status: "open",
     title: "Zrobic rzecz 2",
     content: "No musze zrobic ją totalnie tez"
 }, {
     id:2,
-    icon: "💙",
+    icon: "🟠",
     status: "in progress",
     title: "Zrobic rzecz 3",
     content: "O kurde ją tez musze zrobic"
 },{
     id:3,
-    icon: "💛",
+    icon: "🔴",
     status: "open",
     title: "Zrobic rzecz 4",
     content: "No musze zrobic ją tez ogólnie"
