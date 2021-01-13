@@ -240,3 +240,105 @@ select {
   color: transparent;
   opacity: 0.8;
 }
+
+#edit-board-btn {
+  border-radius: 0 5px 5px 0;
+  font-size: 32px;
+  width: 150px;
+  background-color: #6ba4b6;
+  margin-bottom: 10px;
+  border-color: rgb(228, 218, 197);
+  border-width: 2px;
+  border-style: outset;
+}
+
+#edit-board-btn:hover {
+  border-style: inset;
+}
+
+#back-to-profile-btn {
+  border-radius: 5px 0 0 5px;
+  width: 150px;
+  background-color: #6ba4b6;
+  margin-bottom: 10px;
+  border-color: rgb(228, 218, 197);
+  border-width: 2px;
+  border-style: outset;
+}
+
+#back-to-profile-btn:hover {
+  border-style: inset;
+}
+
+#add-col-btn {
+  align-self: flex-start;
+  margin-top: 20px;
+  font-size: 24px;
+  background-color: rgb(252, 243, 221);
+  padding: 8px;
+  border-color: rgb(236, 227, 205);
+  border-width: 2px;
+  border-style: outset;
+}
+
+#add-col-btn:hover {
+  border-style: inset;
+  background-color: rgb(212, 202, 177);
+  transition: none;
+}
+
+#user-header {
+  background-color: #054f7c;
+  padding: 20px;
+  color: white;
+  font-size: 30px;
+  flex: 1 100%;
+  margin-top: 0;
+  text-align: center;
+}
+
+.user-container {
+  display: inline-flex;
+  flex-direction: row;
+}
+
+.boardlist-container {
+  width: 50vw;
+  margin: 2.5vw;
+  height: 60vh;
+  background-color: #6ba4b6;
+  border-radius: 20px;
+}
+
+.settings-container {
+  margin: 2.5vw;
+  width: 40vw;
+  background-color: #6ba4b6;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-container-header {
+  text-align: center;
+  background-color: white;
+  border-radius: 60px;
+  width: 150px;
+  padding: 12px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.settings-container button {
+  background-color: rgb(252, 243, 221);
+  margin-left: 3vw;
+  margin-right: 3vw;
+  border-radius: 25px;
+  padding: 1vw;
+  margin-bottom: 1vh;
+  font-size: medium;
+}
+
+.settings-container button:hover {
+  background-color: rgb(199, 188, 160);
+}

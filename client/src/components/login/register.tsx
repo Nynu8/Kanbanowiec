@@ -24,7 +24,7 @@ export class Register extends React.Component<RegisterProps>{
             <div className="image">
                 <img src={loginImg} />
             </div>
-            <div className="form">
+            <form className="form">
                 <div className="form-group">
                     <label htmlFor="username">Username</label>
                     <input type="text" name="username" placeholder="username"/>
@@ -45,7 +45,7 @@ export class Register extends React.Component<RegisterProps>{
                     <label htmlFor="password">Repeat password</label>
                     <input type="password" name="password" placeholder="password"/>
                 </div>
-            </div>
+            </form>
         </div>
         <div className="footer">
             <button type="button" className="btn">Register</button>

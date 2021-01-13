@@ -25,7 +25,7 @@ export class Login extends React.Component<LoginProps> {
             <div className="image">
                 <img src={loginImg} />
             </div>
-            <div className="form">
+            <form className="form">
                 <div className="form-group">
                     <label htmlFor="username">Username</label>
                     <input type="text" name="username" placeholder="username"/>
@@ -34,7 +34,7 @@ export class Login extends React.Component<LoginProps> {
                     <label htmlFor="password">Password</label>
                     <input type="password" name="password" placeholder="password"/>
                 </div>
-            </div>
+            </form>
         </div>
         <div className="footer">
             <button type="button" className="btn">Login</button>
