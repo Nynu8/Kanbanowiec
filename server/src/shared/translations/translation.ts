@@ -3,11 +3,10 @@ export interface TranslationDependencies {
 }
 
 export class Translation {
-  constructor(private dependencies: TranslationDependencies) {}
+  constructor() {}
 
   translate(value: string, language: string) {
-    const { translations } = this.dependencies;
-    const translation = translations[language] || translations[translations.defaultTranslation];
+    const translation: any = [];
     return value.split(".").reduce((o, k) => {
       return o && o[k];
     }, translation);
