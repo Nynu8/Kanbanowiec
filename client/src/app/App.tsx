@@ -17,6 +17,7 @@ export function App(){
       <Route path='/login' component={Login} />
       <Route path='/register' component={Register} />
       <Route path='/board' component={BoardPage}/>
+
       </Switch>
     </main>
   )

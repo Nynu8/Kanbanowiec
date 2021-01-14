@@ -2,14 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import loginImg from "../../assets/images/logo.png"
 
-type LoginProps = {
+type RegisterProps = {
     containerRef: any;
 }
 
-export class Login extends React.Component<LoginProps> {
-
-    //public containerRef = React.createRef<HTMLDivElement>();
-    static LoginProps={
+export class Register extends React.Component<RegisterProps>{
+    
+    static RegisterProps={
         containerRef: React.createRef<string>()
     }
 
@@ -17,10 +16,10 @@ export class Login extends React.Component<LoginProps> {
         super(props);
     };
 
-    public render(){
+    render(){
         return(
         <div className="base-container" ref={this.props.containerRef}>
-            <div className="header">Login</div>
+            <div className="header">Register</div>
             <div className="content">
             <div className="image">
                 <img src={loginImg} />
@@ -31,13 +30,25 @@ export class Login extends React.Component<LoginProps> {
                     <input type="text" name="username" placeholder="username"/>
                 </div>
                 <div className="form-group">
+                    <label htmlFor="name">Name</label>
+                    <input type="text" name="name" placeholder="name"/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="surname">Surname</label>
+                    <input type="text" name="surname" placeholder="surname"/>
+                </div>
+                <div className="form-group">
                     <label htmlFor="password">Password</label>
+                    <input type="password" name="password" placeholder="password"/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="password">Repeat password</label>
                     <input type="password" name="password" placeholder="password"/>
                 </div>
             </form>
         </div>
         <div className="footer">
-            <button type="button" className="btn">Login</button>
+            <button type="button" className="btn">Register</button>
         </div>
         </div>);
     }

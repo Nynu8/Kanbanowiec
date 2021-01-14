@@ -92,6 +92,7 @@ const BoardPage = () => {
             <DndProvider backend={HTML5Backend}>
             <Header/> 
             <div className={"row"}>
+
             {statuses.map(s=>{
                 return (
                     <div key={s.status} className={"col-wrapper"}>
