@@ -19,6 +19,7 @@ import AccessTokenService from "./app/features/users/services/access-token.servi
 import { UserModel } from "./app/features/users/models/user.model";
 import { TokenModel } from "./app/features/users/models/token.model";
 import { BoardModel } from "./app/features/boards/models/board.model";
+import { PermissionModel } from "./app/features/boards/models/permission.model";
 // MODELS_IMPORTS
 
 import { usersRouting } from "./app/features/users/routing";
@@ -101,6 +102,7 @@ export async function createContainer(): Promise<AwilixContainer> {
     userRepository: awilix.asValue(dbConnection.getRepository(UserModel)),
     tokenRepository: awilix.asValue(dbConnection.getRepository(TokenModel)),
     boardRepository: awilix.asValue(dbConnection.getRepository(BoardModel)),
+    permissionRepository: awilix.asValue(dbConnection.getRepository(PermissionModel)),
     // MODELS_SETUP
   });
 

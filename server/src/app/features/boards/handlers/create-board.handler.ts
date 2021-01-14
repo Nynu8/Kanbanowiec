@@ -6,11 +6,13 @@ import { Repository } from "typeorm";
 import { UserModel } from "../../users/models/user.model";
 import { BoardModel } from "../models/board.model";
 import { v4 as uuid } from "uuid";
+import { PermissionModel } from "../models/permission.model";
+import { UserPermission } from "../models/UserPermission.enum";
 
 export interface CreateBoardHandlerDependencies {
-  eventDispatcher: EventDispatcher;
   userRepository: Repository<UserModel>;
   boardRepository: Repository<BoardModel>;
+  permissionRepository: Repository<PermissionModel>;
 }
 
 export default class CreateBoardHandler implements CommandHandler<CreateBoardCommand> {
@@ -19,7 +21,7 @@ export default class CreateBoardHandler implements CommandHandler<CreateBoardCom
   constructor(private dependencies: CreateBoardHandlerDependencies) {}
 
   async execute({ payload }: CreateBoardCommand) {
-    const { boardRepository, userRepository } = this.dependencies;
+    const { boardRepository, userRepository, permissionRepository } = this.dependencies;
     const { id, name } = payload;
     const user = await userRepository.findOne({ id });
 
@@ -28,7 +30,15 @@ export default class CreateBoardHandler implements CommandHandler<CreateBoardCom
       throw new Error("Board already exists");
     }
 
-    const newBoard = BoardModel.create({ id: uuid(), name, user });
+    const newBoard = BoardModel.create({ id: uuid(), name });
     await boardRepository.save(newBoard);
+
+    const permission = PermissionModel.create({
+      id: uuid(),
+      type: UserPermission.Owner,
+      user,
+      board: newBoard,
+    });
+    await permissionRepository.save(permission);
   }
 }

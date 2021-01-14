@@ -22,8 +22,4 @@ export class BoardModel {
 
   @Column()
   name: string;
-
-  @ManyToOne((type) => UserModel)
-  @JoinColumn()
-  user: UserModel;
 }
