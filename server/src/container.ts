@@ -18,9 +18,12 @@ import AccessTokenService from "./app/features/users/services/access-token.servi
 
 import { UserModel } from "./app/features/users/models/user.model";
 import { TokenModel } from "./app/features/users/models/token.model";
+import { BoardModel } from "./app/features/boards/models/board.model";
+import { PermissionModel } from "./app/features/boards/models/permission.model";
 // MODELS_IMPORTS
 
 import { usersRouting } from "./app/features/users/routing";
+import { boardsRouting } from "./app/features/boards/routing";
 // ROUTING_IMPORTS
 
 import UsersQueryHandler from "./app/features/users/query-handlers/users.query.handler";
@@ -29,6 +32,7 @@ import RegisterCommandHandler from "./app/features/users/handlers/register.handl
 import LoginCommandHandler from "./app/features/users/handlers/login.handler";
 import GetUserDetailsQueryHandler from "./app/features/users/query-handlers/get-user-details.query.handler";
 import ChangeUserDetailsCommandHandler from "./app/features/users/handlers/change-user-details.handler";
+import CreateBoardCommandHandler from "./app/features/boards/handlers/create-board.handler";
 // HANDLERS_IMPORTS
 
 // SUBSCRIBERS_IMPORTS
@@ -64,6 +68,7 @@ export async function createContainer(): Promise<AwilixContainer> {
 
   container.register({
     usersRouting: awilix.asFunction(usersRouting),
+    boardsRouting: awilix.asFunction(boardsRouting),
     // ROUTING_SETUP
   });
 
@@ -83,6 +88,7 @@ export async function createContainer(): Promise<AwilixContainer> {
       awilix.asClass(RegisterCommandHandler),
       awilix.asClass(LoginCommandHandler),
       awilix.asClass(ChangeUserDetailsCommandHandler),
+      awilix.asClass(CreateBoardCommandHandler),
       // COMMAND_HANDLERS_SETUP
     ]),
 
@@ -95,6 +101,8 @@ export async function createContainer(): Promise<AwilixContainer> {
 
     userRepository: awilix.asValue(dbConnection.getRepository(UserModel)),
     tokenRepository: awilix.asValue(dbConnection.getRepository(TokenModel)),
+    boardRepository: awilix.asValue(dbConnection.getRepository(BoardModel)),
+    permissionRepository: awilix.asValue(dbConnection.getRepository(PermissionModel)),
     // MODELS_SETUP
   });
 
