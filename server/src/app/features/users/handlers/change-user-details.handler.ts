@@ -22,9 +22,15 @@ export default class ChangeUserDetailsHandler implements CommandHandler<ChangeUs
     let { name, surname, username } = payload;
 
     //if user won't change data
-    if (name == null) name = user!!.name;
-    if (surname == null) surname = user!!.surname;
-    if (username == null) username = user!!.username;
+    if (name == null) name = user!.name;
+    if (surname == null) surname = user!.surname;
+    if (username == null) username = user!.username;
+    else {
+      const tmpUser = await userRepository.findOne({ username });
+      if (tmpUser) {
+        throw new Error("Username already exists");
+      }
+    }
 
     userRepository.update({ id }, { name, surname, username });
     return { result: { name, surname, username } };
