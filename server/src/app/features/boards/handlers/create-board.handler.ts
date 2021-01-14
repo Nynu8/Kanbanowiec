@@ -1,13 +1,12 @@
 import { CommandHandler } from "../../../../shared/command-bus";
 import { CREATE_BOARD_COMMAND_TYPE, CreateBoardCommand } from "../commands/create-board.command";
-import { EventDispatcher } from "../../../../shared/event-dispatcher";
-import CreateBoardEvent from "../events/create-board.event";
 import { Repository } from "typeorm";
 import { UserModel } from "../../users/models/user.model";
 import { BoardModel } from "../models/board.model";
 import { v4 as uuid } from "uuid";
 import { PermissionModel } from "../models/permission.model";
-import { UserPermission } from "../models/UserPermission.enum";
+import { UserPermission } from "../models/user-permission.enum";
+import { BadRequestError } from "../../../../errors/bad-request.error";
 
 export interface CreateBoardHandlerDependencies {
   userRepository: Repository<UserModel>;
@@ -27,7 +26,7 @@ export default class CreateBoardHandler implements CommandHandler<CreateBoardCom
 
     const board = await boardRepository.findOne({ name });
     if (board) {
-      throw new Error("Board already exists");
+      throw new BadRequestError("Board already exists");
     }
 
     const newBoard = BoardModel.create({ id: uuid(), name });

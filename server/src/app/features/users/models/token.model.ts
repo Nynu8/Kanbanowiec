@@ -23,7 +23,7 @@ export class TokenModel {
   @Column()
   token: string;
 
-  @OneToOne((type) => UserModel)
+  @OneToOne((type) => UserModel, { onDelete: "CASCADE" })
   @JoinColumn()
   user: UserModel;
 }

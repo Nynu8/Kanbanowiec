@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { celebrate, Joi } from "celebrate";
 import { CommandBus } from "../../../../shared/command-bus";
 import { CreateBoardCommand } from "../commands/create-board.command";
-import { MinKey } from "typeorm";
 
 export interface CreateBoardActionDependencies {
   commandBus: CommandBus;
