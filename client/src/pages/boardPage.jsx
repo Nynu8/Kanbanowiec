@@ -7,6 +7,8 @@ import DropWrapper from "../components/board/dropWrapper";
 import Column from "../components/board/column";
 import {data, statuses as stats} from "../data/index";
 import "../assets/styles/board.css";
+import { App } from "../app/App";
+import { Navbar } from "../components/navbar";
 
 
 const BoardPage = () => {
@@ -17,7 +19,8 @@ const BoardPage = () => {
 
     const onDrop = (item, monitor, status)=>{
         const mapping = statuses.find(si=>si.status===status);
-
+ 
+        
         setItems(prevState=>{
             const newItems = prevState
             .filter(i=>i.id !== item.id)
@@ -97,8 +100,15 @@ const BoardPage = () => {
                 return (
                     <div key={s.status} className={"col-wrapper"}>
                         <div className="col-header-div">
+                        <button className="col-icon-button" onClick={(e)=>editColumnIcon(s,e)}>{s.icon}</button>
                             <div className={"col-header"} contentEditable="true" onBlur={(e)=>editColumnTitle(s,e)} >{s.status.toUpperCase()}</div>
-                            <button className="col-icon-button" onClick={(e)=>editColumnIcon(s,e)}>{s.icon}</button>
+                            <button className="edit-col-button">...
+                            <div class="dropdown-edit-column">
+                                <a href="#">Edit column name</a>
+                                <a href="#">Change position</a>
+                                <a href="#" style={{color: "darkred"}}>Delete column</a>
+                            </div>
+                        </button>
                         </div>
                         <DropWrapper onDrop={onDrop} status={s.status}>
                             <Column status={s}>

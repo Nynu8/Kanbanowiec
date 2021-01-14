@@ -16,6 +16,10 @@ const Window=({show, onClose, item, color, icon})=>{
                 <p id="description-field" contentEditable="true">{item.content}</p>
                 <h2>Status</h2>
                 <p>{`${icon} ${item.status.charAt(0).toUpperCase()}${item.status.slice(1)}`}</p>
+                <h4>Author</h4>
+                <p>task's author</p>
+                <h4>Executor</h4>
+                <p>task's executor</p>
                 <button id="delete-task-btn">Delete task</button>
             </div>
         </Modal>

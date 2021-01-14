@@ -1,23 +1,29 @@
-import React from "react";
+import React, {useState} from "react";
 import ReactDOM from "react-dom";
+import { boolean } from "yargs";
+import { App } from "../../app/App";
 import loginImg from "../../assets/images/logo.png"
+import WaitingWindow from "../waitingWindow"
 
-type LoginProps = {
-    containerRef: any;
-}
 
-export class Login extends React.Component<LoginProps> {
 
-    //public containerRef = React.createRef<HTMLDivElement>();
+export class Login extends React.Component{
+    
+    
     static LoginProps={
-        containerRef: React.createRef<string>()
+        containerRef: React.createRef()
     }
 
-    constructor(props: any){
+    constructor(props){
         super(props);
+        this.state={
+            showWindow: "hidden"
+        };
     };
 
-    public render(){
+    
+
+    render(){
         return(
         <div className="base-container" ref={this.props.containerRef}>
             <div className="header">Login</div>
@@ -34,11 +40,12 @@ export class Login extends React.Component<LoginProps> {
                     <label htmlFor="password">Password</label>
                     <input type="password" name="password" placeholder="password"/>
                 </div>
+                <input className="btn" type="submit" onClick={()=>this.setState({showWindow: "visible"})} value="Login"/>
             </form>
         </div>
-        <div className="footer">
-            <button type="button" className="btn">Login</button>
-        </div>
+        <WaitingWindow show={this.state.showWindow}/>
         </div>);
     }
 }
+
+export default Login;

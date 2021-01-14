@@ -1,4 +1,6 @@
 import React, {useState} from "react";
+import { App } from "../app/App";
+import BoardPage from "./boardPage";
 
 const UserPage = () => {
 

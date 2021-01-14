@@ -31,6 +31,7 @@
   "author": "",
   "dependencies": {
     "awilix": "^4.2.6",
+    "axios": "^0.21.1",
     "celebrate": "^12.1.1",
     "class-transformer": "^0.2.3",
     "cors": "^2.8.5",
