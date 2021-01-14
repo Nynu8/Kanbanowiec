@@ -17,25 +17,34 @@ export class Register extends React.Component {
     this.register = this.register.bind(this);
   }
 
-  async register(e) {
+  async register(e, Username, Name, Surname, Password, ConfirmPassword) {
     e.preventDefault();
     try {
       await httpClient.registerUser({
-        username: "lolo",
-        password: "abcd",
-        confirmPassword: "abcd",
-        name: "piss",
-        surname: "mememe",
+        username: Username,
+        password: Password,
+        confirmPassword: ConfirmPassword,
+        name: Name,
+        surname: Surname,
       });
     } catch (err) {
       //display error somehow
       console.error(err);
     }
+
   }
 
   onSubmitClick(e){
+
     this.setState({showWindow: "visible"});
-    this.register(e)
+
+    var username = document.getElementById('username-field').value;
+    var name = document.getElementById('name-field').value;
+    var surname = document.getElementById('surname-field').value;
+    var password = document.getElementById('password-field').value;
+    var confirmPassword = document.getElementById('confirm-password-field').value;
+
+    this.register(e, username, name, surname, password, confirmPassword);
   }
   
 
@@ -50,23 +59,23 @@ export class Register extends React.Component {
           <form className="form">
             <div className="form-group">    
               <label htmlFor="username">Username</label>
-              <input type="text" name="username" placeholder="username" />
+              <input type="text" id='username-field' name="username" placeholder="username" />
             </div>
             <div className="form-group">
               <label htmlFor="name">Name</label>
-              <input type="text" name="name" placeholder="name" />
+              <input type="text" id="name-field" name="name" placeholder="name" />
             </div>
             <div className="form-group">
               <label htmlFor="surname">Surname</label>
-              <input type="text" name="surname" placeholder="surname" />
+              <input type="text" id="surname-field" name="surname" placeholder="surname" />
             </div>
             <div className="form-group">
               <label htmlFor="password">Password</label>
-              <input type="password" name="password" placeholder="password" />
+              <input type="password" id="password-field" name="password" placeholder="password" />
             </div>
             <div className="form-group">
-              <label htmlFor="password">Repeat password</label>
-              <input type="password" name="password" placeholder="password" />
+              <label htmlFor="password">Confirm password</label>
+              <input type="password" id="confirm-password-field" name="password" placeholder="password" />
             </div>
             <input type="submit" value="Register" onClick={this.onSubmitClick} className="btn"/>
           </form>
