@@ -96,7 +96,7 @@ const BoardPage = () => {
             <DndProvider backend={HTML5Backend}>
             <Header/> 
             <div className={"row"}>
-                <button id="add-col-btn">➕</button>
+
             {statuses.map(s=>{
                 return (
                     <div key={s.status} className={"col-wrapper"}>
