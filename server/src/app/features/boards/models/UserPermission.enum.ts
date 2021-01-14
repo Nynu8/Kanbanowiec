@@ -1,5 +1,6 @@
 export enum UserPermission {
-  Owner,
-  Administrator,
-  User,
+  Owner = "Owner",
+  Administrator = "Administrator",
+  User = "User",
+  Viewer = "Viewer",
 }
