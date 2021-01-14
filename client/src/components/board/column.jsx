@@ -18,4 +18,5 @@ const Column = ({isOver, children, status}) =>{
     );
 };
 
+
 export default Column;

@@ -13,4 +13,9 @@ a {
 
 a:hover {
   font-weight: bold;
+  text-shadow: 2px 1px rgb(182, 180, 180);
+}
+
+#loginNavbar h3 {
+  text-decoration: underline;
 }

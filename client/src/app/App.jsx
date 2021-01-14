@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Type } from "typescript";
 import { boolean } from "yargs";
 import "../assets/styles/App.css";
@@ -8,13 +8,16 @@ import {Navbar} from '../components/navbar'
 import BoardPage from "../pages/boardPage";
 
 
-
 export function App(){
+
+  //const [stage, setStage] = useState("logging");
+
+
   return(
     <main>
       <Navbar/>
       <Switch>
-      <Route path='/login' component={Login} />
+      <Route path='/login'  component={Login} />
       <Route path='/register' component={Register} />
       <Route path='/board' component={BoardPage}/>
 

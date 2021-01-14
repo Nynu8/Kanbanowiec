@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import loginImg from "../../assets/images/logo.png";
 import httpClient from "../../tools/httpClient";
+import WaitingWindow from "../waitingWindow"
 
 export class Register extends React.Component {
   static RegisterProps = {
@@ -10,7 +11,9 @@ export class Register extends React.Component {
 
   constructor(props) {
     super(props);
-
+    this.state={
+    showWindow: "hidden"
+    }
     this.register = this.register.bind(this);
   }
 
@@ -30,6 +33,12 @@ export class Register extends React.Component {
     }
   }
 
+  onSubmitClick(e){
+    this.setState({showWindow: "visible"});
+    this.register(e)
+  }
+  
+
   render() {
     return (
       <div className="base-container" ref={this.props.containerRef}>
@@ -38,8 +47,8 @@ export class Register extends React.Component {
           <div className="image">
             <img src={loginImg} />
           </div>
-          <div className="form">
-            <div className="form-group">
+          <form className="form">
+            <div className="form-group">    
               <label htmlFor="username">Username</label>
               <input type="text" name="username" placeholder="username" />
             </div>
@@ -59,14 +68,13 @@ export class Register extends React.Component {
               <label htmlFor="password">Repeat password</label>
               <input type="password" name="password" placeholder="password" />
             </div>
-          </div>
+            <input type="submit" value="Register" onClick={this.onSubmitClick} className="btn"/>
+          </form>
         </div>
-        <div className="footer">
-          <button type="button" className="btn" onClick={this.register}>
-            Register
-          </button>
-        </div>
+        <WaitingWindow show={this.state.showWindow}/>
       </div>
     );
   }
 }
+
+export default Register;
