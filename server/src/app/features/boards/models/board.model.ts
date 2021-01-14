@@ -1,10 +1,8 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { UserModel } from "../../users/models/user.model";
 
 interface BoardModelProps {
   id: string;
   name: string;
-  user: UserModel;
 }
 
 @Entity({

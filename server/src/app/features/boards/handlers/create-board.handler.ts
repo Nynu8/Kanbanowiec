@@ -1,7 +1,5 @@
 import { CommandHandler } from "../../../../shared/command-bus";
 import { CREATE_BOARD_COMMAND_TYPE, CreateBoardCommand } from "../commands/create-board.command";
-import { EventDispatcher } from "../../../../shared/event-dispatcher";
-import CreateBoardEvent from "../events/create-board.event";
 import { Repository } from "typeorm";
 import { UserModel } from "../../users/models/user.model";
 import { BoardModel } from "../models/board.model";

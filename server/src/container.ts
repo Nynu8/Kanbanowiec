@@ -33,6 +33,7 @@ import LoginCommandHandler from "./app/features/users/handlers/login.handler";
 import GetUserDetailsQueryHandler from "./app/features/users/query-handlers/get-user-details.query.handler";
 import ChangeUserDetailsCommandHandler from "./app/features/users/handlers/change-user-details.handler";
 import CreateBoardCommandHandler from "./app/features/boards/handlers/create-board.handler";
+import EditBoardCommandHandler from "./app/features/boards/handlers/edit-board.handler";
 // HANDLERS_IMPORTS
 
 // SUBSCRIBERS_IMPORTS
@@ -89,6 +90,7 @@ export async function createContainer(): Promise<AwilixContainer> {
       awilix.asClass(LoginCommandHandler),
       awilix.asClass(ChangeUserDetailsCommandHandler),
       awilix.asClass(CreateBoardCommandHandler),
+      awilix.asClass(EditBoardCommandHandler),
       // COMMAND_HANDLERS_SETUP
     ]),
 

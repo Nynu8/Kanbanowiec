@@ -1,11 +1,11 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class AddedPermissions1610642988326 implements MigrationInterface {
-    name = 'AddedPermissions1610642988326'
+export class AddedPermissions1610650236323 implements MigrationInterface {
+    name = 'AddedPermissions1610650236323'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`ALTER TABLE "board" DROP CONSTRAINT "FK_c9951f13af7909d37c0e2aec484"`);
-        await queryRunner.query(`CREATE TYPE "permission_type_enum" AS ENUM('0', '1', '2')`);
+        await queryRunner.query(`CREATE TYPE "permission_type_enum" AS ENUM('Owner', 'Administrator', 'User', 'Viewer')`);
         await queryRunner.query(`CREATE TABLE "permission" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "type" "permission_type_enum" NOT NULL, "userId" uuid, "boardId" uuid, CONSTRAINT "PK_3b8b97af9d9d8807e41e6f48362" PRIMARY KEY ("id"))`);
         await queryRunner.query(`ALTER TABLE "board" DROP COLUMN "userId"`);
         await queryRunner.query(`ALTER TABLE "permission" ADD CONSTRAINT "FK_c60570051d297d8269fcdd9bc47" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
