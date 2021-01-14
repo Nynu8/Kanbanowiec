@@ -8,7 +8,6 @@ import { createApp } from "./app/app";
 import { createRouter } from "./app/router";
 import { CommandBus } from "./shared/command-bus";
 import * as db from "../config/db";
-import { Translation } from "./shared/translations/translation";
 import { errorHandler } from "./middleware/error-handler";
 import { winstonLogger } from "./shared/logger";
 import { QueryBus } from "./shared/query-bus";
@@ -20,6 +19,7 @@ import { UserModel } from "./app/features/users/models/user.model";
 import { TokenModel } from "./app/features/users/models/token.model";
 import { BoardModel } from "./app/features/boards/models/board.model";
 import { PermissionModel } from "./app/features/boards/models/permission.model";
+import { ColumnModel } from "./app/features/boards/models/column.model";
 // MODELS_IMPORTS
 
 import { usersRouting } from "./app/features/users/routing";
@@ -27,13 +27,14 @@ import { boardsRouting } from "./app/features/boards/routing";
 // ROUTING_IMPORTS
 
 import UsersQueryHandler from "./app/features/users/query-handlers/users.query.handler";
-import DeleteUserCommandHandler from "./app/features/users/handlers/delete-user.handler";
 import RegisterCommandHandler from "./app/features/users/handlers/register.handler";
 import LoginCommandHandler from "./app/features/users/handlers/login.handler";
 import GetUserDetailsQueryHandler from "./app/features/users/query-handlers/get-user-details.query.handler";
 import ChangeUserDetailsCommandHandler from "./app/features/users/handlers/change-user-details.handler";
 import CreateBoardCommandHandler from "./app/features/boards/handlers/create-board.handler";
 import EditBoardCommandHandler from "./app/features/boards/handlers/edit-board.handler";
+import CreateColumnCommandHandler from "./app/features/boards/handlers/create-column.handler";
+import DeleteCommandHandler from "./app/features/users/handlers/delete.handler";
 // HANDLERS_IMPORTS
 
 // SUBSCRIBERS_IMPORTS
@@ -76,7 +77,6 @@ export async function createContainer(): Promise<AwilixContainer> {
   container.register({
     router: awilix.asFunction(createRouter),
     errorHandler: awilix.asFunction(errorHandler),
-    translationService: awilix.asClass(Translation),
 
     eventDispatcher: awilix.asClass(EventDispatcher).classic().singleton(),
     eventSubscribers: asArray<any>([
@@ -85,12 +85,13 @@ export async function createContainer(): Promise<AwilixContainer> {
 
     commandBus: awilix.asClass(CommandBus).classic().singleton(),
     commandHandlers: asArray<any>([
-      awilix.asClass(DeleteUserCommandHandler),
       awilix.asClass(RegisterCommandHandler),
       awilix.asClass(LoginCommandHandler),
       awilix.asClass(ChangeUserDetailsCommandHandler),
       awilix.asClass(CreateBoardCommandHandler),
       awilix.asClass(EditBoardCommandHandler),
+      awilix.asClass(CreateColumnCommandHandler),
+      awilix.asClass(DeleteCommandHandler),
       // COMMAND_HANDLERS_SETUP
     ]),
 
@@ -105,6 +106,7 @@ export async function createContainer(): Promise<AwilixContainer> {
     tokenRepository: awilix.asValue(dbConnection.getRepository(TokenModel)),
     boardRepository: awilix.asValue(dbConnection.getRepository(BoardModel)),
     permissionRepository: awilix.asValue(dbConnection.getRepository(PermissionModel)),
+    columnRepository: awilix.asValue(dbConnection.getRepository(ColumnModel)),
     // MODELS_SETUP
   });
 

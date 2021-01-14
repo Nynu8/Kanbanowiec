@@ -14,27 +14,9 @@ export const usersActionValidation = celebrate(
   { abortEarly: false },
 );
 
-/**
- * @swagger
- *
- * /api/users/users:
- *   get:
- *     description: desc
- *     responses:
- *       201:
- *         description: desc
- *       400:
- *         description: Validation Error
- *       500:
- *         description: Internal Server Error
- */
 const usersAction = ({ queryBus }: UsersActionDependencies) => (req: Request, res: Response, next: NextFunction) => {
   queryBus
-    .execute(
-      new UsersQuery({
-        // query props
-      }),
-    )
+    .execute(new UsersQuery({}))
     .then((queryResult) => {
       res.json(queryResult.result);
     })

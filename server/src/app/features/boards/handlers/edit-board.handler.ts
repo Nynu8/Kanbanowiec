@@ -4,7 +4,7 @@ import { Repository } from "typeorm";
 import { UserModel } from "../../users/models/user.model";
 import { BoardModel } from "../models/board.model";
 import { PermissionModel } from "../models/permission.model";
-import { UserPermission } from "../models/UserPermission.enum";
+import { UserPermission } from "../models/user-permission.enum";
 import { UnauthorizedError } from "../../../../errors/unauthorized.error";
 
 export interface EditBoardHandlerDependencies {

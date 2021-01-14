@@ -1,7 +1,7 @@
 import { CommandHandler } from "../../../../shared/command-bus";
 import { LOGIN_COMMAND_TYPE, LoginCommand } from "../commands/login.command";
 import UserPassword from "../services/user-password.service";
-import { IsNull, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import { UserModel } from "../models/user.model";
 import { TokenModel } from "../models/token.model";
 import AccessTokenService from "../services/access-token.service";

@@ -16,20 +16,6 @@ export const loginRefreshActionValidation = celebrate(
   { abortEarly: false },
 );
 
-/**
- * @swagger
- *
- * /api/users/login-refresh:
- *   post:
- *     description: desc
- *     responses:
- *       201:
- *         description: desc
- *       400:
- *         description: Validation Error
- *       500:
- *         description: Internal Server Error
- */
 const loginRefreshAction = ({ commandBus }: LoginRefreshActionDependencies) => (
   req: Request,
   res: Response,

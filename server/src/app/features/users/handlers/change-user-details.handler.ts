@@ -1,12 +1,9 @@
 import { CommandHandler } from "../../../../shared/command-bus";
 import { CHANGE_USER_DETAILS_COMMAND_TYPE, ChangeUserDetailsCommand } from "../commands/change-user-details.command";
-import { EventDispatcher } from "../../../../shared/event-dispatcher";
-import ChangeUserDetailsEvent from "../events/change-user-details.event";
 import { UserModel } from "../models/user.model";
 import { Repository } from "typeorm";
 
 export interface ChangeUserDetailsHandlerDependencies {
-  eventDispatcher: EventDispatcher;
   userRepository: Repository<UserModel>;
 }
 

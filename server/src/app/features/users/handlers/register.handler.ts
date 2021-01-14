@@ -3,6 +3,7 @@ import { CommandHandler } from "../../../../shared/command-bus";
 import { REGISTER_COMMAND_TYPE, RegisterCommand } from "../commands/register.command";
 import { UserModel } from "../models/user.model";
 import { v4 as uuid } from "uuid";
+import { BadRequestError } from "../../../../errors/bad-request.error";
 
 export interface RegisterHandlerDependencies {
   userRepository: Repository<UserModel>;
@@ -19,7 +20,7 @@ export default class RegisterHandler implements CommandHandler<RegisterCommand> 
 
     const user = await userRepository.findOne({ username });
     if (user) {
-      throw new Error("User already exists");
+      throw new BadRequestError("User already exists");
     }
 
     const newUser = UserModel.create({ id: uuid(), username, name, surname });
