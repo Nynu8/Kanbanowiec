@@ -20,6 +20,7 @@ const DropWrapper = ({onDrop, children, status})=>{
         })
     });
 
+    
     return(
         <div ref={drop} className={"drop-wrapper"}>
             {React.cloneElement(children, { isOver })}

@@ -26,4 +26,5 @@ const Window=({show, onClose, item, color, icon})=>{
     );
 };
 
+
 export default Window;

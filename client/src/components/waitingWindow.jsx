@@ -13,4 +13,5 @@ const WaitingWindow=({show})=>{
     );
 };
 
+
 export default WaitingWindow;

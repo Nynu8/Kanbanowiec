@@ -57,6 +57,7 @@ const Item = ({item, index, moveItem, status}) =>{
         item.content = descriptionField.textContent;
         setShow(false)
     }
+    
 
 
     drag(drop(ref));

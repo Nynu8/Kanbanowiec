@@ -90,6 +90,7 @@ const BoardPage = () => {
     }
 
 
+
     return(
         <div>
             <DndProvider backend={HTML5Backend}>
@@ -116,6 +117,7 @@ const BoardPage = () => {
                                     .filter(i => i.status === s.status)
                                     .map((i, indx) => <Item key={i.id} item={i} index={indx} moveItem={moveItem} status={s} />)
                                 }
+                                
                             </Column>
                         </DropWrapper>
                     </div>

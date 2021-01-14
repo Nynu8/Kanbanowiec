@@ -37,6 +37,7 @@ export class Register extends React.Component {
     this.setState({showWindow: "visible"});
     this.register(e)
   }
+  
 
   render() {
     return (
