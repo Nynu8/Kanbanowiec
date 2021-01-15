@@ -450,9 +450,10 @@ select {
 
 .edit-col-name-window {
   position: absolute;
-
+  margin-left: 30px;
+  margin-top: 50px;
   background-color: rgb(250, 248, 248);
   box-shadow: 5px 8px 16px 5px gray;
-  padding: 20px;
+  padding: 25px;
   z-index: 1;
 }
