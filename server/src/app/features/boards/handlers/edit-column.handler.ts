@@ -44,7 +44,7 @@ export default class EditColumnHandler implements CommandHandler<EditColumnComma
       }
 
       if (newName != null) column!.name = newName;
-      //if (color != null) column!.color = ColumnColor[color];
+      if (color != null) column!.color = ColumnColor[color];
 
       columnRepository.save(column!);
     }
