@@ -13,7 +13,7 @@ import { Navbar } from "../components/navbar";
 
 const BoardPage = () => {
 
-    var colmnWindows = Array.prototype.fill("hidden",0,stats.length-1)
+    var colmnWindows = ["hidden","hidden","hidden","hidden"];
 
     const [items, setItems] = useState(data);
     const [statuses, setStatuses] = useState(stats);
@@ -81,10 +81,13 @@ const BoardPage = () => {
             return [...tmp];
         })
     }
-    function setColumnNameWindowHidden(e){
+    function setColumnNameWindowHidden(s,e){
         e.preventDefault();
+        const editedColumnId = statuses.findIndex(si=>si.status===s.status);
+        var tmp = showColumnNameWindow;
+        tmp[editedColumnId] = "hidden";
         setColumnNameWindowVisibility(()=>{
-            return "hidden";
+            return [...tmp];
         })
     }
 
@@ -93,7 +96,9 @@ const BoardPage = () => {
         e.preventDefault();
 
         const editedColumnId = statuses.findIndex(si=>si===s);
-        s.status = "chujsko"
+        var newName = document.getElementsByClassName("new-column-name")[editedColumnId].value;
+        var prevStatus = s.status;
+        s.status = newName;
         statuses[editedColumnId].status = s.status;
         
         setStatuses(()=>{
@@ -101,8 +106,14 @@ const BoardPage = () => {
             return [...newStatuses];
         })
 
-        console.log("Tytul zmieniony koń zwalony");
-
+        setItems(()=>{
+            for(var i=0;i<items.length;i++){
+                if(items[i].status === prevStatus){
+                    items[i].status = newName;
+                }
+            }
+            return [...items]
+        })
     }
 
 
@@ -117,10 +128,10 @@ const BoardPage = () => {
                 return (
                     
                     <div key={s.status} className={"col-wrapper"}>
-                        <div className="edit-col-name-window" style={{visibility: `hidden`}}>
-                                    <button style={{position: "absolute", marginLeft: "230px"}} onClick={setColumnNameWindowHidden}>X</button>
+                        <div className="edit-col-name-window" style={{visibility: `${showColumnNameWindow[statuses.indexOf(s)]}` }}>
+                                    <button style={{position: "absolute", marginLeft: "230px"}} onClick={(e)=>setColumnNameWindowHidden(s,e)}>X</button>
                                     <h3>Enter new column name:</h3>
-                                    <input type="text" className="new-name" id="new-column-name" name="text"/>
+                                    <input type="text" className="new-name" class="new-column-name" name="text"/>
                                     <input type="submit" name="submit" onClick={(e)=>editColumnTitle(s,e)} value="Confirm"/>
                                 </div>
                         <div className="col-header-div">
