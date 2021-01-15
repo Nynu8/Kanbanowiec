@@ -4,6 +4,7 @@ import { Repository } from "typeorm";
 import { ColumnModel } from "../models/column.model";
 import { BoardModel } from "../models/board.model";
 import { BadRequestError } from "../../../../errors/bad-request.error";
+import { ColumnColor } from "../models/column-color.enum";
 
 export interface CreateColumnHandlerDependencies {
   columnRepository: Repository<ColumnModel>;
@@ -32,7 +33,7 @@ export default class CreateColumnHandler implements CommandHandler<CreateColumnC
       }
     }
 
-    const column = ColumnModel.create({ name, index, board });
+    const column = ColumnModel.create({ name, index, color: ColumnColor.black, board });
     await columnRepository.save(column);
   }
 }

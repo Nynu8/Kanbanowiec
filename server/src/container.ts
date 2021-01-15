@@ -35,6 +35,7 @@ import CreateBoardCommandHandler from "./app/features/boards/handlers/create-boa
 import EditBoardCommandHandler from "./app/features/boards/handlers/edit-board.handler";
 import CreateColumnCommandHandler from "./app/features/boards/handlers/create-column.handler";
 import DeleteCommandHandler from "./app/features/users/handlers/delete.handler";
+import EditColumnCommandHandler from "./app/features/boards/handlers/edit-column.handler";
 // HANDLERS_IMPORTS
 
 // SUBSCRIBERS_IMPORTS
@@ -92,6 +93,7 @@ export async function createContainer(): Promise<AwilixContainer> {
       awilix.asClass(EditBoardCommandHandler),
       awilix.asClass(CreateColumnCommandHandler),
       awilix.asClass(DeleteCommandHandler),
+      awilix.asClass(EditColumnCommandHandler),
       // COMMAND_HANDLERS_SETUP
     ]),
 
