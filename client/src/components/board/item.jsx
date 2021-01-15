@@ -6,7 +6,9 @@ import ITEM_TYPE from "../../data/types"
 import { data } from "../../data";
 
 const Item = ({item, index, moveItem, status}) =>{
+
     const ref = useRef(null);
+    
 
     const [, drop] = useDrop({                                                  //drag&drop logic
         accept: ITEM_TYPE,

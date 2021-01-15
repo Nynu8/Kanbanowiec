@@ -13,9 +13,12 @@ import { Navbar } from "../components/navbar";
 
 const BoardPage = () => {
 
+    var colmnWindows = Array.prototype.fill("hidden",0,stats.length-1)
 
     const [items, setItems] = useState(data);
     const [statuses, setStatuses] = useState(stats);
+    const [showColumnNameWindow, setColumnNameWindowVisibility] = useState(colmnWindows);
+
 
     const onDrop = (item, monitor, status)=>{
         const mapping = statuses.find(si=>si.status===status);
@@ -38,10 +41,6 @@ const BoardPage = () => {
         });
     };
 
-    const refreshColumn = (s, icon, color)=>{
-        
-    }
-
     function editColumnIcon(s,e){
 
         const editedColumnId = statuses.findIndex(si=>si.status===s.status);
@@ -63,6 +62,7 @@ const BoardPage = () => {
             s.color = colorsCollection[index];
             statuses[editedColumnId].color = s.color;
             statuses[editedColumnId].icon = s.icon;
+
             
             setStatuses(prevState=>{
                 const newStatuses = statuses;
@@ -70,23 +70,39 @@ const BoardPage = () => {
             });
 
     };
-    
+
+
+    function setColumnNameWindowVisible(s,e){
+        e.preventDefault();
+        const editedColumnId = statuses.findIndex(si=>si.status===s.status);
+        var tmp = showColumnNameWindow;
+        tmp[editedColumnId] = "visible";
+        setColumnNameWindowVisibility(()=>{
+            return [...tmp];
+        })
+    }
+    function setColumnNameWindowHidden(e){
+        e.preventDefault();
+        setColumnNameWindowVisibility(()=>{
+            return "hidden";
+        })
+    }
 
     function editColumnTitle(s,e){
-        const editedColumnId = statuses.findIndex(si=>si.status===s.status);
-
+        
         e.preventDefault();
-        console.log("Tytul zmieniony koń zwalony");
 
-        /*s.status = "to bedzie dzialac"
+        const editedColumnId = statuses.findIndex(si=>si===s);
+        s.status = "chujsko"
         statuses[editedColumnId].status = s.status;
         
-
-        setStatuses(prevState=>{
+        setStatuses(()=>{
             const newStatuses = statuses;
-            return[...newStatuses];
-        });
-*/
+            return [...newStatuses];
+        })
+
+        console.log("Tytul zmieniony koń zwalony");
+
     }
 
 
@@ -99,26 +115,38 @@ const BoardPage = () => {
 
             {statuses.map(s=>{
                 return (
+                    
                     <div key={s.status} className={"col-wrapper"}>
+                        <div className="edit-col-name-window" style={{visibility: `hidden`}}>
+                                    <button style={{position: "absolute", marginLeft: "230px"}} onClick={setColumnNameWindowHidden}>X</button>
+                                    <h3>Enter new column name:</h3>
+                                    <input type="text" className="new-name" id="new-column-name" name="text"/>
+                                    <input type="submit" name="submit" onClick={(e)=>editColumnTitle(s,e)} value="Confirm"/>
+                                </div>
                         <div className="col-header-div">
                         <button className="col-icon-button" onClick={(e)=>editColumnIcon(s,e)}>{s.icon}</button>
-                            <div className={"col-header"} contentEditable="true" onBlur={(e)=>editColumnTitle(s,e)} >{s.status.toUpperCase()}</div>
+                            <div className={"col-header"} onBlur={(e)=>editColumnTitle(s,e)} >{s.status.toUpperCase()}</div>
                             <button className="edit-col-button">...
                             <div class="dropdown-edit-column">
-                                <a href="#">Edit column name</a>
+                                <a onClick={(e)=>setColumnNameWindowVisible(s,e)}>Edit column name</a>
                                 <a href="#">Change position</a>
                                 <a href="#" style={{color: "darkred"}}>Delete column</a>
                             </div>
                         </button>
+                        
                         </div>
+                       
                         <DropWrapper onDrop={onDrop} status={s.status}>
+                            
                             <Column status={s}>
+                                
                                 {items
                                     .filter(i => i.status === s.status)
                                     .map((i, indx) => <Item key={i.id} item={i} index={indx} moveItem={moveItem} status={s} />)
                                 }
                                 
                             </Column>
+
                         </DropWrapper>
                     </div>
                 );
@@ -126,6 +154,7 @@ const BoardPage = () => {
             </div>
 
             </DndProvider>
+            
         </div>
     );
 };
