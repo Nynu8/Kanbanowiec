@@ -1,5 +1,5 @@
 import { Command } from "../../../../shared/command-bus";
-import { ColumnColor } from "../models/column-color.enum";
+import { ColumnColor } from "../../../../../../shared/enum/column-color.enum";
 
 export const EDIT_COLUMN_COMMAND_TYPE = "boards/EDIT_COLUMN";
 

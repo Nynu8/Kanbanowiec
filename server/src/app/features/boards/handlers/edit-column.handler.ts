@@ -3,11 +3,11 @@ import { EDIT_COLUMN_COMMAND_TYPE, EditColumnCommand } from "../commands/edit-co
 import { Repository } from "typeorm";
 import { UserModel } from "../../users/models/user.model";
 import { PermissionModel } from "../models/permission.model";
-import { UserPermission } from "../models/user-permission.enum";
+import { UserPermission } from "../../../../../../shared/enum/user-permission.enum";
 import { UnauthorizedError } from "../../../../errors/unauthorized.error";
 import { ColumnModel } from "../models/column.model";
 import { BadRequestError } from "../../../../errors/bad-request.error";
-import { ColumnColor } from "../models/column-color.enum";
+import { ColumnColor } from "../../../../../../shared/enum/column-color.enum";
 
 export interface EditColumnHandlerDependencies {
   userRepository: Repository<UserModel>;
@@ -39,14 +39,14 @@ export default class EditColumnHandler implements CommandHandler<EditColumnComma
         if (col.index === index) {
           col.index = column.index;
           column.index = index;
-          columnRepository.save(col!);
+          await columnRepository.save(col!);
         }
       }
 
       if (newName != null) column!.name = newName;
       if (color != null) column!.color = ColumnColor[color];
 
-      columnRepository.save(column!);
+      await columnRepository.save(column!);
     }
 
     return {

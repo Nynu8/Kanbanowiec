@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { BoardModel } from "./board.model";
-import { ColumnColor } from "./column-color.enum";
+import { ColumnColor } from "../../../../../../shared/enum/column-color.enum";
 
 interface ColumnModelProps {
   id: string;
@@ -29,7 +29,7 @@ export class ColumnModel {
   @Column()
   name: string;
 
-  @Column({ type: "enum", enum: ColumnColor })
+  @Column({ type: "enum", enum: ColumnColor, default: ColumnColor.Black })
   color: ColumnColor;
 
   @ManyToOne((type) => BoardModel, { onDelete: "CASCADE" })

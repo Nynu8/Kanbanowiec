@@ -5,10 +5,9 @@ import { UserModel } from "../../users/models/user.model";
 import { BoardModel } from "../models/board.model";
 import { v4 as uuid } from "uuid";
 import { PermissionModel } from "../models/permission.model";
-import { UserPermission } from "../models/user-permission.enum";
+import { UserPermission } from "../../../../../../shared/enum/user-permission.enum";
 import { BadRequestError } from "../../../../errors/bad-request.error";
 import { ColumnModel } from "../models/column.model";
-import { ColumnColor } from "../models/column-color.enum";
 
 export interface CreateBoardHandlerDependencies {
   userRepository: Repository<UserModel>;
@@ -44,8 +43,8 @@ export default class CreateBoardHandler implements CommandHandler<CreateBoardCom
     await permissionRepository.save(permission);
 
     const columns = [
-      ColumnModel.create({ id: uuid(), index: 0, name: "To do", color: ColumnColor.black, board: newBoard }),
-      ColumnModel.create({ id: uuid(), index: 1, name: "Done", color: ColumnColor.black, board: newBoard }),
+      ColumnModel.create({ id: uuid(), index: 0, name: "To do", board: newBoard }),
+      ColumnModel.create({ id: uuid(), index: 1, name: "Done", board: newBoard }),
     ];
     await columnRepository.save(columns);
 

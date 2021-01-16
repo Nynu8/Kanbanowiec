@@ -24,6 +24,6 @@
     "config/**/*.ts",
     "tests/**/*.ts",
     "typings/*"
-  ],
+, "../shared/enum/column-color.enum.ts", "../shared/enum/user-permission.enum.ts"  ],
   "exclude": ["node_modules", "build/**"]
 }

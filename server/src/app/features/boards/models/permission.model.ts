@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, ColumnType } from "typeorm";
 import { UserModel } from "../../users/models/user.model";
 import { BoardModel } from "./board.model";
-import { UserPermission } from "./user-permission.enum";
+import { UserPermission } from "../../../../../../shared/enum/user-permission.enum";
 
 interface PermissionModelProps {
   id: string;
