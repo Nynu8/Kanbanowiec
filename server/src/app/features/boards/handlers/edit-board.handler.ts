@@ -30,7 +30,7 @@ export default class EditBoardHandler implements CommandHandler<EditBoardCommand
 
     if (permission!.type == UserPermission.Owner || permission!.type == UserPermission.Administrator) {
       if (newName != null) board!.name = newName;
-      boardRepository.save(board!);
+      await boardRepository.save(board!);
     }
   }
 }
