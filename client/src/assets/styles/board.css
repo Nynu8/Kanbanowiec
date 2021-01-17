@@ -456,4 +456,17 @@ select {
   box-shadow: 5px 8px 16px 5px gray;
   padding: 25px;
   z-index: 1;
+  width: 250px;
+}
+
+.permission-label {
+  position: absolute;
+  margin-left: 30px;
+  margin-top: -20px;
+}
+
+#collab-submit {
+  position: relative;
+  width: 100px;
+  margin-left: 80px;
 }

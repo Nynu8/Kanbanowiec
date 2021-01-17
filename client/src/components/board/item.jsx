@@ -5,7 +5,7 @@ import Window from "./window";
 import ITEM_TYPE from "../../data/types"
 import { data } from "../../data";
 
-const Item = ({item, index, moveItem, status}) =>{
+const Item = ({item, index, moveItem, status, deleteItem}) =>{
 
     const ref = useRef(null);
     
@@ -71,7 +71,7 @@ const Item = ({item, index, moveItem, status}) =>{
                 <p className={"item-title"}>{item.title}</p>
                 <p className={"item-status"}>{status.icon}</p>
             </div>
-            <Window id="pop-up-window" item={item} onClose={onClose} show={show} color={status.color} icon={status.icon}/>
+            <Window id="pop-up-window" item={item} onClose={onClose} deleteItem={deleteItem} show={show} color={status.color} icon={status.icon}/>
         </Fragment>
     );
 };
