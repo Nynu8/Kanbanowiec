@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { BoardModel } from "./board.model";
-import { ColumnColor } from "../../../../../../shared/enum/column-color.enum";
+import { ColumnColor } from "../../../../../shared/enum/column-color.enum";
 
 interface ColumnModelProps {
   id: string;

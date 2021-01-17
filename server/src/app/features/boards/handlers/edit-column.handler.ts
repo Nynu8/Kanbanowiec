@@ -3,11 +3,11 @@ import { EDIT_COLUMN_COMMAND_TYPE, EditColumnCommand } from "../commands/edit-co
 import { Repository } from "typeorm";
 import { UserModel } from "../../users/models/user.model";
 import { PermissionModel } from "../models/permission.model";
-import { UserPermission } from "../../../../../../shared/enum/user-permission.enum";
+import { UserPermission } from "../../../../../shared/enum/user-permission.enum";
 import { UnauthorizedError } from "../../../../errors/unauthorized.error";
 import { ColumnModel } from "../models/column.model";
 import { BadRequestError } from "../../../../errors/bad-request.error";
-import { ColumnColor } from "../../../../../../shared/enum/column-color.enum";
+import { ColumnColor } from "../../../../../shared/enum/column-color.enum";
 
 export interface EditColumnHandlerDependencies {
   userRepository: Repository<UserModel>;

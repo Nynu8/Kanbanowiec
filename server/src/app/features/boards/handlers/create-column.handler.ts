@@ -4,7 +4,6 @@ import { Repository } from "typeorm";
 import { ColumnModel } from "../models/column.model";
 import { BoardModel } from "../models/board.model";
 import { BadRequestError } from "../../../../errors/bad-request.error";
-import { ColumnColor } from "../../../../../../shared/enum/column-color.enum";
 
 export interface CreateColumnHandlerDependencies {
   columnRepository: Repository<ColumnModel>;

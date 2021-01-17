@@ -5,9 +5,9 @@ import { UserModel } from "../../users/models/user.model";
 import { BoardModel } from "../models/board.model";
 import { v4 as uuid } from "uuid";
 import { PermissionModel } from "../models/permission.model";
-import { UserPermission } from "../../../../../../shared/enum/user-permission.enum";
 import { BadRequestError } from "../../../../errors/bad-request.error";
 import { ColumnModel } from "../models/column.model";
+import { UserPermission } from "../../../../../shared/enum/user-permission.enum";
 
 export interface CreateBoardHandlerDependencies {
   userRepository: Repository<UserModel>;
