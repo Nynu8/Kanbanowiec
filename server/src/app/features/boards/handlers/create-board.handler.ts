@@ -26,11 +26,6 @@ export default class CreateBoardHandler implements CommandHandler<CreateBoardCom
     const { id, name } = payload;
     const user = await userRepository.findOne({ id });
 
-    const board = await boardRepository.findOne({ name });
-    if (board) {
-      throw new BadRequestError("Board already exists");
-    }
-
     const newBoard = BoardModel.create({ id: uuid(), name });
     await boardRepository.save(newBoard);
 

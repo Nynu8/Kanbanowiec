@@ -13,7 +13,7 @@ const Column = ({isOver, children, status}) =>{
         <div className={`column${className}`}>
             
             {children}
-            <button id="add-item-btn">ADD TASK</button>
+            
         </div>
     );
 };
