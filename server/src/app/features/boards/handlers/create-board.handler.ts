@@ -1,11 +1,10 @@
+import { v4 as uuid } from "uuid";
+import { Repository } from "typeorm";
 import { CommandHandler } from "../../../../shared/command-bus";
 import { CREATE_BOARD_COMMAND_TYPE, CreateBoardCommand } from "../commands/create-board.command";
-import { Repository } from "typeorm";
 import { UserModel } from "../../users/models/user.model";
 import { BoardModel } from "../models/board.model";
-import { v4 as uuid } from "uuid";
 import { PermissionModel } from "../models/permission.model";
-import { BadRequestError } from "../../../../errors/bad-request.error";
 import { ColumnModel } from "../models/column.model";
 import { UserPermission } from "../../../../../shared/enum/user-permission.enum";
 

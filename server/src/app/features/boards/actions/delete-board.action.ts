@@ -29,7 +29,7 @@ const deleteBoardAction = ({ commandBus }: DeleteBoardActionDependencies) => (
         boardId: req.body.boardId,
       }),
     )
-    .then((commandResult) => {
+    .then(() => {
       res.json({ result: true });
     })
     .catch(next);
