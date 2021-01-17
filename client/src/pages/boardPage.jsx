@@ -121,6 +121,7 @@ const BoardPage = () => {
             }
             return [...items]
         })
+        setColumnNameWindowHidden(s,e);
     }
 
     function setColumnIndexWindowVisible(s,e){
@@ -207,18 +208,122 @@ const BoardPage = () => {
 
     function deleteItem(itemId,e){
         e.preventDefault();
-        setItems(()=>{
-            items.splice(itemId,1);
-            return [...items];
-        });
+        var div = document.getElementById("dialog-place");
+        var dialog = document.createElement("dialog");
+        dialog.id = "dialog-window";
+        
+        dialog.textContent = `Are you sure you want to delete this item?`;
+        dialog.open = true;
+        dialog.style.zIndex=2;
+        dialog.style.width="120px";
+        var yes = document.createElement("button");
+        yes.className = "dialog-button";
+        yes.textContent = "Yes";
+        
+        var no = document.createElement("button");
+        no.className = "dialog-button";
+        no.textContent = "No";
+
+        dialog.appendChild(yes);
+        dialog.appendChild(no);
+        div.appendChild(dialog);
+
+        no.onclick = function(){
+            dialog.close();
+        };
+        yes.onclick = function(){
+            dialog.close();
+            setItems(()=>{
+                items.splice(itemId,1);
+                return [...items];
+            });
+        }
+        
+    }
+
+    function deleteColumn(s,e){
+        e.preventDefault();
+        
+        var div = document.getElementById("dialog-place");
+        var dialog = document.createElement("dialog");
+        dialog.id = "dialog-window";
+        
+        dialog.textContent = `Are you sure you want to delete column ${s.status.toUpperCase()}?`;
+        dialog.open = true;
+        var yes = document.createElement("button");
+        yes.className = "dialog-button";
+        yes.textContent = "Yes";
+        
+        var no = document.createElement("button");
+        no.className = "dialog-button";
+        no.textContent = "No";
+
+        dialog.appendChild(yes);
+        dialog.appendChild(no);
+        div.appendChild(dialog);
+
+        no.onclick = function(){
+            dialog.close();
+        };
+        yes.onclick = function(){
+            dialog.close();
+            setStatuses(()=>{
+                statuses.splice(statuses.indexOf(s),1);
+                return [...statuses];
+            })
+        }
+    }
+
+    function addColumn(e){
+        e.preventDefault();
+        
+        var div = document.getElementById("dialog-place");
+        var dialog = document.createElement("dialog");
+        dialog.id = "dialog-window";
+        var p = document.createElement("h4");
+        var input = document.createElement("input");
+        var ok = document.createElement("button");
+        var x = document.createElement("button");
+        p.innerText = "New column's name:";
+        input.type = "text";
+        ok.textContent = "OK";
+        x.textContent = "x";
+        x.style.fontSize="large";
+        x.style.position='absolute';
+        x.style.marginTop = "-70px";
+        dialog.open = true;
+        dialog.className="edit-col-name-window";
+        dialog.style.width = "180px";
+        dialog.style.marginLeft = "20px";
+        dialog.appendChild(p);
+        dialog.appendChild(input);
+        dialog.appendChild(x);
+        dialog.appendChild(ok);
+        div.appendChild(dialog);
+
+        ok.onclick = function(){
+            setStatuses(()=>{
+                statuses.unshift({
+                    status: input.value,
+                    icon: "🟡",
+                    color: "yellow"
+                })
+                return [...statuses];
+            })
+            dialog.close();
+        }
+        x.onclick = function(){
+            dialog.close();
+        }
     }
 
     return(
         <div>
             <DndProvider backend={HTML5Backend}>
             <Header/> 
+            <button id="add-col-btn" onClick={(e)=>addColumn(e)}>+</button>   
+            <div id="dialog-place"></div>
             <div className={"row"}>
-
             {statuses.map(s=>{
                 return (                  
                     <div key={s.status} className={"col-wrapper"}>
@@ -242,11 +347,11 @@ const BoardPage = () => {
                             <div class="dropdown-edit-column">
                                 <a onClick={(e)=>setColumnNameWindowVisible(s,e)}>Edit column name</a>
                                 <a onClick={(e)=>setColumnIndexWindowVisible(s,e)}>Change position</a>
-                                <a href="#" style={{color: "darkred"}}>Delete column</a>
+                                <a onClick={(e)=>deleteColumn(s,e)} style={{color: "darkred"}}>Delete column</a>
                             </div>
                         </button>
                         </div>                       
-                        <DropWrapper onDrop={onDrop} status={s.status}>                         
+                        <DropWrapper onDrop={onDrop} status={s.status}>    
                             <Column status={s}>                           
                                 {items
                                     .filter(i => i.status === s.status)
@@ -259,7 +364,7 @@ const BoardPage = () => {
                 );
             })}
             </div>
-            </DndProvider>           
+            </DndProvider>        
         </div>
     );
 };

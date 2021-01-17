@@ -41,6 +41,7 @@ const Header = () =>{
             var newName = document.getElementById('new-board-name').value;
             return newName;
         })
+        editShow2(e);
     }
 
     function addCollab(e){
@@ -59,7 +60,7 @@ const Header = () =>{
         else{
             permission = "Viewer";
         }
-        var div = document.getElementById("dialogPlace");
+        var div = document.getElementById("dialog-place");
         var dialog = document.createElement("dialog");
         dialog.style.position = "absolute";
         dialog.style.marginLeft = "60vw";
@@ -127,7 +128,7 @@ const Header = () =>{
             </div>
             <input id="collab-submit" type="submit" name="submit" onClick={addCollab} value="Confirm"/>
         </div>
-        <div id="dialogPlace"></div>
+        <div id="dialog-place"></div>
     </div>
     )
 }
