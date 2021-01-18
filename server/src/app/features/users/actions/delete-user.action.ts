@@ -1,25 +1,25 @@
 import { Request, Response, NextFunction } from "express";
 import { CommandBus } from "../../../../shared/command-bus";
-import { DeleteCommand } from "../commands/delete.command";
+import { DeleteUserCommand } from "../commands/delete-user.command";
 
-export interface DeleteActionDependencies {
+export interface DeleteUserActionDependencies {
   commandBus: CommandBus;
 }
 
-const deleteAction = ({ commandBus }: DeleteActionDependencies) => (
+const deleteUserAction = ({ commandBus }: DeleteUserActionDependencies) => (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   commandBus
     .execute(
-      new DeleteCommand({
+      new DeleteUserCommand({
         id: req.userId,
       }),
     )
-    .then((commandResult) => {
+    .then(() => {
       res.json({ result: true });
     })
     .catch(next);
 };
-export default deleteAction;
+export default deleteUserAction;
