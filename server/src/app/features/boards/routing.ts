@@ -4,6 +4,7 @@ import { createBoardActionValidation } from "./actions/create-board.action";
 import { editBoardActionValidation } from "./actions/edit-board.action";
 import { createColumnActionValidation } from "./actions/create-column.action";
 import { deleteBoardActionValidation } from "./actions/delete-board.action";
+import { createTaskActionValidation } from "./actions/create-task.action";
 // VALIDATION_IMPORTS
 
 export interface BoardsRoutingDependencies {
@@ -11,6 +12,7 @@ export interface BoardsRoutingDependencies {
   editBoardAction: express.RequestHandler;
   createColumnAction: express.RequestHandler;
   deleteBoardAction: express.RequestHandler;
+  createTaskAction: express.RequestHandler;
   // ACTIONS_IMPORTS
 }
 
@@ -22,6 +24,7 @@ export const boardsRouting = (actions: BoardsRoutingDependencies) => {
   router.post("/create-board", [createBoardActionValidation], actions.createBoardAction);
   router.post("/create-column", [createColumnActionValidation], actions.createColumnAction);
   router.post("/delete-board", [deleteBoardActionValidation], actions.deleteBoardAction);
+  router.post("/create-task", [createTaskActionValidation], actions.createTaskAction);
   // ACTIONS_SETUP
 
   return router;

@@ -20,6 +20,7 @@ import { TokenModel } from "./app/features/users/models/token.model";
 import { BoardModel } from "./app/features/boards/models/board.model";
 import { PermissionModel } from "./app/features/boards/models/permission.model";
 import { ColumnModel } from "./app/features/boards/models/column.model";
+import { TaskModel } from "./app/features/boards/models/task.model";
 // MODELS_IMPORTS
 
 import { usersRouting } from "./app/features/users/routing";
@@ -36,6 +37,7 @@ import EditBoardCommandHandler from "./app/features/boards/handlers/edit-board.h
 import CreateColumnCommandHandler from "./app/features/boards/handlers/create-column.handler";
 import DeleteCommandHandler from "./app/features/users/handlers/delete.handler";
 import DeleteBoardCommandHandler from "./app/features/boards/handlers/delete-board.handler";
+import CreateTaskCommandHandler from "./app/features/boards/handlers/create-task.handler";
 // HANDLERS_IMPORTS
 
 // SUBSCRIBERS_IMPORTS
@@ -94,6 +96,7 @@ export async function createContainer(): Promise<AwilixContainer> {
       awilix.asClass(CreateColumnCommandHandler),
       awilix.asClass(DeleteCommandHandler),
       awilix.asClass(DeleteBoardCommandHandler),
+      awilix.asClass(CreateTaskCommandHandler),
       // COMMAND_HANDLERS_SETUP
     ]),
 
@@ -109,6 +112,7 @@ export async function createContainer(): Promise<AwilixContainer> {
     boardRepository: awilix.asValue(dbConnection.getRepository(BoardModel)),
     permissionRepository: awilix.asValue(dbConnection.getRepository(PermissionModel)),
     columnRepository: awilix.asValue(dbConnection.getRepository(ColumnModel)),
+    taskRepository: awilix.asValue(dbConnection.getRepository(TaskModel)),
     // MODELS_SETUP
   });
 
