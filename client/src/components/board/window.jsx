@@ -3,7 +3,7 @@ import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 
-const Window=({show, onClose, item, color, icon})=>{
+const Window=({show, onClose, item, color, icon, deleteItem})=>{
     return(
         <Modal isOpen={show} onRequestClose={onClose} className={"modal"} overlayClassName={"overlay"} >
             <div className={"close-btn-ctn"}>
@@ -13,14 +13,14 @@ const Window=({show, onClose, item, color, icon})=>{
             <div>
             <div id={"window-color-bar"} style={{backgroundColor: `${color}`}}> fffffff</div> 
                 <h2>Description</h2>
-                <p id="description-field" contentEditable="true">{item.content}</p>
+                <p id="description-field" contentEditable="true" placeholder="Add description">{item.content}</p>
                 <h2>Status</h2>
                 <p>{`${icon} ${item.status.charAt(0).toUpperCase()}${item.status.slice(1)}`}</p>
                 <h4>Author</h4>
                 <p>task's author</p>
                 <h4>Executor</h4>
                 <p>task's executor</p>
-                <button id="delete-task-btn">Delete task</button>
+                <button id="delete-task-btn" onClick={deleteItem}>Delete task</button>
             </div>
         </Modal>
     );

@@ -29,8 +29,8 @@ const createBoardAction = ({ commandBus }: CreateBoardActionDependencies) => (
         name: req.body.name,
       }),
     )
-    .then(() => {
-      res.json({ sucess: true });
+    .then((commandResult) => {
+      res.json(commandResult.result);
     })
     .catch(next);
 };

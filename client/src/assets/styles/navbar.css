@@ -1,8 +1,12 @@
 #loginNavbar {
   background-color: blanchedalmond;
-  display: block;
-  padding: 20px;
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 5px;
   text-align: right;
+  align-content: flex-end;
+  align-items: flex-end;
+  align-self: flex-end;
 }
 
 a {
@@ -18,4 +22,9 @@ a:hover {
 
 #loginNavbar h3 {
   text-decoration: underline;
+  padding-right: 10px;
+}
+
+#loginNavbar h4 {
+  padding-right: 15px;
 }
