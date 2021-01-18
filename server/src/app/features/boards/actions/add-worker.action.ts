@@ -13,6 +13,7 @@ export const addWorkerActionValidation = celebrate(
     body: Joi.object({
       workerId: Joi.string().uuid().required(),
       taskId: Joi.string().uuid().required(),
+      boardId: Joi.string().uuid().required(),
     }),
   },
   { abortEarly: false },
@@ -29,6 +30,7 @@ const addWorkerAction = ({ commandBus }: AddWorkerActionDependencies) => (
         userId: req.userId,
         workerId: req.body.workerId,
         taskId: req.body.taskId,
+        boardId: req.body.boardId,
       }),
     )
     .then(() => {

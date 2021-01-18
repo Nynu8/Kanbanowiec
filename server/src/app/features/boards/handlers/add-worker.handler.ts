@@ -8,12 +8,13 @@ import { ColumnModel } from "../models/column.model";
 import { UserPermission } from "../../../../../shared/enum/user-permission.enum";
 import { UnauthorizedError } from "../../../../errors/unauthorized.error";
 import { BadRequestError } from "../../../../errors/bad-request.error";
+import { BoardModel } from "../models/board.model";
 
 export interface AddWorkerHandlerDependencies {
   taskRepository: Repository<TaskModel>;
   userRepository: Repository<UserModel>;
   permissionRepository: Repository<PermissionModel>;
-  columnRepository: Repository<ColumnModel>;
+  boardRepository: Repository<BoardModel>;
 }
 
 export default class AddWorkerHandler implements CommandHandler<AddWorkerCommand> {
@@ -22,13 +23,12 @@ export default class AddWorkerHandler implements CommandHandler<AddWorkerCommand
   constructor(private dependencies: AddWorkerHandlerDependencies) {}
 
   async execute({ payload }: AddWorkerCommand) {
-    const { taskRepository, userRepository, permissionRepository, columnRepository } = this.dependencies;
-    const { taskId, userId, workerId } = payload;
+    const { taskRepository, userRepository, permissionRepository, boardRepository } = this.dependencies;
+    const { taskId, userId, workerId, boardId } = payload;
 
     const user = await userRepository.findOne({ id: userId });
-    const task = await taskRepository.findOne({ where: { id: taskId }, relations: ["column"] });
-    const column = await columnRepository.findOne({ where: { id: task?.column.id }, relations: ["board"] });
-    const permission = await permissionRepository.findOne({ where: { board: column?.board, user } });
+    const board = await boardRepository.findOne({ id: boardId });
+    const permission = await permissionRepository.findOne({ where: { board, user } });
 
     if (!permission || permission.type === UserPermission.Viewer) {
       throw new UnauthorizedError();
@@ -38,6 +38,8 @@ export default class AddWorkerHandler implements CommandHandler<AddWorkerCommand
     if (!worker) {
       throw new BadRequestError("Worker not found");
     }
+
+    const task = await taskRepository.findOne({ id: taskId });
 
     task!.setWorker(worker);
     await taskRepository.save(task!);

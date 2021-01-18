@@ -6,6 +6,7 @@ export interface AddWorkerCommandPayload {
   userId: string;
   workerId: string;
   taskId: string;
+  boardId: string;
 }
 
 export class AddWorkerCommand implements Command<AddWorkerCommandPayload> {
