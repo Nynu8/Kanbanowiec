@@ -5,8 +5,8 @@ import { TaskModel } from "../models/task.model";
 import { UserModel } from "../../users/models/user.model";
 import { PermissionModel } from "../models/permission.model";
 import { ColumnModel } from "../models/column.model";
-import { UserPermission } from "../models/user-permission.enum";
 import { UnauthorizedError } from "../../../../errors/unauthorized.error";
+import { UserPermission } from "../../../../../shared/enum/user-permission.enum";
 
 export interface CreateTaskHandlerDependencies {
   taskRepository: Repository<TaskModel>;
@@ -26,9 +26,9 @@ export default class CreateTaskHandler implements CommandHandler<CreateTaskComma
 
     const user = await userRepository.findOne({ id: userId });
     const column = await columnRepository.findOne({ where: { id: columnId }, relations: ["board"] });
-    const userPermission = await permissionRepository.findOne({ where: { board: column?.board, user } });
+    const userPermission = await permissionRepository.findOne({ where: { board: column!.board, user } });
 
-    if (!userPermission || userPermission?.type === UserPermission.Viewer) {
+    if (!userPermission || userPermission!.type === UserPermission.Viewer) {
       throw new UnauthorizedError();
     }
 

@@ -1,14 +1,12 @@
 import { CommandHandler } from "../../../../shared/command-bus";
 import { ADD_USER_COMMAND_TYPE, AddUserCommand } from "../commands/add-user.command";
-import { EventDispatcher } from "../../../../shared/event-dispatcher";
-import AddUserEvent from "../events/add-user.event";
 import { Repository } from "typeorm";
 import { UserModel } from "../../users/models/user.model";
 import { BoardModel } from "../models/board.model";
 import { PermissionModel } from "../models/permission.model";
-import { UserPermission } from "../models/user-permission.enum";
 import { UnauthorizedError } from "../../../../errors/unauthorized.error";
 import { BadRequestError } from "../../../../errors/bad-request.error";
+import { UserPermission } from "../../../../../shared/enum/user-permission.enum";
 
 export interface AddUserHandlerDependencies {
   userRepository: Repository<UserModel>;
