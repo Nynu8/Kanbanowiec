@@ -13,6 +13,7 @@ function createApp({ router, errorHandler }: AppDependencies) {
   const app = express();
   app.use(cors());
   app.use(helmet());
+  app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
 
   app.get("/health", (req, res) => {
