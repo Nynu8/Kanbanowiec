@@ -164,6 +164,7 @@ const BoardPage = () => {
                 columnSwap(s,"right");
             }
         }
+        setColumnIndexWindowHidden(s,e);
     }
 
     function columnSwap(s, direction){
@@ -319,6 +320,7 @@ const BoardPage = () => {
 
     return(
         <div>
+            <Navbar/>
             <DndProvider backend={HTML5Backend}>
             <Header/> 
             <button id="add-col-btn" onClick={(e)=>addColumn(e)}>+</button>   
@@ -336,9 +338,9 @@ const BoardPage = () => {
                         <div className="edit-col-name-window" style={{visibility: `${showColumnIndexWindow[statuses.indexOf(s)]}` }}>
                                 <button style={{position: "absolute", marginLeft: "230px"}} onClick={(e)=>setColumnIndexWindowHidden(s,e)}>X</button>
                                 <h3>Enter new column index:</h3>
-                                <input type="range" className="new-column-index" id="index" min="0" max={statuses.length-1} name="index" onChange={(e)=>updateIndexInput(s,e)}/>
-                                <label className="index-label" for="index" value="0"></label>
-                                <input type="submit" name="submit" onClick={(e)=>changeColumnPosition(s,e)} value="Confirm"/>
+                                <input type="range" className="new-column-index" id="index" min="0" max={statuses.length-1} name="index"  onChange={(e)=>updateIndexInput(s,e)}/>
+                                <label className="index-label" for="index"></label>
+                                <input type="submit" name="submit" className="submit-button" onClick={(e)=>changeColumnPosition(s,e)} value="Confirm"/>
                         </div>
                         <div className="col-header-div">
                         <button className="col-icon-button" onClick={(e)=>editColumnIcon(s,e)}>{s.icon}</button>

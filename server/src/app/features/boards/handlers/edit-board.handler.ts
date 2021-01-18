@@ -4,7 +4,7 @@ import { Repository } from "typeorm";
 import { UserModel } from "../../users/models/user.model";
 import { BoardModel } from "../models/board.model";
 import { PermissionModel } from "../models/permission.model";
-import { UserPermission } from "../models/user-permission.enum";
+import { UserPermission } from "../../../../../shared/enum/user-permission.enum";
 import { UnauthorizedError } from "../../../../errors/unauthorized.error";
 
 export interface EditBoardHandlerDependencies {
@@ -30,7 +30,7 @@ export default class EditBoardHandler implements CommandHandler<EditBoardCommand
 
     if (permission!.type == UserPermission.Owner || permission!.type == UserPermission.Administrator) {
       if (newName != null) board!.name = newName;
-      boardRepository.save(board!);
+      await boardRepository.save(board!);
     }
   }
 }

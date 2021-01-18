@@ -5,7 +5,7 @@ import { Repository } from "typeorm";
 import { UserModel } from "../../users/models/user.model";
 import { PermissionModel } from "../models/permission.model";
 import { UnauthorizedError } from "../../../../errors/unauthorized.error";
-import { UserPermission } from "../models/user-permission.enum";
+import { UserPermission } from "../../../../../shared/enum/user-permission.enum";
 
 export interface DeleteBoardHandlerDependencies {
   boardRepository: Repository<BoardModel>;
@@ -26,11 +26,9 @@ export default class DeleteBoardHandler implements CommandHandler<DeleteBoardCom
     const board = await boardRepository.findOne({ id: boardId });
     const permission = await permissionRepository.findOne({ user, board });
 
-    console.log("\n\n\n\n\n\n\n\n\n", boardId);
-
     if (!permission) throw new UnauthorizedError();
 
-    if (permission!.type == UserPermission.Owner || permission!.type == UserPermission.Administrator)
+    if (permission!.type === UserPermission.Owner || permission!.type === UserPermission.Administrator)
       await boardRepository.delete(board!);
   }
 }
