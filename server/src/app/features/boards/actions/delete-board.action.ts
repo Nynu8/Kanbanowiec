@@ -10,7 +10,7 @@ export interface DeleteBoardActionDependencies {
 export const deleteBoardActionValidation = celebrate(
   {
     headers: Joi.object(),
-    body: Joi.object({
+    query: Joi.object({
       boardId: Joi.string().uuid(),
     }),
   },
@@ -26,7 +26,7 @@ const deleteBoardAction = ({ commandBus }: DeleteBoardActionDependencies) => (
     .execute(
       new DeleteBoardCommand({
         userId: req.userId,
-        boardId: req.body.boardId,
+        boardId: req.query.boardId as string,
       }),
     )
     .then(() => {

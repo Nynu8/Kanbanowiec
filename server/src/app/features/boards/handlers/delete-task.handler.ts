@@ -7,6 +7,7 @@ import { PermissionModel } from "../models/permission.model";
 import { TaskModel } from "../models/task.model";
 import { UserPermission } from "../../../../../shared/enum/user-permission.enum";
 import { UnauthorizedError } from "../../../../errors/unauthorized.error";
+import { BadRequestError } from "../../../../errors/bad-request.error";
 
 export interface DeleteTaskHandlerDependencies {
   boardRepository: Repository<BoardModel>;
@@ -36,6 +37,10 @@ export default class DeleteTaskHandler implements CommandHandler<DeleteTaskComma
       throw new UnauthorizedError();
     }
 
-    taskRepository.delete(task!);
+    if (!task) {
+      throw new BadRequestError("Task not found");
+    }
+
+    await taskRepository.delete(task!);
   }
 }

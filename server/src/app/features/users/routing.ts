@@ -15,7 +15,7 @@ export interface UsersRoutingDependencies {
   getUserDetailsAction: express.RequestHandler;
   isLoggedInMiddleware: any;
   changeUserDetailsAction: express.RequestHandler;
-  deleteAction: express.RequestHandler;
+  deleteUserAction: express.RequestHandler;
   // ACTIONS_IMPORTS
 }
 
@@ -32,7 +32,7 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
     [changeUserDetailsActionValidation, actions.isLoggedInMiddleware],
     actions.changeUserDetailsAction,
   );
-  router.delete("/delete", [actions.isLoggedInMiddleware], actions.deleteAction);
+  router.delete("/delete", [actions.isLoggedInMiddleware], actions.deleteUserAction);
   // ACTIONS_SETUP
 
   return router;

@@ -27,8 +27,8 @@ const deleteTaskAction = ({ commandBus }: DeleteTaskActionDependencies) => (
     .execute(
       new DeleteTaskCommand({
         userId: req.userId,
-        taskId: req.query.taskId,
-        boardId: req.query.boardId,
+        taskId: req.query.taskId as string,
+        boardId: req.query.boardId as string,
       }),
     )
     .then(() => {

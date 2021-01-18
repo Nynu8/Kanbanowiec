@@ -37,7 +37,7 @@ export const boardsRouting = (actions: BoardsRoutingDependencies) => {
   router.post("/create-column", [createColumnActionValidation], actions.createColumnAction);
   router.post("/add-user", [addUserActionValidation], actions.addUserAction);
   router.post("/edit-column", [editColumnActionValidation], actions.editColumnAction);
-  router.post("/delete-board", [deleteBoardActionValidation], actions.deleteBoardAction);
+  router.delete("/delete-board", [deleteBoardActionValidation], actions.deleteBoardAction);
   router.post("/create-task", [createTaskActionValidation], actions.createTaskAction);
   router.get("/get-user-boards", [getUserBoardsActionValidation], actions.getUserBoardsAction);
   router.get("/get-board", [getBoardActionValidation], actions.getBoardAction);
