@@ -3,18 +3,25 @@ import ReactDOM from "react-dom";
 import loginImg from "../../assets/images/logo.png";
 import httpClient from "../../tools/httpClient";
 import WaitingWindow from "../waitingWindow"
+import { useHistory } from "react-router-dom";
+import { App } from "../../app/App";
+import { Redirect } from "react-router-dom";
+import UserPage from "../../pages/userPage";
+import { Link } from 'react-router-dom';
+import {Navbar} from '../navbar'
 
 export class Register extends React.Component {
   static RegisterProps = {
     containerRef: React.createRef(),
   };
 
+
   constructor(props) {
     super(props);
     this.state={
     showWindow: "hidden"
     }
-    this.register = this.register.bind(this);
+    this.onSubmitClick = this.onSubmitClick.bind(this);
   }
 
   async register(e, Username, Name, Surname, Password, ConfirmPassword) {
@@ -27,16 +34,20 @@ export class Register extends React.Component {
         name: Name,
         surname: Surname,
       });
-    } catch (err) {
+      
+      document.getElementById("to-user-page-link").click();
+      
+    } 
+    catch (err) {
       //display error somehow
-      console.error(err);
+      console.error(err.message);
+      alert("You cannot register like that! "+err)
     }
 
   }
 
   onSubmitClick(e){
-
-    this.setState({showWindow: "visible"});
+    //showWindow = "visible";
 
     var username = document.getElementById('username-field').value;
     var name = document.getElementById('name-field').value;
@@ -50,6 +61,8 @@ export class Register extends React.Component {
 
   render() {
     return (
+      <div>
+        <Navbar status="registering" />
       <div className="base-container" ref={this.props.containerRef}>
         <div className="header">Register</div>
         <div className="content">
@@ -81,6 +94,8 @@ export class Register extends React.Component {
           </form>
         </div>
         <WaitingWindow show={this.state.showWindow}/>
+        <Link to="/profile" id="to-user-page-link"/>
+      </div>
       </div>
     );
   }
