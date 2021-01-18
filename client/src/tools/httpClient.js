@@ -53,7 +53,11 @@ class HttpClient {
   }
 
   registerUser(payload) {
-    return this.httpClient.post("/users/register", payload);
+    return this.httpClient.post("/users/register", payload)
+  }
+
+  loginUser(payload) {
+    return this.httpClient.post("users/login", payload)
   }
 }
 
