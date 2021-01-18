@@ -32,7 +32,7 @@ export class ColumnModel {
   @Column({ type: "enum", enum: ColumnColor, default: ColumnColor.Black })
   color: ColumnColor;
 
-  @ManyToOne((type) => BoardModel, { onDelete: "CASCADE" })
+  @ManyToOne((type) => BoardModel, { onDelete: "CASCADE", nullable: false })
   @JoinColumn()
   board: BoardModel;
 }

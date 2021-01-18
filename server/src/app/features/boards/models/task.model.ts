@@ -20,6 +20,10 @@ export class TaskModel {
     return entity;
   }
 
+  public setWorker(worker: UserModel) {
+    this.worker = worker;
+  }
+
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
@@ -32,12 +36,12 @@ export class TaskModel {
   @Column()
   createdAt: Date;
 
-  @ManyToOne(() => UserModel, { onDelete: "CASCADE" })
+  @ManyToOne(() => UserModel, { onDelete: "CASCADE", nullable: false })
   creator: UserModel;
 
   @ManyToOne(() => UserModel, { onDelete: "CASCADE" })
   worker?: UserModel;
 
-  @ManyToOne(() => ColumnModel, { onDelete: "CASCADE" })
+  @ManyToOne(() => ColumnModel, { onDelete: "CASCADE", nullable: false })
   column: ColumnModel;
 }

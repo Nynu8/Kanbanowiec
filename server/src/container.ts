@@ -42,6 +42,7 @@ import DeleteBoardCommandHandler from "./app/features/boards/handlers/delete-boa
 import CreateTaskCommandHandler from "./app/features/boards/handlers/create-task.handler";
 import GetUserBoardsQueryHandler from "./app/features/boards/query-handlers/get-user-boards.query.handler";
 import GetBoardQueryHandler from "./app/features/boards/query-handlers/get-board.query.handler";
+import AddWorkerCommandHandler from "./app/features/boards/handlers/add-worker.handler";
 // HANDLERS_IMPORTS
 
 // SUBSCRIBERS_IMPORTS
@@ -103,6 +104,7 @@ export async function createContainer(): Promise<AwilixContainer> {
       awilix.asClass(EditColumnCommandHandler),
       awilix.asClass(DeleteBoardCommandHandler),
       awilix.asClass(CreateTaskCommandHandler),
+      awilix.asClass(AddWorkerCommandHandler),
       // COMMAND_HANDLERS_SETUP
     ]),
 

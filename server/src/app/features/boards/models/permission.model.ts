@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, ColumnType } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { UserModel } from "../../users/models/user.model";
 import { BoardModel } from "./board.model";
 import { UserPermission } from "../../../../../shared/enum/user-permission.enum";
@@ -26,11 +26,11 @@ export class PermissionModel {
   @Column({ type: "enum", enum: UserPermission })
   type: UserPermission;
 
-  @ManyToOne((type) => UserModel, { onDelete: "CASCADE" })
+  @ManyToOne((type) => UserModel, { onDelete: "CASCADE", nullable: false })
   @JoinColumn()
   user: UserModel;
 
-  @ManyToOne((type) => BoardModel, { onDelete: "CASCADE" })
+  @ManyToOne((type) => BoardModel, { onDelete: "CASCADE", nullable: false })
   @JoinColumn()
   board: BoardModel;
 }

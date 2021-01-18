@@ -65,9 +65,9 @@ export default class GetBoardQueryHandler implements QueryHandler<GetBoardQuery,
       collaborators: permissions.map((permission) => {
         const {
           type,
-          user: { username, name, surname },
+          user: { username, name, surname, id },
         } = permission;
-        return { username, name, surname, type };
+        return { id, username, name, surname, type };
       }),
     });
   }

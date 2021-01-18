@@ -29,7 +29,7 @@ export default class ChangeUserDetailsHandler implements CommandHandler<ChangeUs
       }
     }
 
-    userRepository.update({ id }, { name, surname, username });
+    await userRepository.update({ id }, { name, surname, username });
     return { result: { name, surname, username } };
   }
 }

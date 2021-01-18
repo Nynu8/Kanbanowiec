@@ -33,8 +33,9 @@ export default class LoginHandler implements CommandHandler<LoginCommand> {
 
     const token = await tokenRepository.findOne({ user });
     if (token) {
-      tokenRepository.delete(token);
+      await tokenRepository.delete(token);
     }
+
     const newToken = TokenModel.create({ id: uuid(), token: refreshToken, user });
     await tokenRepository.save(newToken);
 
