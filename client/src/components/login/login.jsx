@@ -27,10 +27,12 @@ export class Login extends React.Component{
     async login(e, Username, Password){
         e.preventDefault();
         try{
-            await httpClient.loginUser({
+           var tokens =  await httpClient.loginUser({
                 username: Username,
                 password: Password
             });
+            localStorage.setItem("accessToken",tokens.accessToken);
+            localStorage.setItem("refreshToken",tokens.refreshToken);
             document.getElementById("to-user-page-link").click();
         }
         catch(err){

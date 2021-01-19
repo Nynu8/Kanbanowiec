@@ -57,10 +57,24 @@ class HttpClient {
   }
 
   loginUser(payload) {
-    return this.httpClient.post("users/login", payload)
+    return this.httpClient.post("/users/login", payload)
   }
+
+  getUserDetails(payload) {
+    return this.httpClient.get("/users/get-user-details", payload)
+  }
+
+  changeUserDetails(payload) {
+    return this.httpClient.post("/users/change-user-details", payload)
+  }
+
+  deleteUser(payload) {
+    return this.httpClient.post("/users/delete", payload)
+  }
+
 }
 
+ 
 
 
 export default new HttpClient();

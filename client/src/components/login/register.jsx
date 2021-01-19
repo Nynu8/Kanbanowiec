@@ -35,7 +35,8 @@ export class Register extends React.Component {
         surname: Surname,
       });
       
-      document.getElementById("to-user-page-link").click();
+      document.getElementById("to-login-link").click();
+      alert("Your account have been succesfully created!\nPlease log in.")
       
     } 
     catch (err) {
@@ -94,7 +95,7 @@ export class Register extends React.Component {
           </form>
         </div>
         <WaitingWindow show={this.state.showWindow}/>
-        <Link to="/profile" id="to-user-page-link"/>
+        <Link to="/login" id="to-login-link"/>
       </div>
       </div>
     );
