@@ -88,8 +88,8 @@ select {
 }
 
 .color-bar {
-  width: 40px;
-  height: 10px;
+  width: 100%;
+  height: 8px;
   border-radius: 5px;
 }
 
@@ -517,6 +517,8 @@ select {
   box-shadow: 5px 8px 16px 5px gray;
   border-radius: 20px;
   height: fit-content;
+  margin-left: 50px;
+  margin-top: 50px;
 }
 
 .user-settings-window button {
@@ -530,4 +532,79 @@ select {
 #delete-account-btn {
   color: darkred;
   font-weight: 600;
+}
+
+#create-board-window {
+  position: absolute;
+  box-shadow: 5px 8px 16px 5px rgb(66, 66, 66);
+  background-color: #f7f5ef;
+  padding: 15px;
+  border-radius: 10px;
+  margin-left: 50px;
+  margin-top: 100px;
+  z-index: 2;
+}
+
+#create-board-window button {
+  border: 1px solid black;
+  border-radius: 30px;
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
+  background-color: #c9e3eb;
+}
+
+#create-board-window input {
+  border-radius: 5px;
+}
+
+#show-add-board-window-btn {
+  background-color: #dad8d1;
+  padding: 15px;
+  width: 50%;
+  border-radius: 25px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.boardlist-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.boardlist-container ul {
+  margin-top: 0px;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #97c1ce;
+  border-radius: 20px;
+  height: 250px;
+  overflow-y: scroll;
+}
+
+.boardlist-container ul li button {
+  position: relative;
+  background-color: #c9e3eb;
+  font-weight: bold;
+  padding: 20px;
+  width: 90%;
+  margin: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.boardlist-container ul li button:hover {
+  background-color: #f4fafc;
+}
+
+.boardlist-container ul li {
+  list-style: none;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#show-add-board-window-btn {
+  margin-bottom: 10px;
 }

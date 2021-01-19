@@ -69,9 +69,20 @@ class HttpClient {
   }
 
   deleteUser(payload) {
-    return this.httpClient.post("/users/delete", payload)
+    return this.httpClient.post("/users/delete-user", payload)
   }
 
+  addBoard(payload) {
+    return this.httpClient.post("/boards/create-board", payload)
+  }
+
+  getUserBoards(payload) {
+    return this.httpClient.get("/boards/get-user-boards", payload)
+  }
+
+  getBoard(payload) {
+    
+  }
 }
 
  

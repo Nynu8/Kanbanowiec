@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import { statuses } from "../../data";
 
-const Header = () =>{
+const Header = (props) =>{
     
     const [showEditBoardName, editEDBWindowVisibility] = useState("hidden");
-    const [boardName, editBoardName] = useState("User's board");
+    const [boardName, editBoardName] = useState(props.name);
     const [collaborator, addCollaborator] = useState("default");
     const [showAddCollaborator, editACVisibility] = useState("hidden");
 

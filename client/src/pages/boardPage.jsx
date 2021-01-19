@@ -9,7 +9,7 @@ import {data, statuses as stats} from "../data/index";
 import "../assets/styles/board.css";
 import { App } from "../app/App";
 import { Navbar } from "../components/navbar";
-
+import {Link} from "react-router"
 
 
 var columnNameWindows = [stats.length];
@@ -19,14 +19,17 @@ var columnIndexWindows = [stats.length];
         columnIndexWindows[i] = "hidden";
     }
 
-const BoardPage = () => {
+const BoardPage = (props) => {
 
     const [items, setItems] = useState(data);
     const [statuses, setStatuses] = useState(stats);
     const [showColumnNameWindow, setColumnNameWindowVisibility] = useState(columnNameWindows);
     const [showColumnIndexWindow, setColumnIndexWindowVisibility] = useState(columnIndexWindows);
 
-
+    
+   
+    console.log(props.location.href);
+    console.log(props.location.pathname);
     const onDrop = (item, monitor, status)=>{
         const mapping = statuses.find(si=>si.status===status);
  
@@ -322,7 +325,7 @@ const BoardPage = () => {
         <div>
             <Navbar/>
             <DndProvider backend={HTML5Backend}>
-            <Header/> 
+            <Header name="chui"/> 
             <button id="add-col-btn" onClick={(e)=>addColumn(e)}>+</button>   
             <div id="dialog-place"></div>
             <div className={"row"}>
@@ -359,7 +362,7 @@ const BoardPage = () => {
                                     .filter(i => i.status === s.status)
                                     .map((i, indx) => <Item key={i.id} item={i} index={indx} moveItem={moveItem} deleteItem={(e)=>deleteItem(i.id,e)} status={s} />)
                                 }      
-                                <button id="add-item-btn" onClick={(e)=>addItem(s,e)}>ADD TASK</button>                       
+                                <button id="add-item-btn" onClick={(e)=>addItem(s,e)}>ADD ITEM</button>                       
                             </Column>
                         </DropWrapper>
                     </div>
