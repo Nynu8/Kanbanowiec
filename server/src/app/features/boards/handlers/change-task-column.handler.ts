@@ -7,6 +7,7 @@ import { UserModel } from "../../users/models/user.model";
 import { PermissionModel } from "../models/permission.model";
 import { UnauthorizedError } from "../../../../errors/unauthorized.error";
 import { UserPermission } from "../../../../../shared/enum/user-permission.enum";
+import { BadRequestError } from "../../../../errors/bad-request.error";
 
 export interface ChangeTaskColumnHandlerDependencies {
   columnRepository: Repository<ColumnModel>;
@@ -31,9 +32,15 @@ export default class ChangeTaskColumnHandler implements CommandHandler<ChangeTas
 
     if (!permission) throw new UnauthorizedError();
 
+    if (!column) throw new BadRequestError("Column not found");
+
     if (permission.type !== UserPermission.Viewer) {
       const task = await taskRepository.findOne({ id: taskId });
+
+      if (!task) throw new BadRequestError("Task not found");
+
       if (column != null) task!.column = column;
+      await taskRepository.save(task!);
     }
   }
 }

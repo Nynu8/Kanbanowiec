@@ -29,7 +29,7 @@ export default class EditColumnHandler implements CommandHandler<EditColumnComma
 
     const user = await userRepository.findOne({ id: userId });
     const permission = await permissionRepository.findOne({ user, board: column!.board });
-    console.log("\n\n", user, column, column.board);
+
     if (!permission) throw new UnauthorizedError();
 
     if (permission!.type == UserPermission.Owner || permission!.type == UserPermission.Administrator) {
