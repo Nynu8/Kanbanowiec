@@ -53,28 +53,48 @@ class HttpClient {
   }
 
   registerUser(payload) {
-    return this.httpClient.post("/users/register", payload)
+    return this.httpClient.post("/users/register", payload);
   }
 
   loginUser(payload) {
-    return this.httpClient.post("/users/login", payload)
+    return this.httpClient.post("/users/login", payload);
   }
 
   getUserDetails(payload) {
-    return this.httpClient.get("/users/get-user-details", payload)
+    return this.httpClient.get("/users/get-user-details", payload);
   }
 
   changeUserDetails(payload) {
-    return this.httpClient.post("/users/change-user-details", payload)
+    return this.httpClient.post("/users/change-user-details", payload);
   }
 
   deleteUser(payload) {
-    return this.httpClient.post("/users/delete", payload)
+    return this.httpClient.delete("/users/delete-user", payload);
   }
 
+  addBoard(payload) {
+    return this.httpClient.post("/boards/create-board", payload);
+  }
+
+  getUserBoards(payload) {
+    return this.httpClient.get("/boards/get-user-boards", payload);
+  }
+
+  getBoard( params ) {
+    return this.httpClient.get("/boards/get-board", { params });
+  }
+
+  editBoard(payload) {
+    return this.httpClient.post("boards/edit-board", payload);
+  }
+
+  addCollaborator(payload) {
+    return this.httpClient.post("boards/add-user", payload);
+  }
+
+  deleteBoard(params) {
+    return this.httpClient.delete("boards/delete-board", { params });
+  }
 }
-
- 
-
 
 export default new HttpClient();

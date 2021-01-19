@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import Header from "../components/board/header";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
@@ -9,7 +9,8 @@ import {data, statuses as stats} from "../data/index";
 import "../assets/styles/board.css";
 import { App } from "../app/App";
 import { Navbar } from "../components/navbar";
-
+import {Link, useParams} from "react-router"
+import httpClient from "../tools/httpClient";
 
 
 var columnNameWindows = [stats.length];
@@ -19,12 +20,45 @@ var columnIndexWindows = [stats.length];
         columnIndexWindows[i] = "hidden";
     }
 
-const BoardPage = () => {
+const BoardPage = (props) => {
 
     const [items, setItems] = useState(data);
     const [statuses, setStatuses] = useState(stats);
     const [showColumnNameWindow, setColumnNameWindowVisibility] = useState(columnNameWindows);
     const [showColumnIndexWindow, setColumnIndexWindowVisibility] = useState(columnIndexWindows);
+    const boardID = useParams(props.match.params.id);
+    const [boardData,setBoardData] = useState();
+    const [boardName, setBoardName]= useState("");
+
+    const [loading, setLoading] = useState(false);
+
+ 
+    console.log(boardID);
+
+    useEffect(() => {
+        loadBoardData();
+      }, [loading]);
+
+      const loadBoardData = useCallback(() => {
+        if (!loading) setLoading(true);
+        async function loadBoard() {
+          try {
+            var data = await httpClient.getBoard({
+                boardId: boardID.id
+            });
+            setBoardData(data);
+            setBoardName(data.board.name);
+            
+            setLoading(false);
+          } catch (err) {
+              console.error(err.message);
+            setLoading(false);
+          }
+        }
+
+        loadBoard();
+        setLoading(false);
+    }, [loading]);
 
 
     const onDrop = (item, monitor, status)=>{
@@ -49,11 +83,10 @@ const BoardPage = () => {
     };
 
     function editColumnIcon(s,e){
-
+        
         const editedColumnId = statuses.findIndex(si=>si.status===s.status);
         
             e.preventDefault();
-            console.log("Funkcja wywolana");
             var iconsCollection = ["🔴","🟠","🟡","🟢","🔵","🟣","⚫️","⚪️","🟤"];
             var colorsCollection = ["red","orange","yellow","green","blue","purple","black","white","brown"];
 
@@ -320,9 +353,9 @@ const BoardPage = () => {
 
     return(
         <div>
-            <Navbar/>
+            <Navbar />
             <DndProvider backend={HTML5Backend}>
-            <Header/> 
+            <Header name={boardName} boardID={boardID.id}/> 
             <button id="add-col-btn" onClick={(e)=>addColumn(e)}>+</button>   
             <div id="dialog-place"></div>
             <div className={"row"}>
@@ -346,7 +379,7 @@ const BoardPage = () => {
                         <button className="col-icon-button" onClick={(e)=>editColumnIcon(s,e)}>{s.icon}</button>
                             <div className={"col-header"} onBlur={(e)=>editColumnTitle(s,e)} >{s.status.toUpperCase()}</div>
                             <button className="edit-col-button">...
-                            <div class="dropdown-edit-column">
+                            <div className="dropdown-edit-column">
                                 <a onClick={(e)=>setColumnNameWindowVisible(s,e)}>Edit column name</a>
                                 <a onClick={(e)=>setColumnIndexWindowVisible(s,e)}>Change position</a>
                                 <a onClick={(e)=>deleteColumn(s,e)} style={{color: "darkred"}}>Delete column</a>
@@ -359,7 +392,7 @@ const BoardPage = () => {
                                     .filter(i => i.status === s.status)
                                     .map((i, indx) => <Item key={i.id} item={i} index={indx} moveItem={moveItem} deleteItem={(e)=>deleteItem(i.id,e)} status={s} />)
                                 }      
-                                <button id="add-item-btn" onClick={(e)=>addItem(s,e)}>ADD TASK</button>                       
+                                <button id="add-item-btn" onClick={(e)=>addItem(s,e)}>ADD ITEM</button>                       
                             </Column>
                         </DropWrapper>
                     </div>

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import React, { useState } from "react";
+import loginImg from "../assets/images/logo.png"
 
 
 export function Navbar(props){
@@ -35,6 +36,7 @@ export function Navbar(props){
     else{
         return(
             <div id="loginNavbar">
+
                 <Link to="/login" onClick={logOut} > <h3>    Log out</h3> </Link>
                 <h4>    Hello, {props.name}!</h4>
         

@@ -19,10 +19,10 @@ export function App(){
       <Switch>
       <Route path='/login'  component={Login} />
       <Route path='/register'><Register /></Route>
-      <Route path='/board' component={BoardPage}/>
+      <Route path='/board/:id' component={BoardPage}/>
       <Route path="/profile" component={UserPage}/>      
       </Switch>
-      <Redirect to={currentPath} />)
+)
     </main>
   )
 }
