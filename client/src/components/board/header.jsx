@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { statuses } from "../../data";
+import httpClient from "../../tools/httpClient";
 
 const Header = (props) =>{
     
     const [showEditBoardName, editEDBWindowVisibility] = useState("hidden");
-    const [boardName, editBoardName] = useState(props.name);
     const [collaborator, addCollaborator] = useState("default");
     const [showAddCollaborator, editACVisibility] = useState("hidden");
+    const [boardName, editBoardName] = useState(props.name);
 
     function editShow1(e){
         e.preventDefault();
@@ -35,16 +36,28 @@ const Header = (props) =>{
         })
     }
 
-    function editName(e){
+    async function editName(e){
         e.preventDefault();
+        console.log(props.boardID+" wywolany log");
         editBoardName(()=>{
             var newName = document.getElementById('new-board-name').value;
             return newName;
         })
+        try{
+            
+            await httpClient.editBoard({
+                boardId: props.boardID,
+                newName: document.getElementById('new-board-name').value
+            })
+            document.getElementsByClassName("page-header")[0].textContent = document.getElementById('new-board-name').value;
+        }
+        catch(err){
+            console.error(err.message);
+        }
         editShow2(e);
     }
 
-    function addCollab(e){
+    async function addCollab(e){
         e.preventDefault();
         addCollaborator(()=>{
             var newCollaborator = document.getElementById('new-collaborator').value;
@@ -53,6 +66,7 @@ const Header = (props) =>{
         var permission;
         if(document.getElementById('Administrator').checked){
             permission = "Administrator";
+
         }
         else if(document.getElementById('User').checked){
             permission = "User";
@@ -60,45 +74,72 @@ const Header = (props) =>{
         else{
             permission = "Viewer";
         }
-        var div = document.getElementById("dialog-place");
-        var dialog = document.createElement("dialog");
-        dialog.style.position = "absolute";
-        dialog.style.marginLeft = "60vw";
-        dialog.style.borderStyle = "none";
-        dialog.style.boxShadow="5px 8px 16px 5px gray";
-        dialog.style.textAlign="center";
-        dialog.style.padding="20px";
-        dialog.textContent = `User ${document.getElementById('new-collaborator').value} invited as ${permission}!   `;
-        dialog.open = true;
-        var ok = document.createElement("button");
-        ok.textContent = "OK";
-        ok.style.marginLeft="auto";
-        ok.style.marginRight="auto";
-        ok.style.padding="10px";
-        ok.style.backgroundColor = "bisque";
-        dialog.appendChild(ok);
-        div.appendChild(dialog);
-        ok.onclick = function(){
+
+        try{
+            await httpClient.addCollaborator({
+                boardId: props.boardID,
+                userName: document.getElementById('new-collaborator').value,
+                permission: permission
+            });
+            var div = document.getElementById("dialog-place");
+            var dialog = document.createElement("dialog");
+            dialog.style.position = "absolute";
+            dialog.style.marginLeft = "60vw";
+            dialog.style.borderStyle = "none";
+            dialog.style.boxShadow="5px 8px 16px 5px gray";
+            dialog.style.textAlign="center";
+            dialog.style.padding="20px";
+            dialog.textContent = `User ${document.getElementById('new-collaborator').value} invited as ${permission}!   `;
+            dialog.open = true;
+            var ok = document.createElement("button");
+            ok.textContent = "OK";
+            ok.style.marginLeft="auto";
+            ok.style.marginRight="auto";
+            ok.style.padding="10px";
+            ok.style.backgroundColor = "bisque";
+            dialog.appendChild(ok);
+            div.appendChild(dialog);
+            ok.onclick = function(){
             dialog.close();
         };
+        }
+        catch(err){
+            console.log(err.message);
+        }
         editACVisibility(()=>{return "hidden"});
     }
 
+    async function deleteBoard(){
+        if (
+            window.confirm(
+              "Are you sure you want to delete your account?\nThis operation is irreversible!"
+            )){
+        try{
+            await httpClient.deleteBoard({
+                boardId: props.boardID
+            });
+            document.getElementById("to-profile-link").click();
+        }
+        catch(err){
+            console.error(err.message);
+        }
+    }
+    }
 
 
     return(
         <div>
         <div className={"row"}>
             <button id = "back-to-profile-btn">
-                <Link to="/profile">Back to profile</Link>
+                <Link to="/profile" id="to-profile-link">Back to profile</Link>
             </button>
-            <p className={"page-header"}>{boardName}</p>
+            <p className={"page-header"}>{props.name}</p>
             <button class = "edit-board-btn">...
             <div class="dropdown-edit-board">
                 <a onClick={editShow1}>Edit board name</a>
                 <a onClick={editShow3}>Invite collaborator</a>
                 <a href="#">Export to PDF</a>
-                <a href="#" style={{color: "darkred"}}>Delete board</a>
+                <a onClick={(e)=>{deleteBoard(e)}} style={{color: "darkred"}}>Delete board</a>
             </div>
             </button>
             

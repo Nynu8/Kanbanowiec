@@ -9,7 +9,7 @@ import { render } from "@testing-library/react";
 
 const UserPage = () => {
   var [username, setUsername] = useState("");
-  var [name, setName] = useState("chujnik");
+  var [name, setName] = useState("");
   var [surname, setSurname] = useState("");
   var [password, setPassword] = useState("");
 

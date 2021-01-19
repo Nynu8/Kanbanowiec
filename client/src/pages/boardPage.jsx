@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import Header from "../components/board/header";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
@@ -9,7 +9,8 @@ import {data, statuses as stats} from "../data/index";
 import "../assets/styles/board.css";
 import { App } from "../app/App";
 import { Navbar } from "../components/navbar";
-import {Link} from "react-router"
+import {Link, useParams} from "react-router"
+import httpClient from "../tools/httpClient";
 
 
 var columnNameWindows = [stats.length];
@@ -25,11 +26,41 @@ const BoardPage = (props) => {
     const [statuses, setStatuses] = useState(stats);
     const [showColumnNameWindow, setColumnNameWindowVisibility] = useState(columnNameWindows);
     const [showColumnIndexWindow, setColumnIndexWindowVisibility] = useState(columnIndexWindows);
+    const boardID = useParams(props.match.params.id);
+    const [boardData,setBoardData] = useState();
+    const [boardName, setBoardName]= useState("");
 
-    
-   
-    console.log(props.location.href);
-    console.log(props.location.pathname);
+    const [loading, setLoading] = useState(false);
+
+ 
+    console.log(boardID);
+
+    useEffect(() => {
+        loadBoardData();
+      }, [loading]);
+
+      const loadBoardData = useCallback(() => {
+        if (!loading) setLoading(true);
+        async function loadBoard() {
+          try {
+            var data = await httpClient.getBoard({
+                boardId: boardID.id
+            });
+            setBoardData(data);
+            setBoardName(data.board.name);
+            
+            setLoading(false);
+          } catch (err) {
+              console.error(err.message);
+            setLoading(false);
+          }
+        }
+
+        loadBoard();
+        setLoading(false);
+    }, [loading]);
+
+
     const onDrop = (item, monitor, status)=>{
         const mapping = statuses.find(si=>si.status===status);
  
@@ -52,11 +83,10 @@ const BoardPage = (props) => {
     };
 
     function editColumnIcon(s,e){
-
+        
         const editedColumnId = statuses.findIndex(si=>si.status===s.status);
         
             e.preventDefault();
-            console.log("Funkcja wywolana");
             var iconsCollection = ["🔴","🟠","🟡","🟢","🔵","🟣","⚫️","⚪️","🟤"];
             var colorsCollection = ["red","orange","yellow","green","blue","purple","black","white","brown"];
 
@@ -323,9 +353,9 @@ const BoardPage = (props) => {
 
     return(
         <div>
-            <Navbar/>
+            <Navbar />
             <DndProvider backend={HTML5Backend}>
-            <Header name="chui"/> 
+            <Header name={boardName} boardID={boardID.id}/> 
             <button id="add-col-btn" onClick={(e)=>addColumn(e)}>+</button>   
             <div id="dialog-place"></div>
             <div className={"row"}>
@@ -349,7 +379,7 @@ const BoardPage = (props) => {
                         <button className="col-icon-button" onClick={(e)=>editColumnIcon(s,e)}>{s.icon}</button>
                             <div className={"col-header"} onBlur={(e)=>editColumnTitle(s,e)} >{s.status.toUpperCase()}</div>
                             <button className="edit-col-button">...
-                            <div class="dropdown-edit-column">
+                            <div className="dropdown-edit-column">
                                 <a onClick={(e)=>setColumnNameWindowVisible(s,e)}>Edit column name</a>
                                 <a onClick={(e)=>setColumnIndexWindowVisible(s,e)}>Change position</a>
                                 <a onClick={(e)=>deleteColumn(s,e)} style={{color: "darkred"}}>Delete column</a>

@@ -80,7 +80,21 @@ class HttpClient {
     return this.httpClient.get("/boards/get-user-boards", payload);
   }
 
-  getBoard(payload) {}
+  getBoard( params ) {
+    return this.httpClient.get("/boards/get-board", { params });
+  }
+
+  editBoard(payload) {
+    return this.httpClient.post("boards/edit-board", payload);
+  }
+
+  addCollaborator(payload) {
+    return this.httpClient.post("boards/add-user", payload);
+  }
+
+  deleteBoard(params) {
+    return this.httpClient.delete("boards/delete-board", { params });
+  }
 }
 
 export default new HttpClient();
