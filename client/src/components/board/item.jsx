@@ -68,10 +68,10 @@ const Item = ({item, index, moveItem, status, deleteItem}) =>{
         <Fragment>
             <div ref={ref} style={{ opacity: isDragging? 0 : 1}} className={"item"} onClick={onOpen}>
                 <div className={"color-bar"} style={{ backgroundColor: status.color}} />  
-                <p className={"item-title"}>{item.title}</p>
-                <p className={"item-status"}>{status.icon}</p>
+                <p className={"item-title"}>{item.name}</p>
+                <p className={"item-status"}>{status.color}</p>
             </div>
-            <Window id="pop-up-window" item={item} onClose={onClose} deleteItem={deleteItem} show={show} color={status.color} icon={status.icon}/>
+            <Window id="pop-up-window" item={item} onClose={onClose} deleteItem={deleteItem} show={show} color={status.color} icon={status.color}/>
         </Fragment>
     );
 };

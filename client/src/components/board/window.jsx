@@ -3,19 +3,19 @@ import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 
-const Window=({show, onClose, item, color, icon, deleteItem})=>{
+const Window=({show, onClose, item, color, deleteItem})=>{
     return(
         <Modal isOpen={show} onRequestClose={onClose} className={"modal"} overlayClassName={"overlay"} >
             <div className={"close-btn-ctn"}>
-                <h1 id="title-field" style={{flex: "1 90%"}} contentEditable="true">{item.title}</h1>
+                <h1 id="title-field" style={{flex: "1 90%"}} contentEditable="true">{item.name}</h1>
                 <button className="closes-btn" onClick={onClose}>X</button>
             </div>
             <div>
             <div id={"window-color-bar"} style={{backgroundColor: `${color}`}}> fffffff</div> 
                 <h2>Description</h2>
-                <p id="description-field" contentEditable="true" placeholder="Add description">{item.content}</p>
+                <p id="description-field" contentEditable="true" placeholder="Add description">{item.description}</p>
                 <h2>Status</h2>
-                <p>{`${icon} ${item.status.charAt(0).toUpperCase()}${item.status.slice(1)}`}</p>
+                <p>{`${color}`}</p>
                 <h4>Author</h4>
                 <p>task's author</p>
                 <h4>Executor</h4>
