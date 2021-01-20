@@ -33,16 +33,15 @@ export default class EditColumnHandler implements CommandHandler<EditColumnComma
     if (!permission) throw new UnauthorizedError();
 
     if (permission!.type == UserPermission.Owner || permission!.type == UserPermission.Administrator) {
-      const columns = await columnRepository.find({ board: column!.board });
-
-      for (const col of columns) {
-        if (col.index === index) {
-          col.index = column.index;
-          column.index = index;
-          await columnRepository.save(col!);
+      if (index != null) {
+        //  v   column with already useed index  v
+        const anotherColumn = await columnRepository.findOne({ board: column!.board, index });
+        if (anotherColumn) {
+          anotherColumn.index = column.index;
+          await columnRepository.save(anotherColumn!);
         }
+        column.index = index;
       }
-
       if (newName != null) column!.name = newName;
       if (color != null) column!.color = ColumnColor[color];
 

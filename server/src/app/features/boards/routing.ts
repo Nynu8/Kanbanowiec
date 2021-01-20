@@ -11,6 +11,7 @@ import { getUserBoardsActionValidation } from "./actions/get-user-boards.action"
 import { getBoardActionValidation } from "./actions/get-board.action";
 import { addWorkerActionValidation } from "./actions/add-worker.action";
 import { deleteTaskActionValidation } from "./actions/delete-task.action";
+import { changeTaskColumnActionValidation } from "./actions/change-task-column.action";
 // VALIDATION_IMPORTS
 
 export interface BoardsRoutingDependencies {
@@ -25,6 +26,7 @@ export interface BoardsRoutingDependencies {
   getBoardAction: express.RequestHandler;
   addWorkerAction: express.RequestHandler;
   deleteTaskAction: express.RequestHandler;
+  changeTaskColumnAction: express.RequestHandler;
   // ACTIONS_IMPORTS
 }
 
@@ -43,6 +45,7 @@ export const boardsRouting = (actions: BoardsRoutingDependencies) => {
   router.get("/get-board", [getBoardActionValidation], actions.getBoardAction);
   router.post("/add-worker", [addWorkerActionValidation], actions.addWorkerAction);
   router.delete("/delete-task", [deleteTaskActionValidation], actions.deleteTaskAction);
+  router.post("/change-task-column", [changeTaskColumnActionValidation], actions.changeTaskColumnAction);
   // ACTIONS_SETUP
 
   return router;
