@@ -22,8 +22,8 @@ var columnIndexWindows = [stats.length];
 
 const BoardPage = (props) => {
 
-    const [items, setItems] = useState(data);
-    const [statuses, setStatuses] = useState(stats);
+    const [items, setItems] = useState([]);
+    const [statuses, setStatuses] = useState([]);
     const [showColumnNameWindow, setColumnNameWindowVisibility] = useState(columnNameWindows);
     const [showColumnIndexWindow, setColumnIndexWindowVisibility] = useState(columnIndexWindows);
     const boardID = useParams(props.match.params.id);
@@ -48,6 +48,8 @@ const BoardPage = (props) => {
             });
             setBoardData(data);
             setBoardName(data.board.name);
+            setItems(data.tasks);
+            setStatuses(data.columns);
             
             setLoading(false);
           } catch (err) {
@@ -61,14 +63,14 @@ const BoardPage = (props) => {
     }, [loading]);
 
 
-    const onDrop = (item, monitor, status)=>{
-        const mapping = statuses.find(si=>si.status===status);
+    const onDrop = (item, monitor, columnId)=>{
+        const mapping = statuses.find(si=>si.id==columnId);
  
         
         setItems(prevState=>{
             const newItems = prevState
             .filter(i=>i.id !== item.id)
-            .concat({...item, status, icon: mapping.icon});
+            .concat({...item, columnId, color: mapping.color});
             return [...newItems];
         });
     };
@@ -82,50 +84,55 @@ const BoardPage = (props) => {
         });
     };
 
-    function editColumnIcon(s,e){
+    async function editColumnIcon(s){
         
-        const editedColumnId = statuses.findIndex(si=>si.status===s.status);
-        
-            e.preventDefault();
-            var iconsCollection = ["🔴","🟠","🟡","🟢","🔵","🟣","⚫️","⚪️","🟤"];
-            var colorsCollection = ["red","orange","yellow","green","blue","purple","black","white","brown"];
+            var colorsCollection = ["black","red","orange","yellow","green","blue","purple","white","brown"];
 
-            var index = iconsCollection.findIndex(si=>si===s.icon)
+            var index = colorsCollection.findIndex(si=>si===s.color)
         
-            if(index<iconsCollection.length-1){
+            if(index<colorsCollection.length-1){
                 index++;
             }
             else{
                 index=0;
             }
-            s.icon = iconsCollection[index];
-            s.color = colorsCollection[index];
-            statuses[editedColumnId].color = s.color;
-            statuses[editedColumnId].icon = s.icon;
+            s.color = colorsCollection[index]
 
-            
-            setStatuses(prevState=>{
-                const newStatuses = statuses;
-                return[...newStatuses];
+            console.log(colorsCollection[index])
+            console.log(s.id)
+            console.log(s.name) 
+
+            try{
+            await httpClient.editColumn({
+                
+                columnId: s.id,
+                newName: s.name,
+                color: colorsCollection[index]
+                
             });
-
+        }
+        catch(err){
+            console.error(err.message)
+        }
+            
+            setLoading(true);
     };
 
 
     function setColumnNameWindowVisible(s,e){
         e.preventDefault();
-        const editedColumnId = statuses.findIndex(si=>si.status===s.status);
+        const editedColumnIndex = s.index;
         var tmp = showColumnNameWindow;
-        tmp[editedColumnId] = "visible";
+        tmp[editedColumnIndex] = "visible";
         setColumnNameWindowVisibility(()=>{
             return [...tmp];
         })
     }
     function setColumnNameWindowHidden(s,e){
         e.preventDefault();
-        const editedColumnId = statuses.findIndex(si=>si.status===s.status);
+        const editedColumnIndex = s.index;
         var tmp = showColumnNameWindow;
-        tmp[editedColumnId] = "hidden";
+        tmp[editedColumnIndex] = "hidden";
         setColumnNameWindowVisibility(()=>{
             return [...tmp];
         })
@@ -135,33 +142,31 @@ const BoardPage = (props) => {
         
         e.preventDefault();
 
-        const editedColumnId = statuses.findIndex(si=>si===s);
-        var newName = document.getElementsByClassName("new-column-name")[editedColumnId].value;
-        var prevStatus = s.status;
-        s.status = newName;
-        statuses[editedColumnId].status = s.status;
-        
-        setStatuses(()=>{
-            const newStatuses = statuses;
-            return [...newStatuses];
-        })
+        var newName = document.getElementsByClassName("new-column-name")[s.index].value;
+        var prevStatus = s.name;
+        //s.name = newName;
+        //statuses[editedColumnId].name = s.name;
+        console.log(s.id)
+        console.log(s.index)
+        console.log(newName)
+        console.log(s.color)
 
-        setItems(()=>{
-            for(var i=0;i<items.length;i++){
-                if(items[i].status === prevStatus){
-                    items[i].status = newName;
-                }
-            }
-            return [...items]
-        })
+        httpClient.editColumn({
+            columnId: s.id,
+            newName: newName,
+            color: s.color
+        });
+        
+        setLoading(true);
+        
         setColumnNameWindowHidden(s,e);
     }
 
     function setColumnIndexWindowVisible(s,e){
         e.preventDefault();
-        const editedColumnId = statuses.findIndex(si=>si.status===s.status);
+        const editedColumnIndex = s.ndex;
         var tmp = showColumnIndexWindow;
-        tmp[editedColumnId] = "visible";
+        tmp[editedColumnIndex] = "visible";
         setColumnIndexWindowVisibility(()=>{
             return [...tmp];
         })
@@ -169,9 +174,9 @@ const BoardPage = (props) => {
 
     function setColumnIndexWindowHidden(s,e){
         e.preventDefault();
-        const editedColumnId = statuses.findIndex(si=>si.status===s.status);
+        const editedColumnIndex = s.index;
         var tmp = showColumnNameWindow;
-        tmp[editedColumnId] = "hidden";
+        tmp[editedColumnIndex] = "hidden";
         setColumnIndexWindowVisibility(()=>{
             return [...tmp];
         })
@@ -220,24 +225,20 @@ const BoardPage = (props) => {
 
     function updateIndexInput(s,e){
         e.preventDefault();
-        var indexValue = document.getElementsByClassName("new-column-index")[statuses.indexOf(s)].value;
-        document.getElementsByClassName("index-label")[statuses.indexOf(s)].textContent = indexValue;
+        var indexValue = document.getElementsByClassName("new-column-index")[s.index].value;
+        document.getElementsByClassName("index-label")[s.index].textContent = indexValue;
     }
 
     function addItem(s,e){
         e.preventDefault();
 
-        setItems(prevState=>{
-            items.push({
-                id: prevState.length,
-                icon: s.icon,
-                status: s.status,
-                title: "New task",
-                content: "Add description"
-            });
-            return [...items];
-        });
-        console.log(items.length);
+        httpClient.addTask({
+            name: "New task",
+            description: "Add description",
+            columnId: s.id
+        })
+        setLoading(true);
+
     }
 
     function deleteItem(itemId,e){
@@ -265,12 +266,14 @@ const BoardPage = (props) => {
         no.onclick = function(){
             dialog.close();
         };
-        yes.onclick = function(){
+        yes.onclick = async function(){
             dialog.close();
-            setItems(()=>{
-                items.splice(itemId,1);
-                return [...items];
-            });
+            
+            await httpClient.deleteTask({
+                taskId: itemId,
+                boardId: boardID.id
+            })
+            setLoading(true);
         }
         
     }
@@ -282,7 +285,7 @@ const BoardPage = (props) => {
         var dialog = document.createElement("dialog");
         dialog.id = "dialog-window";
         
-        dialog.textContent = `Are you sure you want to delete column ${s.status.toUpperCase()}?`;
+        dialog.textContent = `Are you sure you want to delete column ${s.name.toUpperCase()}?`;
         dialog.open = true;
         var yes = document.createElement("button");
         yes.className = "dialog-button";
@@ -302,7 +305,7 @@ const BoardPage = (props) => {
         yes.onclick = function(){
             dialog.close();
             setStatuses(()=>{
-                statuses.splice(statuses.indexOf(s),1);
+                statuses.splice(s.index,1);
                 return [...statuses];
             })
         }
@@ -335,15 +338,18 @@ const BoardPage = (props) => {
         dialog.appendChild(ok);
         div.appendChild(dialog);
 
-        ok.onclick = function(){
-            setStatuses(()=>{
-                statuses.unshift({
-                    status: input.value,
-                    icon: "🟡",
-                    color: "yellow"
-                })
-                return [...statuses];
+        ok.onclick = async function(){
+            try{
+            await httpClient.addColumn({
+                index: statuses.length,
+                name: input.value,
+                boardId: boardID.id
             })
+            setLoading(true);
+        }
+        catch(err){
+            console.error(err.message);
+        }
             dialog.close();
         }
         x.onclick = function(){
@@ -359,16 +365,18 @@ const BoardPage = (props) => {
             <button id="add-col-btn" onClick={(e)=>addColumn(e)}>+</button>   
             <div id="dialog-place"></div>
             <div className={"row"}>
-            {statuses.map(s=>{
+            {statuses
+            .sort((a, b) => (a.index - b.index))
+            .map(s=>{
                 return (                  
-                    <div key={s.status} className={"col-wrapper"}>
-                        <div className="edit-col-name-window" style={{visibility: `${showColumnNameWindow[statuses.indexOf(s)]}` }}>
+                    <div key={s.index} className={"col-wrapper"}>
+                        <div className="edit-col-name-window" style={{visibility: `${showColumnNameWindow[s.index]}` }}>
                                 <button style={{position: "absolute", marginLeft: "230px"}} onClick={(e)=>setColumnNameWindowHidden(s,e)}>X</button>
                                 <h3>Enter new column name:</h3>
                                 <input type="text" className="new-name" class="new-column-name" name="text"/>
                                 <input type="submit" name="submit" onClick={(e)=>editColumnTitle(s,e)} value="Confirm"/>
                         </div>
-                        <div className="edit-col-name-window" style={{visibility: `${showColumnIndexWindow[statuses.indexOf(s)]}` }}>
+                        <div className="edit-col-name-window" style={{visibility: `${showColumnIndexWindow[s.index]}` }}>
                                 <button style={{position: "absolute", marginLeft: "230px"}} onClick={(e)=>setColumnIndexWindowHidden(s,e)}>X</button>
                                 <h3>Enter new column index:</h3>
                                 <input type="range" className="new-column-index" id="index" min="0" max={statuses.length-1} name="index"  onChange={(e)=>updateIndexInput(s,e)}/>
@@ -376,8 +384,8 @@ const BoardPage = (props) => {
                                 <input type="submit" name="submit" className="submit-button" onClick={(e)=>changeColumnPosition(s,e)} value="Confirm"/>
                         </div>
                         <div className="col-header-div">
-                        <button className="col-icon-button" onClick={(e)=>editColumnIcon(s,e)}>{s.icon}</button>
-                            <div className={"col-header"} onBlur={(e)=>editColumnTitle(s,e)} >{s.status.toUpperCase()}</div>
+                        <button className="col-icon-button" onClick={(e)=>editColumnIcon(s,e)}>{s.color}</button>
+                            <div className={"col-header"} onBlur={(e)=>editColumnTitle(s,e)} >{s.name}</div>
                             <button className="edit-col-button">...
                             <div className="dropdown-edit-column">
                                 <a onClick={(e)=>setColumnNameWindowVisible(s,e)}>Edit column name</a>
@@ -386,10 +394,10 @@ const BoardPage = (props) => {
                             </div>
                         </button>
                         </div>                       
-                        <DropWrapper onDrop={onDrop} status={s.status}>    
+                        <DropWrapper onDrop={onDrop} id={s.id}>    
                             <Column status={s}>                           
                                 {items
-                                    .filter(i => i.status === s.status)
+                                    .filter(i => i.columnId === s.id)
                                     .map((i, indx) => <Item key={i.id} item={i} index={indx} moveItem={moveItem} deleteItem={(e)=>deleteItem(i.id,e)} status={s} />)
                                 }      
                                 <button id="add-item-btn" onClick={(e)=>addItem(s,e)}>ADD ITEM</button>                       
