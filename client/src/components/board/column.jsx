@@ -4,9 +4,11 @@ import {statuses} from "../../data/index";
 
 
 const Column = ({isOver, children, status}) =>{
-    const title = useState(status.status);
+    const title = useState(status.name);
     const color = useState(status.color);
-    const icon = useState(status.icon);
+    const icon = useState(status.color);
+    const index = useState(status.index);
+    const id = useState(status.id);
     const className = isOver ? " highlight-region" : "";
     
     return (

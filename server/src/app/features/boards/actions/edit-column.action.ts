@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { celebrate, Joi } from "celebrate";
 import { CommandBus } from "../../../../shared/command-bus";
 import { EditColumnCommand } from "../commands/edit-column.command";
+import { ColumnColor } from "../../../../../shared/enum/column-color.enum";
 
 export interface EditColumnActionDependencies {
   commandBus: CommandBus;
@@ -14,7 +15,7 @@ export const editColumnActionValidation = celebrate(
       columnId: Joi.string().uuid().required(),
       newName: Joi.string().min(1),
       index: Joi.number(),
-      color: Joi.string().valid("red", "orange", "yellow", "green", "blue", "purple", "black", "white", "brown"),
+      color: Joi.string().valid(...Object.keys(ColumnColor)),
     }),
   },
   { abortEarly: false },

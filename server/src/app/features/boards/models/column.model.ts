@@ -20,6 +20,11 @@ export class ColumnModel {
     return entity;
   }
 
+  setColor(color: ColumnColor) {
+    console.log(color, typeof color);
+    this.color = color;
+  }
+
   @PrimaryGeneratedColumn("uuid")
   id: string;
 

@@ -55,9 +55,9 @@ const Item = ({item, index, moveItem, status, deleteItem}) =>{
     const onClose = () => {
         var titleField = document.querySelector("#title-field");
         var descriptionField = document.querySelector("#description-field")
-        item.title = titleField.textContent;
-        item.content = descriptionField.textContent;
-        setShow(false)
+        item.name = titleField.textContent;
+        item.description = descriptionField.textContent;
+        setShow(false);
     }
     
 
@@ -68,10 +68,10 @@ const Item = ({item, index, moveItem, status, deleteItem}) =>{
         <Fragment>
             <div ref={ref} style={{ opacity: isDragging? 0 : 1}} className={"item"} onClick={onOpen}>
                 <div className={"color-bar"} style={{ backgroundColor: status.color}} />  
-                <p className={"item-title"}>{item.title}</p>
-                <p className={"item-status"}>{status.icon}</p>
+                <p className={"item-title"}>{item.name}</p>
+                <p className={"item-status"}>{status.color}</p>
             </div>
-            <Window id="pop-up-window" item={item} onClose={onClose} deleteItem={deleteItem} show={show} color={status.color} icon={status.icon}/>
+            <Window id="pop-up-window" item={item} onClose={onClose} deleteItem={deleteItem} show={show} color={status.color} status={status.name} icon={status.color}/>
         </Fragment>
     );
 };
