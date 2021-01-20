@@ -12,9 +12,9 @@ import { Navbar } from "../components/navbar";
 import { Link, useParams } from "react-router";
 import httpClient from "../tools/httpClient";
 
-var columnNameWindows = [stats.length];
-var columnIndexWindows = [stats.length];
-for (var i = 0; i < stats.length; i++) {
+var columnNameWindows = [10];
+var columnIndexWindows = [10];
+for (var i = 0; i < 10; i++) {
   columnNameWindows[i] = "hidden";
   columnIndexWindows[i] = "hidden";
 }
@@ -33,6 +33,7 @@ const BoardPage = (props) => {
   const [boardName, setBoardName] = useState("");
 
   const [loading, setLoading] = useState(false);
+  var userName = useState("default");
 
   console.log(boardID);
 
@@ -52,6 +53,13 @@ const BoardPage = (props) => {
         setItems(data.tasks);
         setStatuses(data.columns);
 
+        userName = await httpClient.getUserDetails().name;
+
+        for (var i = 0; i < statuses.length; i++) {
+            columnNameWindows[i] = "hidden";
+            columnIndexWindows[i] = "hidden";
+          }
+
         setLoading(false);
       } catch (err) {
         console.error(err.message);
@@ -63,15 +71,19 @@ const BoardPage = (props) => {
     setLoading(false);
   }, [loading]);
 
-  const onDrop = (item, monitor, columnId) => {
+  const onDrop = async (item, monitor, columnId) => {
     const mapping = statuses.find((si) => si.id == columnId);
 
-    setItems((prevState) => {
-      const newItems = prevState
-        .filter((i) => i.id !== item.id)
-        .concat({ ...item, columnId, color: mapping.color });
-      return [...newItems];
-    });
+    try{
+        await httpClient.changeTaskColumn({
+            columnId: columnId,
+            taskId: item.id
+        });
+        setLoading(true);
+    }
+    catch(err){
+        console.error(err.message);
+    }
   };
 
   const moveItem = (dragIndex, hoverIndex) => {
@@ -96,25 +108,40 @@ const BoardPage = (props) => {
       Brown: "Brown",
     };
 
-    // var index = colorsCollection.findIndex((si) => si === s.color);
-
-    // if (index < colorsCollection.length - 1) {
-    //   index++;
-    // } else {
-    //   index = 0;
-    // }
-    // s.color = colorsCollection[index];
-
-    // console.log(colorsCollection[index]);
-    // console.log(s.id);
-    // console.log(s.name);
+    var currentColor = s.color;
+    switch(s.color){
+        case "Red":
+            currentColor = ColumnColor.Orange;
+            break;
+            case "Orange":
+            currentColor = ColumnColor.Yellow;
+            break;
+            case "Yellow":
+            currentColor = ColumnColor.Green;
+            break;
+            case "Green":
+            currentColor = ColumnColor.Blue;
+            break;
+            case "Blue":
+            currentColor = ColumnColor.Purple;
+            break;
+            case "Purple":
+            currentColor = ColumnColor.White;
+            break;
+            case "White":
+            currentColor = ColumnColor.Black;
+            break;
+            case "Black":
+            currentColor = ColumnColor.Red;
+            break;
+    }
 
     try {
       await httpClient.editColumn({
         columnId: s.id,
         newName: s.name,
-        color: ColumnColor.Red,
-      });
+        color: currentColor
+    });
     } catch (err) {
       console.error(err.message);
     }
@@ -122,6 +149,7 @@ const BoardPage = (props) => {
     setLoading(true);
   }
 
+  
   function setColumnNameWindowVisible(s, e) {
     e.preventDefault();
     const editedColumnIndex = s.index;
@@ -141,7 +169,7 @@ const BoardPage = (props) => {
     });
   }
 
-  function editColumnTitle(s, e) {
+  async function editColumnTitle(s, e) {
     e.preventDefault();
 
     var newName = document.getElementsByClassName("new-column-name")[s.index]
@@ -154,7 +182,7 @@ const BoardPage = (props) => {
     console.log(newName);
     console.log(s.color);
 
-    httpClient.editColumn({
+    await httpClient.editColumn({
       columnId: s.id,
       newName: newName,
       color: s.color,
@@ -167,7 +195,7 @@ const BoardPage = (props) => {
 
   function setColumnIndexWindowVisible(s, e) {
     e.preventDefault();
-    const editedColumnIndex = s.ndex;
+    const editedColumnIndex = s.index;
     var tmp = showColumnIndexWindow;
     tmp[editedColumnIndex] = "visible";
     setColumnIndexWindowVisibility(() => {
@@ -185,27 +213,28 @@ const BoardPage = (props) => {
     });
   }
 
-  function changeColumnPosition(s, e) {
+  async function changeColumnPosition(s, e) {
     e.preventDefault();
 
-    const editedColumnIndex = statuses.indexOf(s);
-    const indexValue = document.getElementsByClassName("new-column-index")[
-      editedColumnIndex
-    ].value;
-    const selectedIndex = indexValue;
+    const editedColumnIndex = s.index;
+    const selectedIndex = document.getElementsByClassName("new-column-index")[editedColumnIndex].value;
 
-    const howManyTimes = selectedIndex - editedColumnIndex;
-    console.log(Math.abs(howManyTimes));
-
-    if (howManyTimes < 0) {
-      for (let i = 0; i < Math.abs(howManyTimes); i++) {
-        columnSwap(s, "left");
-      }
-    } else if (howManyTimes > 0) {
-      for (let i = 0; i < howManyTimes; i++) {
-        columnSwap(s, "right");
-      }
+    console.log(editedColumnIndex)
+    console.log(selectedIndex)
+    try{
+        
+        await httpClient.editColumn({
+            columnId: s.id,
+            newName: s.name,
+            color: s.color,
+            index: selectedIndex
+        })
+        setLoading(true);
     }
+    catch(err){
+        console.error(err.message);
+    }
+
     setColumnIndexWindowHidden(s, e);
   }
 
@@ -225,14 +254,11 @@ const BoardPage = (props) => {
     });
   }
 
-  function updateIndexInput(s, e) {
-    e.preventDefault();
-    var indexValue = document.getElementsByClassName("new-column-index")[
-      s.index
-    ].value;
-    document.getElementsByClassName("index-label")[
-      s.index
-    ].textContent = indexValue;
+  function updateIndexInput(s,e) {
+      e.preventDefault();
+      console.log(s.index)
+    var indexValue = document.getElementsByClassName("new-column-index")[s.index].value;
+    document.getElementsByClassName("index-label")[s.index].textContent = indexValue;
   }
 
   function addItem(s, e) {
@@ -362,7 +388,7 @@ const BoardPage = (props) => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar name={userName} />
       <DndProvider backend={HTML5Backend}>
         <Header name={boardName} boardID={boardID.id} />
         <button id="add-col-btn" onClick={(e) => addColumn(e)}>
@@ -414,8 +440,8 @@ const BoardPage = (props) => {
                       type="range"
                       className="new-column-index"
                       id="index"
-                      min="0"
-                      max={statuses.length - 1}
+                      min={0}
+                      max={statuses.length-1}
                       name="index"
                       onChange={(e) => updateIndexInput(s, e)}
                     />

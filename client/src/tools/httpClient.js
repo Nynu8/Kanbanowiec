@@ -113,8 +113,11 @@ class HttpClient {
   }
 
   editColumn(payload) {
-    console.log(payload);
     return this.httpClient.post("boards/edit-column", payload);
+  }
+
+  changeTaskColumn(payload) {
+    return this.httpClient.post("boards/change-task-column", payload);
   }
 }
 

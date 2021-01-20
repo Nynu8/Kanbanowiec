@@ -3,7 +3,7 @@ import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 
-const Window=({show, onClose, item, color, deleteItem})=>{
+const Window=({show, status, onClose, item, color, deleteItem})=>{
     return(
         <Modal isOpen={show} onRequestClose={onClose} className={"modal"} overlayClassName={"overlay"} >
             <div className={"close-btn-ctn"}>
@@ -15,7 +15,7 @@ const Window=({show, onClose, item, color, deleteItem})=>{
                 <h2>Description</h2>
                 <p id="description-field" contentEditable="true" placeholder="Add description">{item.description}</p>
                 <h2>Status</h2>
-                <p>{`${color}`}</p>
+                <p>{`${color}  ${status}`}</p>
                 <h4>Author</h4>
                 <p>task's author</p>
                 <h4>Executor</h4>

@@ -8,7 +8,7 @@ const DropWrapper = ({onDrop, children, id})=>{
     const [{ isOver }, drop] = useDrop({
         accept: ITEM_TYPE,
         canDrop: (item, monitor)=>{
-            const itemIndex = statuses.findIndex(si=>si.id===item.id);
+            const itemIndex = statuses.findIndex(si=>si.id===item.columnId);
             const statusIndex = statuses.findIndex(si=>si.id===id);
             return [itemIndex + 1, itemIndex - 1, itemIndex].includes(statusIndex);
         },
