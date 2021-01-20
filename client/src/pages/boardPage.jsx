@@ -1,416 +1,490 @@
-import React, {useState, useEffect, useCallback} from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Header from "../components/board/header";
-import {DndProvider} from "react-dnd";
-import {HTML5Backend} from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import Item from "../components/board/item";
 import DropWrapper from "../components/board/dropWrapper";
 import Column from "../components/board/column";
-import {data, statuses as stats} from "../data/index";
+import { data, statuses as stats } from "../data/index";
 import "../assets/styles/board.css";
 import { App } from "../app/App";
 import { Navbar } from "../components/navbar";
-import {Link, useParams} from "react-router"
+import { Link, useParams } from "react-router";
 import httpClient from "../tools/httpClient";
-
 
 var columnNameWindows = [stats.length];
 var columnIndexWindows = [stats.length];
-    for(var i=0; i<stats.length;i++){
-        columnNameWindows[i] = "hidden";
-        columnIndexWindows[i] = "hidden";
-    }
+for (var i = 0; i < stats.length; i++) {
+  columnNameWindows[i] = "hidden";
+  columnIndexWindows[i] = "hidden";
+}
 
 const BoardPage = (props) => {
+  const [items, setItems] = useState([]);
+  const [statuses, setStatuses] = useState([]);
+  const [showColumnNameWindow, setColumnNameWindowVisibility] = useState(
+    columnNameWindows
+  );
+  const [showColumnIndexWindow, setColumnIndexWindowVisibility] = useState(
+    columnIndexWindows
+  );
+  const boardID = useParams(props.match.params.id);
+  const [boardData, setBoardData] = useState();
+  const [boardName, setBoardName] = useState("");
 
-    const [items, setItems] = useState([]);
-    const [statuses, setStatuses] = useState([]);
-    const [showColumnNameWindow, setColumnNameWindowVisibility] = useState(columnNameWindows);
-    const [showColumnIndexWindow, setColumnIndexWindowVisibility] = useState(columnIndexWindows);
-    const boardID = useParams(props.match.params.id);
-    const [boardData,setBoardData] = useState();
-    const [boardName, setBoardName]= useState("");
+  const [loading, setLoading] = useState(false);
 
-    const [loading, setLoading] = useState(false);
+  console.log(boardID);
 
- 
-    console.log(boardID);
+  useEffect(() => {
+    loadBoardData();
+  }, [loading]);
 
-    useEffect(() => {
-        loadBoardData();
-      }, [loading]);
+  const loadBoardData = useCallback(() => {
+    if (!loading) setLoading(true);
+    async function loadBoard() {
+      try {
+        var data = await httpClient.getBoard({
+          boardId: boardID.id,
+        });
+        setBoardData(data);
+        setBoardName(data.board.name);
+        setItems(data.tasks);
+        setStatuses(data.columns);
 
-      const loadBoardData = useCallback(() => {
-        if (!loading) setLoading(true);
-        async function loadBoard() {
-          try {
-            var data = await httpClient.getBoard({
-                boardId: boardID.id
-            });
-            setBoardData(data);
-            setBoardName(data.board.name);
-            setItems(data.tasks);
-            setStatuses(data.columns);
-            
-            setLoading(false);
-          } catch (err) {
-              console.error(err.message);
-            setLoading(false);
-          }
-        }
-
-        loadBoard();
         setLoading(false);
-    }, [loading]);
-
-
-    const onDrop = (item, monitor, columnId)=>{
-        const mapping = statuses.find(si=>si.id==columnId);
- 
-        
-        setItems(prevState=>{
-            const newItems = prevState
-            .filter(i=>i.id !== item.id)
-            .concat({...item, columnId, color: mapping.color});
-            return [...newItems];
-        });
-    };
-
-    const moveItem = (dragIndex, hoverIndex)=>{
-        const item = items[dragIndex];
-        setItems(prevState=>{
-            const newItems = prevState.filter((i,indx)=>indx!==dragIndex);
-            newItems.splice(hoverIndex, 0, item);
-            return [...newItems];
-        });
-    };
-
-    async function editColumnIcon(s){
-        
-            var colorsCollection = ["black","red","orange","yellow","green","blue","purple","white","brown"];
-
-            var index = colorsCollection.findIndex(si=>si===s.color)
-        
-            if(index<colorsCollection.length-1){
-                index++;
-            }
-            else{
-                index=0;
-            }
-            s.color = colorsCollection[index]
-
-            console.log(colorsCollection[index])
-            console.log(s.id)
-            console.log(s.name) 
-
-            try{
-            await httpClient.editColumn({
-                
-                columnId: s.id,
-                newName: s.name,
-                color: colorsCollection[index]
-                
-            });
-        }
-        catch(err){
-            console.error(err.message)
-        }
-            
-            setLoading(true);
-    };
-
-
-    function setColumnNameWindowVisible(s,e){
-        e.preventDefault();
-        const editedColumnIndex = s.index;
-        var tmp = showColumnNameWindow;
-        tmp[editedColumnIndex] = "visible";
-        setColumnNameWindowVisibility(()=>{
-            return [...tmp];
-        })
-    }
-    function setColumnNameWindowHidden(s,e){
-        e.preventDefault();
-        const editedColumnIndex = s.index;
-        var tmp = showColumnNameWindow;
-        tmp[editedColumnIndex] = "hidden";
-        setColumnNameWindowVisibility(()=>{
-            return [...tmp];
-        })
+      } catch (err) {
+        console.error(err.message);
+        setLoading(false);
+      }
     }
 
-    function editColumnTitle(s,e){
-        
-        e.preventDefault();
+    loadBoard();
+    setLoading(false);
+  }, [loading]);
 
-        var newName = document.getElementsByClassName("new-column-name")[s.index].value;
-        var prevStatus = s.name;
-        //s.name = newName;
-        //statuses[editedColumnId].name = s.name;
-        console.log(s.id)
-        console.log(s.index)
-        console.log(newName)
-        console.log(s.color)
+  const onDrop = (item, monitor, columnId) => {
+    const mapping = statuses.find((si) => si.id == columnId);
 
-        httpClient.editColumn({
-            columnId: s.id,
-            newName: newName,
-            color: s.color
+    setItems((prevState) => {
+      const newItems = prevState
+        .filter((i) => i.id !== item.id)
+        .concat({ ...item, columnId, color: mapping.color });
+      return [...newItems];
+    });
+  };
+
+  const moveItem = (dragIndex, hoverIndex) => {
+    const item = items[dragIndex];
+    setItems((prevState) => {
+      const newItems = prevState.filter((i, indx) => indx !== dragIndex);
+      newItems.splice(hoverIndex, 0, item);
+      return [...newItems];
+    });
+  };
+
+  async function editColumnIcon(s) {
+    const ColumnColor = {
+      Red: "Red",
+      Orange: "Orange",
+      Yellow: "Yellow",
+      Green: "Green",
+      Blue: "Blue",
+      Purple: "Purple",
+      Black: "Black",
+      White: "White",
+      Brown: "Brown",
+    };
+
+    // var index = colorsCollection.findIndex((si) => si === s.color);
+
+    // if (index < colorsCollection.length - 1) {
+    //   index++;
+    // } else {
+    //   index = 0;
+    // }
+    // s.color = colorsCollection[index];
+
+    // console.log(colorsCollection[index]);
+    // console.log(s.id);
+    // console.log(s.name);
+
+    try {
+      await httpClient.editColumn({
+        columnId: s.id,
+        newName: s.name,
+        color: ColumnColor.Red,
+      });
+    } catch (err) {
+      console.error(err.message);
+    }
+
+    setLoading(true);
+  }
+
+  function setColumnNameWindowVisible(s, e) {
+    e.preventDefault();
+    const editedColumnIndex = s.index;
+    var tmp = showColumnNameWindow;
+    tmp[editedColumnIndex] = "visible";
+    setColumnNameWindowVisibility(() => {
+      return [...tmp];
+    });
+  }
+  function setColumnNameWindowHidden(s, e) {
+    e.preventDefault();
+    const editedColumnIndex = s.index;
+    var tmp = showColumnNameWindow;
+    tmp[editedColumnIndex] = "hidden";
+    setColumnNameWindowVisibility(() => {
+      return [...tmp];
+    });
+  }
+
+  function editColumnTitle(s, e) {
+    e.preventDefault();
+
+    var newName = document.getElementsByClassName("new-column-name")[s.index]
+      .value;
+    var prevStatus = s.name;
+    //s.name = newName;
+    //statuses[editedColumnId].name = s.name;
+    console.log(s.id);
+    console.log(s.index);
+    console.log(newName);
+    console.log(s.color);
+
+    httpClient.editColumn({
+      columnId: s.id,
+      newName: newName,
+      color: s.color,
+    });
+
+    setLoading(true);
+
+    setColumnNameWindowHidden(s, e);
+  }
+
+  function setColumnIndexWindowVisible(s, e) {
+    e.preventDefault();
+    const editedColumnIndex = s.ndex;
+    var tmp = showColumnIndexWindow;
+    tmp[editedColumnIndex] = "visible";
+    setColumnIndexWindowVisibility(() => {
+      return [...tmp];
+    });
+  }
+
+  function setColumnIndexWindowHidden(s, e) {
+    e.preventDefault();
+    const editedColumnIndex = s.index;
+    var tmp = showColumnNameWindow;
+    tmp[editedColumnIndex] = "hidden";
+    setColumnIndexWindowVisibility(() => {
+      return [...tmp];
+    });
+  }
+
+  function changeColumnPosition(s, e) {
+    e.preventDefault();
+
+    const editedColumnIndex = statuses.indexOf(s);
+    const indexValue = document.getElementsByClassName("new-column-index")[
+      editedColumnIndex
+    ].value;
+    const selectedIndex = indexValue;
+
+    const howManyTimes = selectedIndex - editedColumnIndex;
+    console.log(Math.abs(howManyTimes));
+
+    if (howManyTimes < 0) {
+      for (let i = 0; i < Math.abs(howManyTimes); i++) {
+        columnSwap(s, "left");
+      }
+    } else if (howManyTimes > 0) {
+      for (let i = 0; i < howManyTimes; i++) {
+        columnSwap(s, "right");
+      }
+    }
+    setColumnIndexWindowHidden(s, e);
+  }
+
+  function columnSwap(s, direction) {
+    if (direction === "right") {
+      var tmp = statuses[statuses.indexOf(s) + 1];
+      statuses[statuses.indexOf(s) + 1] = s;
+      statuses[statuses.indexOf(s)] = tmp;
+    } else {
+      var tmp = statuses[statuses.indexOf(s) - 1];
+      statuses[statuses.indexOf(s) - 1] = s;
+      statuses[statuses.indexOf(s)] = tmp;
+    }
+    setStatuses(() => {
+      const newStatuses = statuses;
+      return [...newStatuses];
+    });
+  }
+
+  function updateIndexInput(s, e) {
+    e.preventDefault();
+    var indexValue = document.getElementsByClassName("new-column-index")[
+      s.index
+    ].value;
+    document.getElementsByClassName("index-label")[
+      s.index
+    ].textContent = indexValue;
+  }
+
+  function addItem(s, e) {
+    e.preventDefault();
+
+    httpClient.addTask({
+      name: "New task",
+      description: "Add description",
+      columnId: s.id,
+    });
+    setLoading(true);
+  }
+
+  function deleteItem(itemId, e) {
+    e.preventDefault();
+    var div = document.getElementById("dialog-place");
+    var dialog = document.createElement("dialog");
+    dialog.id = "dialog-window";
+
+    dialog.textContent = `Are you sure you want to delete this item?`;
+    dialog.open = true;
+    dialog.style.zIndex = 2;
+    dialog.style.width = "120px";
+    var yes = document.createElement("button");
+    yes.className = "dialog-button";
+    yes.textContent = "Yes";
+
+    var no = document.createElement("button");
+    no.className = "dialog-button";
+    no.textContent = "No";
+
+    dialog.appendChild(yes);
+    dialog.appendChild(no);
+    div.appendChild(dialog);
+
+    no.onclick = function () {
+      dialog.close();
+    };
+    yes.onclick = async function () {
+      dialog.close();
+
+      await httpClient.deleteTask({
+        taskId: itemId,
+        boardId: boardID.id,
+      });
+      setLoading(true);
+    };
+  }
+
+  function deleteColumn(s, e) {
+    e.preventDefault();
+
+    var div = document.getElementById("dialog-place");
+    var dialog = document.createElement("dialog");
+    dialog.id = "dialog-window";
+
+    dialog.textContent = `Are you sure you want to delete column ${s.name.toUpperCase()}?`;
+    dialog.open = true;
+    var yes = document.createElement("button");
+    yes.className = "dialog-button";
+    yes.textContent = "Yes";
+
+    var no = document.createElement("button");
+    no.className = "dialog-button";
+    no.textContent = "No";
+
+    dialog.appendChild(yes);
+    dialog.appendChild(no);
+    div.appendChild(dialog);
+
+    no.onclick = function () {
+      dialog.close();
+    };
+    yes.onclick = function () {
+      dialog.close();
+      setStatuses(() => {
+        statuses.splice(s.index, 1);
+        return [...statuses];
+      });
+    };
+  }
+
+  function addColumn(e) {
+    e.preventDefault();
+
+    var div = document.getElementById("dialog-place");
+    var dialog = document.createElement("dialog");
+    dialog.id = "dialog-window";
+    var p = document.createElement("h4");
+    var input = document.createElement("input");
+    var ok = document.createElement("button");
+    var x = document.createElement("button");
+    p.innerText = "New column's name:";
+    input.type = "text";
+    ok.textContent = "OK";
+    x.textContent = "x";
+    x.style.fontSize = "large";
+    x.style.position = "absolute";
+    x.style.marginTop = "-70px";
+    dialog.open = true;
+    dialog.className = "edit-col-name-window";
+    dialog.style.width = "180px";
+    dialog.style.marginLeft = "20px";
+    dialog.appendChild(p);
+    dialog.appendChild(input);
+    dialog.appendChild(x);
+    dialog.appendChild(ok);
+    div.appendChild(dialog);
+
+    ok.onclick = async function () {
+      try {
+        await httpClient.addColumn({
+          index: statuses.length,
+          name: input.value,
+          boardId: boardID.id,
         });
-        
         setLoading(true);
-        
-        setColumnNameWindowHidden(s,e);
-    }
+      } catch (err) {
+        console.error(err.message);
+      }
+      dialog.close();
+    };
+    x.onclick = function () {
+      dialog.close();
+    };
+  }
 
-    function setColumnIndexWindowVisible(s,e){
-        e.preventDefault();
-        const editedColumnIndex = s.ndex;
-        var tmp = showColumnIndexWindow;
-        tmp[editedColumnIndex] = "visible";
-        setColumnIndexWindowVisibility(()=>{
-            return [...tmp];
-        })
-    }
-
-    function setColumnIndexWindowHidden(s,e){
-        e.preventDefault();
-        const editedColumnIndex = s.index;
-        var tmp = showColumnNameWindow;
-        tmp[editedColumnIndex] = "hidden";
-        setColumnIndexWindowVisibility(()=>{
-            return [...tmp];
-        })
-    }
-
-    function changeColumnPosition(s,e){
-        e.preventDefault();   
-
-        const editedColumnIndex = statuses.indexOf(s); 
-        const indexValue = document.getElementsByClassName("new-column-index")[editedColumnIndex].value;
-        const selectedIndex = indexValue;
-
-        const howManyTimes = selectedIndex - editedColumnIndex;
-        console.log(Math.abs(howManyTimes))
-        
-        if(howManyTimes<0){
-            for(let i=0; i<Math.abs(howManyTimes); i++){
-                columnSwap(s,"left");
-            }
-        }
-        else if(howManyTimes>0){
-            for(let i=0; i<howManyTimes; i++){
-                columnSwap(s,"right");
-            }
-        }
-        setColumnIndexWindowHidden(s,e);
-    }
-
-    function columnSwap(s, direction){
-       
-        if(direction==="right"){
-           var tmp = statuses[statuses.indexOf(s)+1];
-           statuses[statuses.indexOf(s)+1] = s;
-           statuses[statuses.indexOf(s)] = tmp;
-        }
-        else{
-            var tmp = statuses[statuses.indexOf(s)-1];
-           statuses[statuses.indexOf(s)-1] = s;
-           statuses[statuses.indexOf(s)] = tmp;
-        }
-        setStatuses(()=>{
-            const newStatuses = statuses;
-            return [...newStatuses]; 
-        });
-    }
-
-    function updateIndexInput(s,e){
-        e.preventDefault();
-        var indexValue = document.getElementsByClassName("new-column-index")[s.index].value;
-        document.getElementsByClassName("index-label")[s.index].textContent = indexValue;
-    }
-
-    function addItem(s,e){
-        e.preventDefault();
-
-        httpClient.addTask({
-            name: "New task",
-            description: "Add description",
-            columnId: s.id
-        })
-        setLoading(true);
-
-    }
-
-    function deleteItem(itemId,e){
-        e.preventDefault();
-        var div = document.getElementById("dialog-place");
-        var dialog = document.createElement("dialog");
-        dialog.id = "dialog-window";
-        
-        dialog.textContent = `Are you sure you want to delete this item?`;
-        dialog.open = true;
-        dialog.style.zIndex=2;
-        dialog.style.width="120px";
-        var yes = document.createElement("button");
-        yes.className = "dialog-button";
-        yes.textContent = "Yes";
-        
-        var no = document.createElement("button");
-        no.className = "dialog-button";
-        no.textContent = "No";
-
-        dialog.appendChild(yes);
-        dialog.appendChild(no);
-        div.appendChild(dialog);
-
-        no.onclick = function(){
-            dialog.close();
-        };
-        yes.onclick = async function(){
-            dialog.close();
-            
-            await httpClient.deleteTask({
-                taskId: itemId,
-                boardId: boardID.id
-            })
-            setLoading(true);
-        }
-        
-    }
-
-    function deleteColumn(s,e){
-        e.preventDefault();
-        
-        var div = document.getElementById("dialog-place");
-        var dialog = document.createElement("dialog");
-        dialog.id = "dialog-window";
-        
-        dialog.textContent = `Are you sure you want to delete column ${s.name.toUpperCase()}?`;
-        dialog.open = true;
-        var yes = document.createElement("button");
-        yes.className = "dialog-button";
-        yes.textContent = "Yes";
-        
-        var no = document.createElement("button");
-        no.className = "dialog-button";
-        no.textContent = "No";
-
-        dialog.appendChild(yes);
-        dialog.appendChild(no);
-        div.appendChild(dialog);
-
-        no.onclick = function(){
-            dialog.close();
-        };
-        yes.onclick = function(){
-            dialog.close();
-            setStatuses(()=>{
-                statuses.splice(s.index,1);
-                return [...statuses];
-            })
-        }
-    }
-
-    function addColumn(e){
-        e.preventDefault();
-        
-        var div = document.getElementById("dialog-place");
-        var dialog = document.createElement("dialog");
-        dialog.id = "dialog-window";
-        var p = document.createElement("h4");
-        var input = document.createElement("input");
-        var ok = document.createElement("button");
-        var x = document.createElement("button");
-        p.innerText = "New column's name:";
-        input.type = "text";
-        ok.textContent = "OK";
-        x.textContent = "x";
-        x.style.fontSize="large";
-        x.style.position='absolute';
-        x.style.marginTop = "-70px";
-        dialog.open = true;
-        dialog.className="edit-col-name-window";
-        dialog.style.width = "180px";
-        dialog.style.marginLeft = "20px";
-        dialog.appendChild(p);
-        dialog.appendChild(input);
-        dialog.appendChild(x);
-        dialog.appendChild(ok);
-        div.appendChild(dialog);
-
-        ok.onclick = async function(){
-            try{
-            await httpClient.addColumn({
-                index: statuses.length,
-                name: input.value,
-                boardId: boardID.id
-            })
-            setLoading(true);
-        }
-        catch(err){
-            console.error(err.message);
-        }
-            dialog.close();
-        }
-        x.onclick = function(){
-            dialog.close();
-        }
-    }
-
-    return(
-        <div>
-            <Navbar />
-            <DndProvider backend={HTML5Backend}>
-            <Header name={boardName} boardID={boardID.id}/> 
-            <button id="add-col-btn" onClick={(e)=>addColumn(e)}>+</button>   
-            <div id="dialog-place"></div>
-            <div className={"row"}>
-            {statuses
-            .sort((a, b) => (a.index - b.index))
-            .map(s=>{
-                return (                  
-                    <div key={s.index} className={"col-wrapper"}>
-                        <div className="edit-col-name-window" style={{visibility: `${showColumnNameWindow[s.index]}` }}>
-                                <button style={{position: "absolute", marginLeft: "230px"}} onClick={(e)=>setColumnNameWindowHidden(s,e)}>X</button>
-                                <h3>Enter new column name:</h3>
-                                <input type="text" className="new-name" class="new-column-name" name="text"/>
-                                <input type="submit" name="submit" onClick={(e)=>editColumnTitle(s,e)} value="Confirm"/>
-                        </div>
-                        <div className="edit-col-name-window" style={{visibility: `${showColumnIndexWindow[s.index]}` }}>
-                                <button style={{position: "absolute", marginLeft: "230px"}} onClick={(e)=>setColumnIndexWindowHidden(s,e)}>X</button>
-                                <h3>Enter new column index:</h3>
-                                <input type="range" className="new-column-index" id="index" min="0" max={statuses.length-1} name="index"  onChange={(e)=>updateIndexInput(s,e)}/>
-                                <label className="index-label" for="index"></label>
-                                <input type="submit" name="submit" className="submit-button" onClick={(e)=>changeColumnPosition(s,e)} value="Confirm"/>
-                        </div>
-                        <div className="col-header-div">
-                        <button className="col-icon-button" onClick={(e)=>editColumnIcon(s,e)}>{s.color}</button>
-                            <div className={"col-header"} onBlur={(e)=>editColumnTitle(s,e)} >{s.name}</div>
-                            <button className="edit-col-button">...
-                            <div className="dropdown-edit-column">
-                                <a onClick={(e)=>setColumnNameWindowVisible(s,e)}>Edit column name</a>
-                                <a onClick={(e)=>setColumnIndexWindowVisible(s,e)}>Change position</a>
-                                <a onClick={(e)=>deleteColumn(s,e)} style={{color: "darkred"}}>Delete column</a>
-                            </div>
-                        </button>
-                        </div>                       
-                        <DropWrapper onDrop={onDrop} id={s.id}>    
-                            <Column status={s}>                           
-                                {items
-                                    .filter(i => i.columnId === s.id)
-                                    .map((i, indx) => <Item key={i.id} item={i} index={indx} moveItem={moveItem} deleteItem={(e)=>deleteItem(i.id,e)} status={s} />)
-                                }      
-                                <button id="add-item-btn" onClick={(e)=>addItem(s,e)}>ADD ITEM</button>                       
-                            </Column>
-                        </DropWrapper>
+  return (
+    <div>
+      <Navbar />
+      <DndProvider backend={HTML5Backend}>
+        <Header name={boardName} boardID={boardID.id} />
+        <button id="add-col-btn" onClick={(e) => addColumn(e)}>
+          +
+        </button>
+        <div id="dialog-place"></div>
+        <div className={"row"}>
+          {statuses
+            .sort((a, b) => a.index - b.index)
+            .map((s) => {
+              return (
+                <div key={s.index} className={"col-wrapper"}>
+                  <div
+                    className="edit-col-name-window"
+                    style={{ visibility: `${showColumnNameWindow[s.index]}` }}
+                  >
+                    <button
+                      style={{ position: "absolute", marginLeft: "230px" }}
+                      onClick={(e) => setColumnNameWindowHidden(s, e)}
+                    >
+                      X
+                    </button>
+                    <h3>Enter new column name:</h3>
+                    <input
+                      type="text"
+                      className="new-name"
+                      class="new-column-name"
+                      name="text"
+                    />
+                    <input
+                      type="submit"
+                      name="submit"
+                      onClick={(e) => editColumnTitle(s, e)}
+                      value="Confirm"
+                    />
+                  </div>
+                  <div
+                    className="edit-col-name-window"
+                    style={{ visibility: `${showColumnIndexWindow[s.index]}` }}
+                  >
+                    <button
+                      style={{ position: "absolute", marginLeft: "230px" }}
+                      onClick={(e) => setColumnIndexWindowHidden(s, e)}
+                    >
+                      X
+                    </button>
+                    <h3>Enter new column index:</h3>
+                    <input
+                      type="range"
+                      className="new-column-index"
+                      id="index"
+                      min="0"
+                      max={statuses.length - 1}
+                      name="index"
+                      onChange={(e) => updateIndexInput(s, e)}
+                    />
+                    <label className="index-label" for="index"></label>
+                    <input
+                      type="submit"
+                      name="submit"
+                      className="submit-button"
+                      onClick={(e) => changeColumnPosition(s, e)}
+                      value="Confirm"
+                    />
+                  </div>
+                  <div className="col-header-div">
+                    <button
+                      className="col-icon-button"
+                      onClick={(e) => editColumnIcon(s, e)}
+                    >
+                      {s.color}
+                    </button>
+                    <div
+                      className={"col-header"}
+                      onBlur={(e) => editColumnTitle(s, e)}
+                    >
+                      {s.name}
                     </div>
-                );
+                    <button className="edit-col-button">
+                      ...
+                      <div className="dropdown-edit-column">
+                        <a onClick={(e) => setColumnNameWindowVisible(s, e)}>
+                          Edit column name
+                        </a>
+                        <a onClick={(e) => setColumnIndexWindowVisible(s, e)}>
+                          Change position
+                        </a>
+                        <a
+                          onClick={(e) => deleteColumn(s, e)}
+                          style={{ color: "darkred" }}
+                        >
+                          Delete column
+                        </a>
+                      </div>
+                    </button>
+                  </div>
+                  <DropWrapper onDrop={onDrop} id={s.id}>
+                    <Column status={s}>
+                      {items
+                        .filter((i) => i.columnId === s.id)
+                        .map((i, indx) => (
+                          <Item
+                            key={i.id}
+                            item={i}
+                            index={indx}
+                            moveItem={moveItem}
+                            deleteItem={(e) => deleteItem(i.id, e)}
+                            status={s}
+                          />
+                        ))}
+                      <button id="add-item-btn" onClick={(e) => addItem(s, e)}>
+                        ADD ITEM
+                      </button>
+                    </Column>
+                  </DropWrapper>
+                </div>
+              );
             })}
-            </div>
-            </DndProvider>        
         </div>
-    );
+      </DndProvider>
+    </div>
+  );
 };
 
 export default BoardPage;
-
