@@ -69,7 +69,7 @@ class HttpClient {
   }
 
   deleteUser(payload) {
-    return this.httpClient.delete("/users/delete-user", payload);
+    return this.httpClient.delete("/users/delete", payload);
   }
 
   addBoard(payload) {
@@ -119,6 +119,7 @@ class HttpClient {
   changeTaskColumn(payload) {
     return this.httpClient.post("boards/change-task-column", payload);
   }
+
 }
 
 export default new HttpClient();
