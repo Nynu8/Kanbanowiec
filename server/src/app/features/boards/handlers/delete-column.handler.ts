@@ -46,8 +46,5 @@ export default class DeleteColumnHandler implements CommandHandler<DeleteColumnC
       await columnRepository.save(columns);
       await columnRepository.delete(column);
     }
-    return {
-      result: 1,
-    };
   }
 }
