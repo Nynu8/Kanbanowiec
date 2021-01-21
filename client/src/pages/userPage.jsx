@@ -184,13 +184,13 @@ const UserPage = () => {
 
   async function addBoard(e) {
     e.preventDefault();
-    setLoading(true);
     var boardName = document.getElementById("board-name-input").value;
     try {
       await httpClient.addBoard({
         name: boardName,
       });
       setCreateBoardWindowVisibility("hidden");
+      setLoading(true);
     } catch (err) {
       console.error(err.message);
     }

@@ -61,8 +61,8 @@ const BoardPage = (props) => {
         var user = await httpClient.getUserDetails();
         setName(user.name);
         setUserName(user.username)
-        var userKurwaID = data.collaborators.find((c)=>c.username == user.username).id
-        setUserId(userKurwaID);
+        var userTmpID = data.collaborators.find((c)=>c.username == user.username).id
+        setUserId(userTmpID);
 
         for (var i = 0; i < statuses.length; i++) {
             columnNameWindows[i] = "hidden";
@@ -537,6 +537,7 @@ catch(err){
                             status={s}
                             boardID={boardID.id}
                             workersList={collaborators}
+                            worker={i.worker}
                             barColor={ActualCurrentColor(s.color)}
                           />
                         ))}
