@@ -19,7 +19,7 @@
     "react-modal": "^3.12.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.4",
-    "react-to-pdf": "0.0.13",
+    "react-to-pdf": "^0.0.13",
     "typescript": "~3.7.2"
   },
   "scripts": {

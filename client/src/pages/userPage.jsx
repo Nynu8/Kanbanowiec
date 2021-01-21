@@ -77,10 +77,12 @@ const UserPage = () => {
           surname: param,
         });
       }
+      setLoading(true);
     } catch (err) {
       console.error(err.message);
     }
   }
+
 
   function setSettingsWindow(visibility, settingNr, e) {
     e.preventDefault();
