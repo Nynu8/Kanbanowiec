@@ -36,7 +36,8 @@ const BoardPage = (props) => {
 
   const [loading, setLoading] = useState(false);
   var [name, setName] = useState("");
-
+  var [userName, setUserName] = useState("");
+  var [userId, setUserId] = useState("");
   console.log(boardID);
 
   useEffect(() => {
@@ -58,7 +59,9 @@ const BoardPage = (props) => {
 
         var user = await httpClient.getUserDetails();
         setName(user.name);
-
+        setUserName(user.username)
+        var userKurwaID = data.collaborators.find((c)=>c.username == user.username).id
+        setUserId(userKurwaID);
 
         for (var i = 0; i < statuses.length; i++) {
             columnNameWindows[i] = "hidden";
@@ -268,23 +271,24 @@ const BoardPage = (props) => {
     document.getElementsByClassName("index-label")[s.index].textContent = indexValue;
   }
 
-  function addItem(s, e) {
+  async function addItem(s, e) {
     e.preventDefault();
-    
+    console.log(userId, userName)
     try{
-    httpClient.addTask({
+    await httpClient.addTask({
       name: "New task",
       description: "Add description",
-      columnId: s.id,
+      columnId: s.id
     });
+    setLoading(true);
 }
 catch(err){
-    console.log(err.message)
+    console.error(err.message)
 }
-    setLoading(true);
+    
   }
 
-  function deleteItem(itemId, e) {
+  function deleteItem(itemId, item, e) {
     e.preventDefault();
     var div = document.getElementById("dialog-place");
     var dialog = document.createElement("dialog");
@@ -308,6 +312,8 @@ catch(err){
 
     no.onclick = function () {
       dialog.close();
+      console.log(item.userId)
+      console.log(item.id)
     };
     yes.onclick = async function () {
       dialog.close();
@@ -508,7 +514,7 @@ catch(err){
                             item={i}
                             index={indx}
                             moveItem={moveItem}
-                            deleteItem={(e) => deleteItem(i.id, e)}
+                            deleteItem={(e) => deleteItem(i.id, i, e)}
                             status={s}
                             boardID={boardID.id}
                             workersList={collaborators}
