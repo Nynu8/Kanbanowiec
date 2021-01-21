@@ -125,7 +125,26 @@ const Header = (props) =>{
         }
     }
     }
-
+/*
+    async function toPdf(){
+        var htmlTo = require('htmlto');
+ 
+        var options = {
+            pathTohtml:'./pages/boardPage',
+            pathTopdf:'../../data/boardPage.pdf',
+            paperSize:{
+                format: 'A4',
+                orientation: 'portrait',
+                margin: '1.5cm'
+            }
+        }
+     
+        htmlTo.pdf(options,function(err,result){
+            if(err) throw err;
+            console.log('result :',result)
+        })
+        //event.srcElement.setAttribute("href",options.pathTopdf);
+    }*/
 
     return(
         <div>
@@ -138,7 +157,7 @@ const Header = (props) =>{
             <div class="dropdown-edit-board">
                 <a onClick={editShow1}>Edit board name</a>
                 <a onClick={editShow3}>Invite collaborator</a>
-                <a href="#">Export to PDF</a>
+                <a href="#" download>Export to PDF</a>
                 <a onClick={(e)=>{deleteBoard(e)}} style={{color: "darkred"}}>Delete board</a>
             </div>
             </button>

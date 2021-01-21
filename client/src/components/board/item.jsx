@@ -1,6 +1,5 @@
 import React, { Fragment, useRef, useState } from "react";
 import {useDrag, useDrop} from "react-dnd";
-import { Any } from "typeorm";
 import Window from "./window";
 import ITEM_TYPE from "../../data/types"
 import { data } from "../../data";
