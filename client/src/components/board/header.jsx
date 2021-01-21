@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Link, useParams } from 'react-router-dom';
 import { statuses } from "../../data";
 import httpClient from "../../tools/httpClient";
+import ReactDOM from "react-dom";
+import Pdf from "react-to-pdf";
+import {ref} from "../../pages/boardPage"
 
 const Header = (props) =>{
     
@@ -132,7 +135,12 @@ const Header = (props) =>{
         document.getElementById("back-to-profile-link").click();
     }
 
-
+    const options = {
+        orientation: 'landscape',
+        unit:"px",
+        format:[  ref.current ? ref.current.offsetWidth : 0, ref.current ? ref.current.offsetHeight : 0]
+    };
+    
     return(
         <div>
         <div className={"row"} id="board-head">
@@ -144,7 +152,12 @@ const Header = (props) =>{
             <div class="dropdown-edit-board">
                 <a class="dropdown-edit-option" onClick={editShow1}>&#10094; Edit board name</a>
                 <a class="dropdown-edit-option" onClick={editShow3}>&#10094; Invite collaborator</a>
-                <a class="dropdown-edit-option" id="dropdown-edit-pdf" href="#">Export to PDF</a>
+                
+    <Pdf targetRef={ref} filename="board.pdf" options={options} y={2} scale={1.4}>
+        {({toPdf}) => (
+                <a class="dropdown-edit-option" id="dropdown-edit-pdf" onClick={toPdf} >Export to PDF</a>
+        )}
+    </Pdf>
                 <a class="dropdown-edit-option" id="dropdown-edit-delete" onClick={(e)=>deleteBoard(e)}>&#10005; Delete board</a>
             </div>
             </button>
