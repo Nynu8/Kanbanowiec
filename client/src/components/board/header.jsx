@@ -116,7 +116,7 @@ const Header = (props) =>{
         e.preventDefault();
         if (
             window.confirm(
-              "Are you sure you want to delete your account?\nThis operation is irreversible!"
+              "Are you sure you want to delete your board?\nThis operation is irreversible!"
             )){
         try{
             await httpClient.deleteBoard({

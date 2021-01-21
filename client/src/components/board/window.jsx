@@ -60,6 +60,7 @@ const Window=({show, status, item,  color, deleteItem, boardID, worker, onClose,
         }
         catch(err){
             console.error(err.message);
+            onClose();
         }
     }
 

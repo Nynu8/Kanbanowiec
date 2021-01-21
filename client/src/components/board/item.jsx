@@ -5,7 +5,7 @@ import ITEM_TYPE from "../../data/types"
 import { data } from "../../data";
 import httpClient from "../../tools/httpClient"
 
-const Item = ({item, worker, index, moveItem, status, deleteItem, editItemWindowClose, boardID, workersList, barColor}) =>{
+const Item = ({item,  index, moveItem, status, deleteItem, editItemWindowClose, boardID, workersList, barColor}) =>{
 
     const ref = useRef(null);
     
@@ -51,7 +51,6 @@ const Item = ({item, worker, index, moveItem, status, deleteItem, editItemWindow
     const [show, setShow] = useState(false);
 
     const onOpen = () => {
-        console.log(worker)
         setShow(true);
     }
 
@@ -73,7 +72,7 @@ const Item = ({item, worker, index, moveItem, status, deleteItem, editItemWindow
                 <div className={"color-bar"} style={{ backgroundColor: barColor}} />  
                 <p className={"item-title"}>{item.name}</p>
             </div>
-            <Window onClose={onClose} id="pop-up-window" item={item} deleteItem={deleteItem} show={show} color={status.color} worker={worker} status={status.name} boardID={boardID} workersList={workersList} icon={status.color} barColor={barColor}/>
+            <Window onClose={onClose} id="pop-up-window" item={item} deleteItem={deleteItem} show={show} color={status.color} worker={item.worker} status={status.name} boardID={boardID} workersList={workersList} icon={status.color} barColor={barColor}/>
         </Fragment>
     );
 };
