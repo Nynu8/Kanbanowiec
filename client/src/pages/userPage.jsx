@@ -219,7 +219,7 @@ const UserPage = () => {
                 setCreateBoardWindowVisibility("hidden");
               }}
             >
-              X
+              &#10005;
             </button>
             <h3>Enter board name:</h3>
             <input
@@ -245,65 +245,24 @@ const UserPage = () => {
               setCreateBoardWindowVisibility("visible");
             }}
           >
-            CREATE BOARD
+            +
           </button>
         </div>
         <div className="settings-container">
-          <div
-            className="user-settings-window"
-            id="settings-window"
-            style={{ visibility: `${settingsWindowVisibility}` }}
-          >
-            <button
-              style={{ position: "absolute", marginLeft: "230px" }}
-              onClick={(e) => setSettingsWindow("hidden", 0, e)}
-            >
-              X
-            </button>
+          <div className="user-settings-window" id="settings-window" style={{ visibility: `${settingsWindowVisibility}` }}>
+            <button style={{ position: "absolute", marginLeft: "230px" }} onClick={(e) => setSettingsWindow("hidden", 0, e)}> &#10005; </button>
             <h3 id="settings-h3">Enter new value:</h3>
-            <input
-              type="text"
-              className="new-name"
-              id="setting-input"
-              name="text"
-            />
-            <input
-              type="submit"
-              id="setting-submit-btn"
-              onClick={(e) => saveNewValue(settingNumber, e)}
-              name="submit"
-              value="Confirm"
+            <input type="text" className="new-name" id="setting-input" name="text"/>
+            <input type="submit" id="setting-submit-btn" onClick={(e) => saveNewValue(settingNumber, e)} name="submit" value="Confirm"
             />
           </div>
 
           <h2 className="user-container-header">Settings</h2>
-          <button
-            id="edit-username-btn"
-            onClick={(e) => setSettingsWindow("visible", 1, e)}
-          >
-            Edit Username
-          </button>
-          <button
-            id="edit-name-btn"
-            onClick={(e) => setSettingsWindow("visible", 2, e)}
-          >
-            Edit Name
-          </button>
-          <button
-            id="edit-surname-btn"
-            onClick={(e) => setSettingsWindow("visible", 3, e)}
-          >
-            Edit Surname
-          </button>
-          <button
-            id="edit-password-btn"
-            onClick={(e) => setSettingsWindow("visible", 4, e)}
-          >
-            Change Password
-          </button>
-          <button id="delete-account-btn" onClick={(e) => deleteAccount(e)}>
-            Delete Account
-          </button>
+          <button id="edit-username-btn" onClick={(e) => setSettingsWindow("visible", 1, e)}>Edit Username</button>
+          <button id="edit-name-btn" onClick={(e) => setSettingsWindow("visible", 2, e)}> Edit Name</button>
+          <button id="edit-surname-btn" onClick={(e) => setSettingsWindow("visible", 3, e)}> Edit Surname</button>
+          <button id="edit-password-btn" onClick={(e) => setSettingsWindow("visible", 4, e)} > Change Password </button>
+          <button id="delete-account-btn" onClick={(e) => deleteAccount(e)}> &#10005; Delete Account </button>
         </div>
       </div>
       <Link to="/login" id="to-login-link"></Link>

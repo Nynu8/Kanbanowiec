@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import React, { useState } from "react";
-import loginImg from "../assets/images/logo.png"
+import logoImg from "../assets/images/logo_noText.png"
 
 
 export function Navbar(props){
@@ -39,7 +39,11 @@ export function Navbar(props){
 
                 <Link to="/login" onClick={logOut} > <h3>    Log out</h3> </Link>
                 <h4>    Hello, {props.name}!</h4>
-        
+                <div id="logo-img">
+                    <img src={logoImg}/>
+                </div>
+
+
             </div>
             )
     }

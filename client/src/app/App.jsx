@@ -22,7 +22,6 @@ export function App(){
       <Route path='/board/:id' component={BoardPage}/>
       <Route path="/profile" component={UserPage}/>      
       </Switch>
-)
     </main>
   )
 }

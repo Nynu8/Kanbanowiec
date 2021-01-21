@@ -4,7 +4,7 @@ import httpClient from "../../tools/httpClient"
 
 Modal.setAppElement("#root");
 
-const Window=({show, status, item, color, deleteItem, boardID, onClose, workersList})=>{
+const Window=({show, status, item, color, deleteItem, boardID, onClose, workersList, barColor})=>{
 
     var [worker, setWorker] = useState("");
     var [creator, setCreator] = useState("");
@@ -22,21 +22,21 @@ const Window=({show, status, item, color, deleteItem, boardID, onClose, workersL
         async function getCreatorAndWorker(){
             console.log(item.userId)
             try{
-                if(item.workerId!==undefined){
+  
                 var worker = await httpClient.getUserDetails({
                     userId: item.workerId
                 });
-            }
-            else{
-                var worker = workersList[0]
-            }
+                setWorker(worker);
+                setWorkerName(worker.username);
+
+            
                 var creator = await httpClient.getUserDetails({
                     userId: item.userId
                 });
-                setWorker(worker);
-                setWorkerName(worker.username);
+                
                 setCreator(creator);
                 console.log(creator.username)
+                console.log(worker.username)
                 console.log(item.name)
 
             }
@@ -83,9 +83,15 @@ const Window=({show, status, item, color, deleteItem, boardID, onClose, workersL
                 e.preventDefault();
                 console.log(wlist)
                 setWorker(wlist[i]);
-                setWorkerName(worker.username);
+                //setWorkerName(worker.username);
                 document.getElementById("workers-list").innerHTML = "";
-                document.getElementById("worker-button").textContent = workerName;
+                document.getElementById("worker-button").textContent = worker.username
+                var workerIdSlot = document.createElement("p");
+                workerIdSlot.textContent = worker.id;
+                workerIdSlot.id = "worker-id";
+                //item.workerId = worker.id;
+                //setLoading(true);
+                
                 //saveChanges();
             })
    
@@ -99,23 +105,24 @@ const Window=({show, status, item, color, deleteItem, boardID, onClose, workersL
         <Modal isOpen={showWindow = show} onRequestClose={onClose} className={"modal"} id="item-window" overlayClassName={"overlay"} >
             <div className={"close-btn-ctn"}>
                 <h1 id="title-field" style={{flex: "1 90%"}} contentEditable="true">{item.name}</h1>
-                <button className="closes-btn" onClick={onClose}>X</button>
+                <button className="closes-btn" onClick={onClose}>&#10005;</button>
             </div>
             <div>
-            <div id={"window-color-bar"} style={{backgroundColor: `${color}`}}> fffffff</div> 
+            <div id={"window-color-bar"} style={{backgroundColor: `${barColor}`}}> </div> 
                 <h2>Description</h2>
                 <p id="description-field" contentEditable="true" placeholder="Add description">{item.description}</p>
                 <h2>Status</h2>
-                <p>{`${color}  ${status}`}</p>
-                <h4>Author</h4>
-                <p>{creator.username}</p>
+                <div id="status-div-dot">
+                    <div className="icon-div" id="status-dot" style={{backgroundColor: `${barColor}`}}></div>
+                    <div id="status-div">{`${status}`}</div>
+                </div>
                 <h4>Executor</h4>
                 <div id="dropdown-workers">
                     <button onClick={(e)=>changeWorker(e)} id="worker-button" class="dropbtn">{workerName}</button>
                     <div id="workers-list" class="dropdown-content">
                     </div>
                 </div>
-                <button id="delete-task-btn" onClick={deleteItem}>Delete task</button>
+                <button id="delete-task-btn" onClick={deleteItem}>&#10005; Delete task</button>
             </div>
         </Modal>
     );

@@ -12,6 +12,7 @@ import { Navbar } from "../components/navbar";
 import { Link, useParams } from "react-router";
 import httpClient from "../tools/httpClient";
 import { http } from "winston";
+import { createPortal } from "react-dom";
 
 var columnNameWindows = [10];
 var columnIndexWindows = [10];
@@ -113,8 +114,7 @@ const BoardPage = (props) => {
       Blue: "Blue",
       Purple: "Purple",
       Black: "Black",
-      White: "White",
-      Brown: "Brown",
+      White: "White"
     };
 
     var currentColor = s.color;
@@ -144,6 +144,7 @@ const BoardPage = (props) => {
             currentColor = ColumnColor.Red;
             break;
     }
+    
 
     try {
       await httpClient.editColumn({
@@ -158,7 +159,19 @@ const BoardPage = (props) => {
 
     setLoading(true);
   }
-
+  function ActualCurrentColor(s)
+  {
+    switch(s){
+      case "Red":    return "crimson"; break;
+      case "Orange": return "coral"; break;
+      case "Yellow": return "gold"; break;
+      case "Green":  return "seagreen"; break;
+      case "Blue":   return "royalblue"; break;
+      case "Purple": return "orchid"; break;
+      case "White":  return "white"; break;
+      case "Black":  return "black"; break;
+    }
+  }
   
   function setColumnNameWindowVisible(s, e) {
     e.preventDefault();
@@ -297,7 +310,7 @@ catch(err){
     dialog.textContent = `Are you sure you want to delete this item?`;
     dialog.open = true;
     dialog.style.zIndex = 2;
-    dialog.style.width = "120px";
+    dialog.style.width = "170px";
     var yes = document.createElement("button");
     yes.className = "dialog-button";
     yes.textContent = "Yes";
@@ -350,14 +363,19 @@ catch(err){
     no.onclick = function () {
       dialog.close();
     };
-    yes.onclick = function () {
+    yes.onclick = async function () {
       dialog.close();
-      setStatuses(() => {
-        statuses.splice(s.index, 1);
-        return [...statuses];
+      try{
+      await httpClient.deleteColumn({
+        columnId: s.id
       });
-    };
+      setLoading(true);
+    }
+    catch(err){
+      console.error(err.message)
+    }
   }
+}
 
   function addColumn(e) {
     e.preventDefault();
@@ -428,7 +446,7 @@ catch(err){
                       style={{ position: "absolute", marginLeft: "230px" }}
                       onClick={(e) => setColumnNameWindowHidden(s, e)}
                     >
-                      X
+                      &#10005;
                     </button>
                     <h3>Enter new column name:</h3>
                     <input
@@ -438,6 +456,7 @@ catch(err){
                       name="text"
                     />
                     <input
+                      id="submit-btn-name"
                       type="submit"
                       name="submit"
                       onClick={(e) => editColumnTitle(s, e)}
@@ -452,7 +471,7 @@ catch(err){
                       style={{ position: "absolute", marginLeft: "230px" }}
                       onClick={(e) => setColumnIndexWindowHidden(s, e)}
                     >
-                      X
+                      &#10005;
                     </button>
                     <h3>Enter new column index:</h3>
                     <input
@@ -466,6 +485,7 @@ catch(err){
                     />
                     <label className="index-label" for="index"></label>
                     <input
+                      id="submit-btn-index"
                       type="submit"
                       name="submit"
                       className="submit-button"
@@ -478,7 +498,7 @@ catch(err){
                       className="col-icon-button"
                       onClick={(e) => editColumnIcon(s, e)}
                     >
-                      {s.color}
+                      <div className="icon-div" style={{backgroundColor: `${ActualCurrentColor(s.color)}`}}></div>
                     </button>
                     <div
                       className={"col-header"}
@@ -487,19 +507,18 @@ catch(err){
                       {s.name}
                     </div>
                     <button className="edit-col-button">
-                      ...
+                      &#9776;
                       <div className="dropdown-edit-column">
                         <a onClick={(e) => setColumnNameWindowVisible(s, e)}>
-                          Edit column name
+                          Edit name
                         </a>
                         <a onClick={(e) => setColumnIndexWindowVisible(s, e)}>
                           Change position
                         </a>
-                        <a
+                        <a id="dropdown-edit-delete"
                           onClick={(e) => deleteColumn(s, e)}
-                          style={{ color: "darkred" }}
                         >
-                          Delete column
+                          &#10005; Delete column
                         </a>
                       </div>
                     </button>
@@ -518,6 +537,7 @@ catch(err){
                             status={s}
                             boardID={boardID.id}
                             workersList={collaborators}
+                            barColor={ActualCurrentColor(s.color)}
                           />
                         ))}
                       <button id="add-item-btn" onClick={(e) => addItem(s, e)}>

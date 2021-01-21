@@ -109,7 +109,8 @@ const Header = (props) =>{
         editACVisibility(()=>{return "hidden"});
     }
 
-    async function deleteBoard(){
+    async function deleteBoard(e){
+        e.preventDefault();
         if (
             window.confirm(
               "Are you sure you want to delete your account?\nThis operation is irreversible!"
@@ -118,7 +119,7 @@ const Header = (props) =>{
             await httpClient.deleteBoard({
                 boardId: props.boardID
             });
-            document.getElementById("to-profile-link").click();
+            backToProfile(e);
         }
         catch(err){
             console.error(err.message);
@@ -144,7 +145,7 @@ const Header = (props) =>{
                 <a class="dropdown-edit-option" onClick={editShow1}>&#10094; Edit board name</a>
                 <a class="dropdown-edit-option" onClick={editShow3}>&#10094; Invite collaborator</a>
                 <a class="dropdown-edit-option" id="dropdown-edit-pdf" href="#">Export to PDF</a>
-                <a class="dropdown-edit-option" id="dropdown-edit-delete" href="#">Delete board</a>
+                <a class="dropdown-edit-option" id="dropdown-edit-delete" onClick={(e)=>deleteBoard(e)}>&#10005; Delete board</a>
             </div>
             </button>
             
