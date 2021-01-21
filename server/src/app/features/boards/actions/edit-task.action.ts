@@ -37,8 +37,8 @@ const editTaskAction = ({ commandBus }: EditTaskActionDependencies) => (
         taskId: req.body.taskId,
       }),
     )
-    .then((commandResult) => {
-      res.json(commandResult.result);
+    .then(() => {
+      res.json({ success: true });
     })
     .catch(next);
 };
