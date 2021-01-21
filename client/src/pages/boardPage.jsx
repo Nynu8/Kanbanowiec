@@ -11,8 +11,8 @@ import { App } from "../app/App";
 import { Navbar } from "../components/navbar";
 import { Link, useParams } from "react-router";
 import httpClient from "../tools/httpClient";
-import { http } from "winston";
-import { createPortal } from "react-dom";
+
+export const ref = React.createRef();
 
 var columnNameWindows = [10];
 var columnIndexWindows = [10];
@@ -61,8 +61,8 @@ const BoardPage = (props) => {
         var user = await httpClient.getUserDetails();
         setName(user.name);
         setUserName(user.username)
-        var userKurwaID = data.collaborators.find((c)=>c.username == user.username).id
-        setUserId(userKurwaID);
+        var userTmpID = data.collaborators.find((c)=>c.username == user.username).id
+        setUserId(userTmpID);
 
         for (var i = 0; i < statuses.length; i++) {
             columnNameWindows[i] = "hidden";
@@ -432,7 +432,7 @@ catch(err){
           +
         </button>
         <div id="dialog-place"></div>
-        <div className={"row"}>
+        <div className={"row"} ref={ref}>
           {statuses
             .sort((a, b) => a.index - b.index)
             .map((s) => {
@@ -537,6 +537,7 @@ catch(err){
                             status={s}
                             boardID={boardID.id}
                             workersList={collaborators}
+                            worker={i.worker}
                             barColor={ActualCurrentColor(s.color)}
                           />
                         ))}

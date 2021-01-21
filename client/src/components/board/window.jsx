@@ -4,13 +4,13 @@ import httpClient from "../../tools/httpClient"
 
 Modal.setAppElement("#root");
 
-const Window=({show, status, item, color, deleteItem, boardID, onClose, workersList, barColor})=>{
+const Window=({show, status, item,  color, deleteItem, boardID, worker, onClose, workersList, barColor})=>{
 
-    var [worker, setWorker] = useState("");
+    var [worker, setWorker] = useState(worker);
     var [creator, setCreator] = useState("");
     var [loading, setLoading] = useState(false);
     var [showWindow, setShow] = useState(show);
-    var [workerName, setWorkerName] = useState("");
+    var [workerId, setWorkerId] = useState();
 
     useEffect(() => {
         loadWindowData();
@@ -20,25 +20,19 @@ const Window=({show, status, item, color, deleteItem, boardID, onClose, workersL
         if (!loading) setLoading(true);
 
         async function getCreatorAndWorker(){
-            console.log(item.userId)
             try{
-  
-                var worker = await httpClient.getUserDetails({
-                    userId: item.workerId
-                });
-                setWorker(worker);
-                setWorkerName(worker.username);
-
-            
-                var creator = await httpClient.getUserDetails({
-                    userId: item.userId
-                });
+                console.log(item.worker);
+                if(worker!==undefined){
                 
-                setCreator(creator);
-                console.log(creator.username)
-                console.log(worker.username)
-                console.log(item.name)
-
+                setWorker(worker);
+                
+                console.log(worker);
+            }
+            else{
+                setWorker("Not assigned");
+                //setWorkerName("Not assigned");
+            }
+                console.log(worker)
             }
             catch(err){
                 console.log(err.message);
@@ -49,23 +43,20 @@ const Window=({show, status, item, color, deleteItem, boardID, onClose, workersL
   }, [loading]);
 
     async function saveChanges(){
+        console.log("SAVE CHANGES ODPALONE")
         var name = document.getElementById("title-field").textContent;
         var description = document.getElementById("description-field").textContent;
         try{
-            console.log(name, description, worker.id, worker.username, boardID, item.id)
+            console.log(name, description, workerId, worker, boardID, item.id)
             console.log(workersList)
             await httpClient.editTask({
-                //workerId: worker.id,
+                workerId: workerId,
                 name: name,
                 description: description,
                 boardId: boardID,
                 taskId: item.id
             })
-            setShow(false);
-            //document.getElementById("item-window").style.visibility="hidden";
-            //document.getElementById('#item-window').modal('hide');
-            document.getElementById('#item-window').modal.isOpen = showWindow;
-            setLoading(true);
+            onClose();
         }
         catch(err){
             console.error(err.message);
@@ -75,26 +66,36 @@ const Window=({show, status, item, color, deleteItem, boardID, onClose, workersL
     function changeWorker(e){
         e.preventDefault();
         document.getElementById("workers-list").innerHTML = "";
-        for(var i=0; i<workersList.length; i++){
+        for(const workerItem of workersList){
             var option = document.createElement("a");
-            option.textContent = workersList[i].username;
-            const wlist = workersList;
+            option.textContent = workerItem.username+` (${workerItem.type})`
             option.addEventListener('click', (e)=>{
+
                 e.preventDefault();
-                console.log(wlist)
-                setWorker(wlist[i]);
-                //setWorkerName(worker.username);
-                document.getElementById("workers-list").innerHTML = "";
-                document.getElementById("worker-button").textContent = worker.username
+                console.log(workersList)
+                console.log(workerItem)
+                setWorker(workerItem.username);                
+                setWorkerId(()=>{
+                    var id = workersList.find((w)=>w.username==workerItem.username).id;
+                    console.log(id);
+
+                    document.getElementById("worker-button").textContent = workerItem.username;
+                    var workerIdSlot = document.createElement("p");
+                    workerIdSlot.id = "worker-id";
+                    //saveChanges(id)
+                    
+                    return id;
+                });
+                
+                document.getElementById("worker-button").textContent = workerItem.username;
                 var workerIdSlot = document.createElement("p");
-                workerIdSlot.textContent = worker.id;
+                //workerIdSlot.textContent = worker.id;
                 workerIdSlot.id = "worker-id";
+               // saveChanges();
                 //item.workerId = worker.id;
                 //setLoading(true);
                 
-                //saveChanges();
             })
-   
             document.getElementById("workers-list").appendChild(option);
         }
     }
@@ -102,10 +103,10 @@ const Window=({show, status, item, color, deleteItem, boardID, onClose, workersL
     
 
     return(
-        <Modal isOpen={showWindow = show} onRequestClose={onClose} className={"modal"} id="item-window" overlayClassName={"overlay"} >
+        <Modal isOpen={showWindow = show} onRequestClose={saveChanges} className={"modal"} id="item-window" overlayClassName={"overlay"} >
             <div className={"close-btn-ctn"}>
                 <h1 id="title-field" style={{flex: "1 90%"}} contentEditable="true">{item.name}</h1>
-                <button className="closes-btn" onClick={onClose}>&#10005;</button>
+                <button className="closes-btn" onClick={saveChanges}>&#10005;</button>
             </div>
             <div>
             <div id={"window-color-bar"} style={{backgroundColor: `${barColor}`}}> </div> 
@@ -118,7 +119,7 @@ const Window=({show, status, item, color, deleteItem, boardID, onClose, workersL
                 </div>
                 <h4>Executor</h4>
                 <div id="dropdown-workers">
-                    <button onClick={(e)=>changeWorker(e)} id="worker-button" class="dropbtn">{workerName}</button>
+                    <button onClick={(e)=>changeWorker(e)} id="worker-button" class="dropbtn">{worker}</button>
                     <div id="workers-list" class="dropdown-content">
                     </div>
                 </div>
