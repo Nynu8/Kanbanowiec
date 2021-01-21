@@ -6,6 +6,7 @@ export interface CreateColumnCommandPayload {
   index: number;
   name: string;
   boardId: string;
+  userId: string;
 }
 
 export class CreateColumnCommand implements Command<CreateColumnCommandPayload> {

@@ -29,6 +29,7 @@ const createColumnAction = ({ commandBus }: CreateColumnActionDependencies) => (
         index: req.body.index,
         name: req.body.name,
         boardId: req.body.boardId,
+        userId: req.userId,
       }),
     )
     .then(() => {
