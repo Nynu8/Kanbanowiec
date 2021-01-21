@@ -4,6 +4,7 @@ import { Any } from "typeorm";
 import Window from "./window";
 import ITEM_TYPE from "../../data/types"
 import { data } from "../../data";
+import httpClient from "../../tools/httpClient"
 
 const Item = ({item, index, moveItem, status, deleteItem, editItemWindowClose, boardID, workersList}) =>{
 
@@ -52,8 +53,25 @@ const Item = ({item, index, moveItem, status, deleteItem, editItemWindowClose, b
 
     const onOpen = () => setShow(true);
 
-    const onClose = () => {
+    const onClose = async () => {
+        var titleField = document.querySelector("#title-field");
+        var descriptionField = document.querySelector("#description-field")
+        item.name = titleField.textContent;
+        item.description = descriptionField.textContent;
         setShow(false);
+        try{
+            console.log(item.name, item.description, boardID, item.id, workersList[0].id)
+        await httpClient.editTask({
+            workerId: workersList[0].id,
+            name: item.name,
+            description: item.description,
+            boardId: boardID
+        
+        });
+        }
+        catch(err){
+            console.error(err.message);
+        }
     }
     
 

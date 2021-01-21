@@ -47,7 +47,7 @@ const Window=({show, status, item, color, deleteItem, boardID, onClose, workersL
             console.log(name, description, worker.id, worker.username, boardID, item.id)
             console.log(workersList)
             await httpClient.editTask({
-                workerId: worker.id,
+                //workerId: worker.id,
                 name: name,
                 description: description,
                 boardId: boardID,
