@@ -8,7 +8,7 @@ export interface EditColumnCommandPayload {
   columnId: string;
   newName: string;
   index: number;
-  color: keyof typeof ColumnColor;
+  color: ColumnColor;
 }
 
 export class EditColumnCommand implements Command<EditColumnCommandPayload> {

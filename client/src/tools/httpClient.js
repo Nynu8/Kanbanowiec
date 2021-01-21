@@ -69,7 +69,7 @@ class HttpClient {
   }
 
   deleteUser(payload) {
-    return this.httpClient.delete("/users/delete-user", payload);
+    return this.httpClient.delete("/users/delete", payload);
   }
 
   addBoard(payload) {
@@ -95,6 +95,35 @@ class HttpClient {
   deleteBoard(params) {
     return this.httpClient.delete("boards/delete-board", { params });
   }
+
+  addColumn(payload) {
+    return this.httpClient.post("boards/create-column", payload);
+  }
+
+  deleteColumn(params) {
+    return this.httpClient.delete("boards/delete-column", { params })
+  }
+
+  addTask(payload) {
+    return this.httpClient.post("boards/create-task", payload);
+  }
+
+  deleteTask(params) {
+    return this.httpClient.delete("boards/delete-task", { params })
+  }
+
+  editColumn(payload) {
+    return this.httpClient.post("boards/edit-column", payload);
+  }
+
+  changeTaskColumn(payload) {
+    return this.httpClient.post("boards/change-task-column", payload);
+  }
+
+  editTask(payload) {
+    return this.httpClient.post("boards/edit-task", payload);
+  }
+
 }
 
 export default new HttpClient();

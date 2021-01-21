@@ -109,7 +109,8 @@ const Header = (props) =>{
         editACVisibility(()=>{return "hidden"});
     }
 
-    async function deleteBoard(){
+    async function deleteBoard(e){
+        e.preventDefault();
         if (
             window.confirm(
               "Are you sure you want to delete your account?\nThis operation is irreversible!"
@@ -118,59 +119,45 @@ const Header = (props) =>{
             await httpClient.deleteBoard({
                 boardId: props.boardID
             });
-            document.getElementById("to-profile-link").click();
+            backToProfile(e);
         }
         catch(err){
             console.error(err.message);
         }
     }
     }
-/*
-    async function toPdf(){
-        var htmlTo = require('htmlto');
- 
-        var options = {
-            pathTohtml:'./pages/boardPage',
-            pathTopdf:'../../data/boardPage.pdf',
-            paperSize:{
-                format: 'A4',
-                orientation: 'portrait',
-                margin: '1.5cm'
-            }
-        }
-     
-        htmlTo.pdf(options,function(err,result){
-            if(err) throw err;
-            console.log('result :',result)
-        })
-        //event.srcElement.setAttribute("href",options.pathTopdf);
-    }*/
+
+    function backToProfile(e) {
+        e.preventDefault();
+        document.getElementById("back-to-profile-link").click();
+    }
+
 
     return(
         <div>
-        <div className={"row"}>
-            <button id = "back-to-profile-btn">
-                <Link to="/profile" id="to-profile-link">Back to profile</Link>
+        <div className={"row"} id="board-head">
+            <button id = "back-to-profile-btn" onClick={(e)=>{backToProfile(e)}}>&#10094; Profile
+                <Link to="/profile" id="back-to-profile-link"></Link>
             </button>
             <p className={"page-header"}>{props.name}</p>
-            <button class = "edit-board-btn">...
+            <button class = "edit-board-btn">&#9776;
             <div class="dropdown-edit-board">
-                <a onClick={editShow1}>Edit board name</a>
-                <a onClick={editShow3}>Invite collaborator</a>
-                <a href="#" download>Export to PDF</a>
-                <a onClick={(e)=>{deleteBoard(e)}} style={{color: "darkred"}}>Delete board</a>
+                <a class="dropdown-edit-option" onClick={editShow1}>&#10094; Edit board name</a>
+                <a class="dropdown-edit-option" onClick={editShow3}>&#10094; Invite collaborator</a>
+                <a class="dropdown-edit-option" id="dropdown-edit-pdf" href="#">Export to PDF</a>
+                <a class="dropdown-edit-option" id="dropdown-edit-delete" onClick={(e)=>deleteBoard(e)}>&#10005; Delete board</a>
             </div>
             </button>
             
         </div>
         <div className="edit-name-window" style={{visibility: `${showEditBoardName}`}}>
-            <button style={{position: "absolute", marginLeft: "230px"}} onClick={editShow2}>X</button>
+            <button style={{position: "absolute", marginLeft: "230px"}} onClick={editShow2}>&#10005;</button>
             <h3>Enter new board name:</h3>
             <input type="text" className="new-name" id="new-board-name" name="text"/>
-            <input type="submit" name="submit" onClick={editName} value="Confirm"/>
+            <input id="collab-submit" type="submit" name="submit" onClick={editName} value="Confirm"/>
         </div>
         <div className="edit-name-window" style={{visibility: `${showAddCollaborator}`}}>
-            <button style={{position: "absolute", marginLeft: "230px"}} onClick={editShow4}>X</button>
+            <button style={{position: "absolute", marginLeft: "230px"}} onClick={editShow4}>&#10005;</button>
             <h3>Enter username:</h3>
             <input type="text" className="new-name" id="new-collaborator" name="text"/>
             <h3>Permission type:</h3>

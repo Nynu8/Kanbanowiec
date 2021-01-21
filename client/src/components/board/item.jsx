@@ -3,8 +3,9 @@ import {useDrag, useDrop} from "react-dnd";
 import Window from "./window";
 import ITEM_TYPE from "../../data/types"
 import { data } from "../../data";
+import httpClient from "../../tools/httpClient"
 
-const Item = ({item, index, moveItem, status, deleteItem}) =>{
+const Item = ({item, index, moveItem, status, deleteItem, editItemWindowClose, boardID, workersList, barColor}) =>{
 
     const ref = useRef(null);
     
@@ -51,12 +52,24 @@ const Item = ({item, index, moveItem, status, deleteItem}) =>{
 
     const onOpen = () => setShow(true);
 
-    const onClose = () => {
+    const onClose = async () => {
         var titleField = document.querySelector("#title-field");
         var descriptionField = document.querySelector("#description-field")
-        item.title = titleField.textContent;
-        item.content = descriptionField.textContent;
-        setShow(false)
+        item.name = titleField.textContent;
+        item.description = descriptionField.textContent;
+        setShow(false);
+        try{
+        await httpClient.editTask({
+            //workerId: document.getElementById("worker-id").textContent,
+            name: item.name,
+            description: item.description,
+            boardId: boardID,
+            taskId: item.id
+        });
+        }
+        catch(err){
+            console.error(err.message);
+        }
     }
     
 
@@ -66,11 +79,10 @@ const Item = ({item, index, moveItem, status, deleteItem}) =>{
     return(
         <Fragment>
             <div ref={ref} style={{ opacity: isDragging? 0 : 1}} className={"item"} onClick={onOpen}>
-                <div className={"color-bar"} style={{ backgroundColor: status.color}} />  
-                <p className={"item-title"}>{item.title}</p>
-                <p className={"item-status"}>{status.icon}</p>
+                <div className={"color-bar"} style={{ backgroundColor: barColor}} />  
+                <p className={"item-title"}>{item.name}</p>
             </div>
-            <Window id="pop-up-window" item={item} onClose={onClose} deleteItem={deleteItem} show={show} color={status.color} icon={status.icon}/>
+            <Window onClose={onClose} id="pop-up-window" item={item} deleteItem={deleteItem} show={show} color={status.color} status={status.name} boardID={boardID} workersList={workersList} icon={status.color} barColor={barColor}/>
         </Fragment>
     );
 };
