@@ -126,32 +126,37 @@ const Header = (props) =>{
     }
     }
 
+    function backToProfile(e) {
+        e.preventDefault();
+        document.getElementById("back-to-profile-link").click();
+    }
+
 
     return(
         <div>
-        <div className={"row"}>
-            <button id = "back-to-profile-btn">
-                <Link to="/profile" id="to-profile-link">Back to profile</Link>
+        <div className={"row"} id="board-head">
+            <button id = "back-to-profile-btn" onClick={(e)=>{backToProfile(e)}}>&#10094; Profile
+                <Link to="/profile" id="back-to-profile-link"></Link>
             </button>
             <p className={"page-header"}>{props.name}</p>
-            <button class = "edit-board-btn">...
+            <button class = "edit-board-btn">&#9776;
             <div class="dropdown-edit-board">
-                <a onClick={editShow1}>Edit board name</a>
-                <a onClick={editShow3}>Invite collaborator</a>
-                <a href="#">Export to PDF</a>
-                <a onClick={(e)=>{deleteBoard(e)}} style={{color: "darkred"}}>Delete board</a>
+                <a class="dropdown-edit-option" onClick={editShow1}>&#10094; Edit board name</a>
+                <a class="dropdown-edit-option" onClick={editShow3}>&#10094; Invite collaborator</a>
+                <a class="dropdown-edit-option" id="dropdown-edit-pdf" href="#">Export to PDF</a>
+                <a class="dropdown-edit-option" id="dropdown-edit-delete" href="#">Delete board</a>
             </div>
             </button>
             
         </div>
         <div className="edit-name-window" style={{visibility: `${showEditBoardName}`}}>
-            <button style={{position: "absolute", marginLeft: "230px"}} onClick={editShow2}>X</button>
+            <button style={{position: "absolute", marginLeft: "230px"}} onClick={editShow2}>&#10005;</button>
             <h3>Enter new board name:</h3>
             <input type="text" className="new-name" id="new-board-name" name="text"/>
-            <input type="submit" name="submit" onClick={editName} value="Confirm"/>
+            <input id="collab-submit" type="submit" name="submit" onClick={editName} value="Confirm"/>
         </div>
         <div className="edit-name-window" style={{visibility: `${showAddCollaborator}`}}>
-            <button style={{position: "absolute", marginLeft: "230px"}} onClick={editShow4}>X</button>
+            <button style={{position: "absolute", marginLeft: "230px"}} onClick={editShow4}>&#10005;</button>
             <h3>Enter username:</h3>
             <input type="text" className="new-name" id="new-collaborator" name="text"/>
             <h3>Permission type:</h3>

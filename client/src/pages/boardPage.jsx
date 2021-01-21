@@ -11,6 +11,7 @@ import { App } from "../app/App";
 import { Navbar } from "../components/navbar";
 import { Link, useParams } from "react-router";
 import httpClient from "../tools/httpClient";
+import { http } from "winston";
 
 var columnNameWindows = [10];
 var columnIndexWindows = [10];
@@ -31,9 +32,10 @@ const BoardPage = (props) => {
   const boardID = useParams(props.match.params.id);
   const [boardData, setBoardData] = useState();
   const [boardName, setBoardName] = useState("");
+  const [collaborators, setCollaborators] = useState([]);
 
   const [loading, setLoading] = useState(false);
-  var userName = useState("default");
+  var [name, setName] = useState("");
 
   console.log(boardID);
 
@@ -50,10 +52,13 @@ const BoardPage = (props) => {
         });
         setBoardData(data);
         setBoardName(data.board.name);
+        setCollaborators(data.collaborators);
         setItems(data.tasks);
         setStatuses(data.columns);
 
-        userName = await httpClient.getUserDetails().name;
+        var user = await httpClient.getUserDetails();
+        setName(user.name);
+
 
         for (var i = 0; i < statuses.length; i++) {
             columnNameWindows[i] = "hidden";
@@ -79,6 +84,7 @@ const BoardPage = (props) => {
             columnId: columnId,
             taskId: item.id
         });
+        console.log(boardData.collaborators)
         setLoading(true);
     }
     catch(err){
@@ -142,6 +148,7 @@ const BoardPage = (props) => {
         newName: s.name,
         color: currentColor
     });
+        
     } catch (err) {
       console.error(err.message);
     }
@@ -263,12 +270,17 @@ const BoardPage = (props) => {
 
   function addItem(s, e) {
     e.preventDefault();
-
+    
+    try{
     httpClient.addTask({
       name: "New task",
       description: "Add description",
       columnId: s.id,
     });
+}
+catch(err){
+    console.log(err.message)
+}
     setLoading(true);
   }
 
@@ -386,9 +398,10 @@ const BoardPage = (props) => {
     };
   }
 
+
   return (
     <div>
-      <Navbar name={userName} />
+      <Navbar name={name} />
       <DndProvider backend={HTML5Backend}>
         <Header name={boardName} boardID={boardID.id} />
         <button id="add-col-btn" onClick={(e) => addColumn(e)}>
@@ -497,6 +510,8 @@ const BoardPage = (props) => {
                             moveItem={moveItem}
                             deleteItem={(e) => deleteItem(i.id, e)}
                             status={s}
+                            boardID={boardID.id}
+                            workersList={collaborators}
                           />
                         ))}
                       <button id="add-item-btn" onClick={(e) => addItem(s, e)}>

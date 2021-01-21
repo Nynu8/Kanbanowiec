@@ -23,8 +23,9 @@ label {
 
 button,
 input {
-  padding: 4px;
-  border: 1px solid var(--disabled-color);
+  border: 0;
+  font-family: "Josefin Slab";
+  text-shadow: 0px 0px 1px white, 0px 0px 5px black;
 }
 
 button {
@@ -32,7 +33,7 @@ button {
   background: transparent;
   border-radius: 5px;
   color: var(--primary-color);
-  transition: all ease 0.8s;
+  transition: all ease 0.25s;
   cursor: pointer;
 }
 
@@ -55,7 +56,6 @@ input:focus {
 
 select {
   outline: none;
-  height: 40px;
 }
 
 .row {
@@ -88,8 +88,8 @@ select {
 }
 
 .color-bar {
-  width: 100%;
-  height: 8px;
+  width: 40px;
+  height: 10px;
   border-radius: 5px;
 }
 
@@ -152,14 +152,67 @@ select {
   background-color: yellow;
 }
 
-.page-header {
-  background-color: #054f7c;
-  padding: 20px;
+#board-head {
+  background-image: linear-gradient(
+    to left,
+    rgb(255, 213, 74),
+    rgb(255, 44, 114)
+  );
   color: white;
-  font-size: 30px;
+  text-shadow: 0px 0px 2px white, 0px 0px 5px black;
+  flex: 1 100%;
+  padding: 12px;
+  height: 40px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center;
+  box-shadow: 0px 0px 16px black;
+  text-shadow: 0px 0px 1px white, 0px 0px 5px black;
+  font-family: "Josefin Slab";
+  justify-content: center;
+  align-items: center;
+}
+
+.page-header {
+  width: 50vw;
+  padding-top: 12px;
+  padding-right: 40px;
+  color: white;
+  font-size: 32px;
   flex: 1 100%;
   margin-top: 0;
   text-align: center;
+}
+
+.edit-board-btn,
+#back-to-profile-btn {
+  display: flex;
+  width: 12vw;
+  height: 50px;
+  background-color: #00000050;
+  box-shadow: inset 0px 0px 6px black, 0px 0px 2px black;
+  font-size: 24px;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.25s ease-in-out;
+}
+.edit-board-btn {
+  width: 58px;
+  font-size: 40px;
+}
+#back-to-profile-btn {
+  padding: 0px 20px 0px 15px;
+}
+
+.edit-board-btn:hover,
+#back-to-profile-btn:hover {
+  background-color: #00000000;
+  box-shadow: none;
+  text-decoration: underline;
+  height: 64px;
+}
+#back-to-profile-btn:hover {
+  padding: 0px 35px 0px 0px;
 }
 
 .modal {
@@ -240,35 +293,6 @@ select {
   opacity: 0.8;
 }
 
-.edit-board-btn {
-  border-radius: 0 5px 5px 0;
-  font-size: 32px;
-  width: 150px;
-  background-color: #6ba4b6;
-  margin-bottom: 10px;
-  border-color: rgb(228, 218, 197);
-  border-width: 2px;
-  border-style: outset;
-}
-
-.edit-board-btn:hover {
-  border-style: inset;
-}
-
-#back-to-profile-btn {
-  border-radius: 5px 0 0 5px;
-  width: 150px;
-  background-color: #6ba4b6;
-  margin-bottom: 10px;
-  border-color: rgb(228, 218, 197);
-  border-width: 2px;
-  border-style: outset;
-}
-
-#back-to-profile-btn:hover {
-  border-style: inset;
-}
-
 #add-col-btn {
   position: absolute;
   margin-top: 20px;
@@ -290,59 +314,108 @@ select {
 }
 
 #user-header {
-  background-color: #054f7c;
-  padding: 20px;
+  background-image: linear-gradient(
+    to left,
+    rgb(255, 213, 74),
+    rgb(255, 44, 114)
+  );
+  padding: 12px;
+  height: 40px;
   color: white;
-  font-size: 30px;
+  text-shadow: 0px 0px 2px white, 0px 0px 5px black;
+  font-size: 32px;
   flex: 1 100%;
   margin-top: 0;
+  margin-bottom: 20px;
   text-align: center;
+  box-shadow: 0px 0px 16px black;
+  text-shadow: 0px 0px 1px white, 0px 0px 5px black;
+  font-family: "Josefin Slab";
 }
 
 .user-container {
   display: inline-flex;
   flex-direction: row;
+  background-color: #444444;
+  box-shadow: 0px 0px 16px black;
+
+  text-shadow: 0px 0px 1px white, 0px 0px 7px black;
+  font-family: "Josefin Slab";
+  font-size: 20px;
+
+  border-top: 10px solid;
+  border-bottom: 10px solid;
+  border-image-slice: 1;
+  border-width: 6px;
+  border-image-source: linear-gradient(
+    to left,
+    rgb(255, 213, 74),
+    rgb(255, 44, 114)
+  );
 }
 
 .boardlist-container {
-  width: 50vw;
+  width: 65vw;
   margin: 2.5vw;
   height: 60vh;
-  background-color: #6ba4b6;
-  border-radius: 20px;
+  background-color: #333333;
+  border-radius: 8px;
+
+  box-shadow: 0px 0px 2px black, inset 0px 0px 12px black;
+  transition: all 0.4s ease-in-out;
 }
 
 .settings-container {
   margin: 2.5vw;
-  width: 40vw;
-  background-color: #6ba4b6;
-  border-radius: 20px;
+  width: 25vw;
+  background-color: #333333;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
+
+  box-shadow: 0px 0px 2px black, inset 0px 0px 12px black;
+  transition: all 0.25s ease-in-out;
+}
+
+.settings-container:hover {
+  box-shadow: 0px 0px 2px black, inset 0px 0px 250px black;
+  background-color: #333333;
 }
 
 .user-container-header {
   text-align: center;
-  background-color: white;
-  border-radius: 60px;
-  width: 150px;
+  background-image: linear-gradient(
+    to left,
+    rgb(255, 213, 74),
+    rgb(255, 44, 114)
+  );
+  border-radius: 8px;
+  width: 20vw;
   padding: 12px;
   margin-left: auto;
   margin-right: auto;
+  color: white;
+
+  box-shadow: 0px 3px 10px black, inset 0px 0px 2px black,
+    inset 0px 1px 4px white;
 }
 
 .settings-container button {
-  background-color: rgb(252, 243, 221);
-  margin-left: 3vw;
-  margin-right: 3vw;
-  border-radius: 25px;
+  background-color: #333333;
+  margin: 6px 20px 8px 20px;
+  border-radius: 8px;
   padding: 1vw;
-  margin-bottom: 1vh;
-  font-size: medium;
+  font-size: 24px;
+  color: white;
+  text-shadow: 0px 0px 1px white, 0px 0px 5px black;
+  font-family: "Josefin Slab";
 }
 
-.settings-container button:hover {
-  background-color: rgb(199, 188, 160);
+.settings-container button:hover,
+#edit-name-btn:hover {
+  margin: 8px 5px 6px 5px;
+  background-color: #666666;
+  box-shadow: 0px 3px 10px black;
 }
 
 .login-container {
@@ -372,22 +445,38 @@ select {
 .dropdown-edit-board {
   display: none;
   position: absolute;
-  margin-left: -50px;
-  background-color: whitesmoke;
+  top: 156px;
+  right: 0;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px gray;
   z-index: 1;
+
+  background-color: #aaaaaa;
+  color: white;
+  font-size: 18px;
+  box-shadow: 0px 6px 6px black, inset 0 0 2px black;
+  border-radius: 0px 0px 8px 8px;
+  height: fit-content;
 }
 
 .dropdown-edit-board a {
-  color: black;
-  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 12px 16px 24px;
+  height: 20px;
   text-decoration: none;
-  display: block;
 }
 
 .dropdown-edit-board a:hover {
-  background-color: rgb(202, 201, 196);
+  background-color: #00000050;
+  padding: 16px 24px 16px 12px;
+}
+
+#dropdown-edit-pdf:hover,
+#dropdown-edit-delete:hover {
+  background-color: #00000050;
+  padding: 16px 12px 16px 24px;
+  font-size: 24px;
 }
 
 .edit-board-btn:hover .dropdown-edit-board {
@@ -410,7 +499,7 @@ select {
   display: none;
   position: absolute;
   margin-left: -50px;
-  background-color: whitesmoke;
+  background-color: yellow;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px gray;
   z-index: 1;
@@ -455,12 +544,16 @@ select {
   position: absolute;
   margin-left: 30px;
   margin-top: 50px;
-  background-color: rgb(250, 248, 248);
-  box-shadow: 5px 8px 16px 5px gray;
+  background-color: #aaaaaa;
+  box-shadow: 0px 2px 16px black, inset 0px 0px 2px black,
+    inset 0px 1px 2px white;
   padding: 25px;
   z-index: 1;
   width: 250px;
   height: max-content;
+  color: white;
+  font-size: 18px;
+  border-radius: 0px 0px 8px 8px;
 }
 
 .permission-label {
@@ -512,101 +605,81 @@ select {
 
 .user-settings-window {
   position: absolute;
-  background-color: #f7f5ef;
+  background-color: #aaaaaa;
+  color: white;
   padding: 25px;
-  box-shadow: 5px 8px 16px 5px gray;
-  border-radius: 20px;
+  font-size: 18px;
+  box-shadow: 0px 2px 16px black, inset 0px 0px 2px black,
+    inset 0px 1px 2px white;
+  border-radius: 8px;
   height: fit-content;
-  margin-left: 50px;
-  margin-top: 50px;
 }
 
 .user-settings-window button {
-  border: 1px solid black;
+  top: -20px;
+  left: 0px;
   border-radius: 30px;
+  color: rgb(255, 44, 114);
   width: 50px;
   height: 50px;
-  margin-right: 5px;
+  padding: 0;
+  background-color: #aaaaaa;
+  box-shadow: 0px 2px 16px black, inset 0px 0px 1px black;
+  text-shadow: 0px 0px 1px rgb(255, 44, 114);
 }
 
-/*dodaje do repo*/
+.user-settings-window button:hover {
+  margin: 0;
+  color: white;
+  background-color: rgb(255, 44, 114);
+  text-shadow: 0px 0px 2px white;
+  box-shadow: 0px 3px 10px black;
+}
 
-#delete-account-btn {
-  color: darkred;
+#setting-submit-btn {
+  background-color: #888888;
+  border-radius: 4px;
+  padding: 8px;
+  font-family: inherit;
+  font-size: 16px;
+  text-shadow: 0px 0px 1px white, 0px 0px 5px black;
+  color: white;
+  box-shadow: 0px 2px 2px black;
+  margin-bottom: 10px;
+  transition: all 0.25s ease-in-out;
+}
+
+#setting-submit-btn:hover {
+  cursor: pointer;
+  color: rgb(255, 220, 70);
+  text-shadow: 0px 0px 1px rgb(255, 195, 40), 0px 0px 5px black;
+}
+
+#delete-account-btn,
+#dropdown-edit-delete {
+  color: rgb(255, 91, 143);
+  text-shadow: 0px 0px 1px crimson, 0px 0px 5px black;
   font-weight: 600;
 }
 
-#create-board-window {
-  position: absolute;
-  box-shadow: 5px 8px 16px 5px rgb(66, 66, 66);
-  background-color: #f7f5ef;
-  padding: 15px;
-  border-radius: 10px;
-  margin-left: 50px;
-  margin-top: 100px;
-  z-index: 2;
-}
-
-#create-board-window button {
-  border: 1px solid black;
-  border-radius: 30px;
-  width: 40px;
-  height: 40px;
-  margin-right: 5px;
-  background-color: #c9e3eb;
-}
-
-#create-board-window input {
-  border-radius: 5px;
-}
-
-#show-add-board-window-btn {
-  background-color: #dad8d1;
-  padding: 15px;
-  width: 50%;
-  border-radius: 25px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.boardlist-container {
+#workers-list {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  background-color: #dad8d1;
+  width: fit-content;
 }
 
-.boardlist-container ul {
-  margin-top: 0px;
-  width: 70%;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: #97c1ce;
-  border-radius: 20px;
-  height: 250px;
-  overflow-y: scroll;
+#workers-list a {
+  font-size: medium;
+  border: 1px solid black;
+  box-shadow: 0px 5px 5px 1px rgb(104, 96, 96);
+  padding: 10px;
 }
 
-.boardlist-container ul li button {
-  position: relative;
-  background-color: #c9e3eb;
-  font-weight: bold;
-  padding: 20px;
-  width: 90%;
-  margin: 5px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.boardlist-container ul li button:hover {
-  background-color: #f4fafc;
-}
-
-.boardlist-container ul li {
-  list-style: none;
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-#show-add-board-window-btn {
-  margin-bottom: 10px;
+#worker-button {
+  background-color: rgb(225, 231, 231);
+  font-size: medium;
+  color: black;
+  padding: 10px;
+  box-shadow: 0px 5px 5px 1px rgb(104, 96, 96);
 }

@@ -5,7 +5,7 @@ import Window from "./window";
 import ITEM_TYPE from "../../data/types"
 import { data } from "../../data";
 
-const Item = ({item, index, moveItem, status, deleteItem}) =>{
+const Item = ({item, index, moveItem, status, deleteItem, editItemWindowClose, boardID, workersList}) =>{
 
     const ref = useRef(null);
     
@@ -53,10 +53,6 @@ const Item = ({item, index, moveItem, status, deleteItem}) =>{
     const onOpen = () => setShow(true);
 
     const onClose = () => {
-        var titleField = document.querySelector("#title-field");
-        var descriptionField = document.querySelector("#description-field")
-        item.name = titleField.textContent;
-        item.description = descriptionField.textContent;
         setShow(false);
     }
     
@@ -71,7 +67,7 @@ const Item = ({item, index, moveItem, status, deleteItem}) =>{
                 <p className={"item-title"}>{item.name}</p>
                 <p className={"item-status"}>{status.color}</p>
             </div>
-            <Window id="pop-up-window" item={item} onClose={onClose} deleteItem={deleteItem} show={show} color={status.color} status={status.name} icon={status.color}/>
+            <Window onClose={onClose} id="pop-up-window" item={item} deleteItem={deleteItem} show={show} color={status.color} status={status.name} boardID={boardID} workersList={workersList} icon={status.color}/>
         </Fragment>
     );
 };
