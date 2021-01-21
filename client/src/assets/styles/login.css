@@ -31,6 +31,7 @@ body {
   color: white;
   text-shadow: 0px 0px 1px white, 0px 0px 5px black;
   font-family: "Josefin Slab";
+  text-align: center;
 }
 
 .content {

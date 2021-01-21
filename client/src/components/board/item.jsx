@@ -6,7 +6,7 @@ import ITEM_TYPE from "../../data/types"
 import { data } from "../../data";
 import httpClient from "../../tools/httpClient"
 
-const Item = ({item, index, moveItem, status, deleteItem, editItemWindowClose, boardID, workersList}) =>{
+const Item = ({item, index, moveItem, status, deleteItem, editItemWindowClose, boardID, workersList, barColor}) =>{
 
     const ref = useRef(null);
     
@@ -60,9 +60,8 @@ const Item = ({item, index, moveItem, status, deleteItem, editItemWindowClose, b
         item.description = descriptionField.textContent;
         setShow(false);
         try{
-            console.log(item.name, item.description, boardID, item.id, workersList[0].id)
         await httpClient.editTask({
-            workerId: workersList[0].id,
+            //workerId: document.getElementById("worker-id").textContent,
             name: item.name,
             description: item.description,
             boardId: boardID,
@@ -81,11 +80,10 @@ const Item = ({item, index, moveItem, status, deleteItem, editItemWindowClose, b
     return(
         <Fragment>
             <div ref={ref} style={{ opacity: isDragging? 0 : 1}} className={"item"} onClick={onOpen}>
-                <div className={"color-bar"} style={{ backgroundColor: status.color}} />  
+                <div className={"color-bar"} style={{ backgroundColor: barColor}} />  
                 <p className={"item-title"}>{item.name}</p>
-                <p className={"item-status"}>{status.color}</p>
             </div>
-            <Window onClose={onClose} id="pop-up-window" item={item} deleteItem={deleteItem} show={show} color={status.color} status={status.name} boardID={boardID} workersList={workersList} icon={status.color}/>
+            <Window onClose={onClose} id="pop-up-window" item={item} deleteItem={deleteItem} show={show} color={status.color} status={status.name} boardID={boardID} workersList={workersList} icon={status.color} barColor={barColor}/>
         </Fragment>
     );
 };

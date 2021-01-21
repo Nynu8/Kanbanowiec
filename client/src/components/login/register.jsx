@@ -65,11 +65,11 @@ export class Register extends React.Component {
       <div>
         <Navbar status="registering" />
       <div className="base-container" ref={this.props.containerRef}>
-        <div className="header">Register</div>
         <div className="content">
           <div className="image">
             <img src={loginImg} />
           </div>
+          <div className="header">Register</div>
           <form className="form">
             <div className="form-group">    
               <label htmlFor="username">Username</label>

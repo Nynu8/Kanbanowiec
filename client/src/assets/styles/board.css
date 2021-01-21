@@ -62,24 +62,60 @@ select {
   display: flex;
   flex-direction: row;
   justify-content: center;
+
+  background-color: #444444;
+  box-shadow: 0px 0px 24px black;
+
+  text-shadow: 0px 0px 1px white, 0px 0px 7px black;
+  font-family: "Josefin Slab";
+  font-size: 20px;
+
+  border-top: 10px solid;
+  border-bottom: 10px solid;
+  border-image-slice: 1;
+  border-width: 6px;
+  border-image-source: linear-gradient(
+    to left,
+    rgb(255, 213, 74),
+    rgb(255, 44, 114)
+  );
+
+  color: white;
 }
 
-.item {
+.item,
+.board-button,
+#worker-button {
   font-size: 15px;
   margin-bottom: 10px;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 8px;
   z-index: 1;
-  background-color: #f4f5f7;
+  background-color: none;
+  box-shadow: inset 0 0 8px #00000075;
+  transition: all 0.25s ease-in-out;
 }
 
-.item:hover {
+.board-button {
+  color: white;
+  text-shadow: 0px 0px 1px white, 0px 0px 7px black;
+  font-size: 24px;
+  margin-right: 40px;
+  width: 52vw;
+}
+.board-button a {
+  font-size: inherit;
+}
+
+.item:hover,
+.board-button:hover,
+#worker-button:hover {
   cursor: pointer;
-  background-color: #ebeae6;
+  background-color: #ffffff50;
+  box-shadow: 0 0 6px black;
 }
 
 .item-title {
-  font-weight: 600;
   font-size: 16px;
 }
 
@@ -88,8 +124,8 @@ select {
 }
 
 .color-bar {
-  width: 40px;
-  height: 10px;
+  width: 100%;
+  height: 5px;
   border-radius: 5px;
 }
 
@@ -97,59 +133,85 @@ select {
   flex: 1 25%;
   width: 100%;
   height: 100%;
+
+  border-radius: 8px;
+  background-color: #666666;
+  box-shadow: 0px 0px 2px black, inset 0px 0px 12px black;
 }
 
 .col-wrapper {
   display: flex;
   flex-direction: column;
-  margin: 20px;
-  padding: 20px;
-  background-color: rgb(252, 243, 221);
+  margin: 18px 12px;
+  padding: 16px 8px;
+  background-color: #888888;
   border-radius: 5px;
-  max-width: 180px;
-  width: 180px;
+  max-width: 200px;
+  width: 200px;
+  box-shadow: 0px 0px 10px black, 0px 0px 0px black, inset 0px 0px 2px black;
+  transition: all 0.25s ease-in-out;
+}
+.col-wrapper:hover {
+  box-shadow: 0px 0px 10px black, 0px 15px 30px black, inset 0px 2px 5px white,
+    inset 0px 2px 3px black;
 }
 
 .col-header-div {
-  display: inline-flex;
+  display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 .col-header {
   font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   margin-top: 0;
   width: 150px;
-  text-align: left;
+  text-align: center;
+  padding-right: 0px;
 }
 
-.col-icon-button {
-  align-self: flex-start;
-  margin-top: 0;
-  margin-bottom: 40px;
-  right: 0px;
+.icon-div {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px black, inset 0 2px 4px #ffffff80;
+  align-self: center;
+  margin-bottom: 12px;
 }
 
-.col-icon-button:hover {
-  border: black;
-  background-color: #c2beb5;
-  border-radius: 15px;
-  font-size: medium;
+.icon-div:hover {
+  background-color: #00000000;
+  box-shadow: 0 2px 6px #ffffff80, inset 0 2px 4px #00000080;
 }
-
-.col {
-  min-height: 300px;
-  max-width: 300px;
-  width: 300px;
+#status-div-dot {
+  display: flex;
+  align-items: center;
+}
+#status-dot,
+#status-div {
+  display: inline-flex;
+  align-items: center;
+}
+#status-dot {
+  margin-top: 4px;
+}
+#status-div {
+  margin: 10px;
+}
+#status-dot:hover {
+  box-shadow: 0 2px 6px black, inset 0 2px 4px #ffffff80;
 }
 
 .highlight-region {
-  background-color: yellow;
+  transition: all 0.3s ease-in-out;
+  background-color: #ffffff50;
 }
 
 .highlight-region:hover {
-  background-color: yellow;
+  background-color: #00000050;
+  border-radius: 8px;
 }
 
 #board-head {
@@ -171,6 +233,8 @@ select {
   font-family: "Josefin Slab";
   justify-content: center;
   align-items: center;
+
+  border: 0;
 }
 
 .page-header {
@@ -187,7 +251,7 @@ select {
 .edit-board-btn,
 #back-to-profile-btn {
   display: flex;
-  width: 12vw;
+  width: 140px;
   height: 50px;
   background-color: #00000050;
   box-shadow: inset 0px 0px 6px black, 0px 0px 2px black;
@@ -208,21 +272,29 @@ select {
 #back-to-profile-btn:hover {
   background-color: #00000000;
   box-shadow: none;
-  text-decoration: underline;
-  height: 64px;
+
+  height: 68px;
 }
 #back-to-profile-btn:hover {
+  text-decoration: underline;
   padding: 0px 35px 0px 0px;
 }
 
 .modal {
-  background-color: #f4f5f7;
-  border-radius: 2px;
+  background-color: #777777;
+  color: white;
+  text-shadow: 0 0 3px black, 0 0 1px white;
+  border-radius: 8px;
   margin: 48px 0 80px;
   min-height: 450px;
   width: 800px;
   outline: none;
   padding: 20px 20px 50px 20px;
+  filter: none;
+  box-shadow: 0 0 48px black, 0 0 24px black, inset 0 2px 5px white;
+  font-family: "Josefin Slab";
+  font-size: 24px;
+  height: fit-content;
 }
 
 .overlay {
@@ -233,42 +305,72 @@ select {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #00000040;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .close-btn-ctn {
   display: flex;
 }
 
-.close-btn {
-  height: 40px;
-  width: 35px;
-  font-size: 20px;
-  color: #031d2c;
-  border: none;
-  border-radius: 25px;
+#title-field {
+  font-size: 40px;
 }
 
-.close-btn:hover {
-  background-color: #dcdcdc;
+.closes-btn {
+  border: none;
+  border-radius: 30px;
+  color: rgb(255, 44, 114);
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  background-color: #bbbbbb;
+  box-shadow: 0px 1px 10px black;
+  text-shadow: 0px 0px 1px rgb(255, 44, 114);
+  font-size: 24px;
+  transition: all 0.25s ease-in-out;
+}
+
+.closes-btn:hover {
+  color: white;
+  background-color: rgb(255, 44, 114);
+  text-shadow: 0px 0px 2px white;
+  box-shadow: 0px 5px 15px black;
 }
 
 #add-item-btn {
   width: 100%;
-  background-color: #f4f5f7;
-  padding: 10px;
+  height: 40px;
+  background-image: linear-gradient(
+    to left,
+    rgb(255, 213, 74),
+    rgb(255, 44, 114)
+  );
+  box-shadow: 0px 3px 10px black, inset 0px 0px 2px black,
+    inset 0px 1px 4px white;
+  padding: 10px 0 6px 0;
+  font-size: 16px;
 }
 
 #add-item-btn:hover {
-  background-color: #dad8d1;
+  font-size: 20px;
+  text-shadow: 0 0 4px black, 0 0 1px white;
+  text-decoration: underline;
 }
-
+*[contenteditable="true"] {
+  margin: 20px 10px;
+  font-size: 20px;
+  transition: all 0.5s ease-in-out;
+}
 *[contenteditable="true"]:focus {
-  border-radius: 10px;
-  border-width: 0.5px;
-  border-style: dashed;
+  border-radius: 6px;
+  border-width: 1px;
+  border-style: solid;
   padding: 5px;
-  border-color: yellow;
+  border-color: rgb(255, 44, 114);
+  box-shadow: 0 0 8px #ffffff50, inset 0 0 8px #ffffff50,
+    0 0 4px rgb(255, 44, 114);
 }
 
 #delete-task-btn {
@@ -276,11 +378,19 @@ select {
   margin-left: auto;
   margin-right: auto;
   padding: 15px;
-  font-size: large;
-  background-color: #e6e6e6;
+  font-size: 24px;
+  color: rgb(255, 44, 114);
+  background-color: #bbbbbb;
+  box-shadow: 0px 4px 10px #000000aa;
+  text-shadow: 0px 0px 1px rgb(255, 44, 114);
+  font-size: 24px;
+  transition: all 0.25s ease-in-out;
 }
 #delete-task-btn:hover {
-  background-color: #cecece;
+  color: white;
+  background-color: rgb(255, 44, 114);
+  text-shadow: 0px 0px 2px white;
+  box-shadow: 0px 5px 15px black;
 }
 
 #window-color-bar {
@@ -291,26 +401,42 @@ select {
   border-radius: 10px;
   color: transparent;
   opacity: 0.8;
+  box-shadow: 0 4px 8px black, inset 0 2px 3px #ffffff90;
 }
 
-#add-col-btn {
+#add-col-btn,
+#show-add-board-window-btn {
   position: absolute;
-  margin-top: 20px;
-  margin-left: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 200px;
+  left: 16px;
   width: 50px;
   height: 50px;
-  font-size: 24px;
-  background-color: rgb(252, 243, 221);
-  padding: 8px;
-  border-color: rgb(236, 227, 205);
-  border-width: 2px;
-  border-style: outset;
+  font-size: 40px;
+
+  color: white;
+  background-image: linear-gradient(
+    to left,
+    rgb(255, 213, 74),
+    rgb(255, 44, 114)
+  );
+  box-shadow: 0px 3px 10px black, inset 0px 0px 2px black,
+    inset 0px 1px 4px white;
+}
+#show-add-board-window-btn {
+  position: absolute;
+  top: 256px;
+  left: 59vw;
+  margin-top: -10px;
 }
 
-#add-col-btn:hover {
-  border-style: inset;
-  background-color: rgb(212, 202, 177);
-  transition: none;
+#add-col-btn:hover,
+#show-add-board-window-btn:hover {
+  text-shadow: 0 0 10px black, 0 0 5px white;
+  font-size: 80px;
+  border-radius: 25px;
 }
 
 #user-header {
@@ -355,12 +481,15 @@ select {
 }
 
 .boardlist-container {
-  width: 65vw;
+  display: flex;
+  flex-direction: column;
+  width: 60vw;
   margin: 2.5vw;
   height: 60vh;
   background-color: #333333;
   border-radius: 8px;
 
+  align-items: center;
   box-shadow: 0px 0px 2px black, inset 0px 0px 12px black;
   transition: all 0.4s ease-in-out;
 }
@@ -384,11 +513,6 @@ select {
 
 .user-container-header {
   text-align: center;
-  background-image: linear-gradient(
-    to left,
-    rgb(255, 213, 74),
-    rgb(255, 44, 114)
-  );
   border-radius: 8px;
   width: 20vw;
   padding: 12px;
@@ -396,6 +520,11 @@ select {
   margin-right: auto;
   color: white;
 
+  background-image: linear-gradient(
+    to left,
+    rgb(255, 213, 74),
+    rgb(255, 44, 114)
+  );
   box-shadow: 0px 3px 10px black, inset 0px 0px 2px black,
     inset 0px 1px 4px white;
 }
@@ -445,12 +574,12 @@ select {
 .dropdown-edit-board {
   display: none;
   position: absolute;
-  top: 156px;
+  top: 152px;
   right: 0;
   min-width: 160px;
   z-index: 1;
 
-  background-color: #aaaaaa;
+  background-color: #999999;
   color: white;
   font-size: 18px;
   box-shadow: 0px 6px 6px black, inset 0 0 2px black;
@@ -484,36 +613,48 @@ select {
 }
 
 .edit-col-button {
-  align-self: flex-end;
-  font-size: large;
-  margin-bottom: 30px;
-  background-color: #ffffff;
-  padding: 5px;
+  align-self: flex-start;
+  font-size: 24px;
+  margin-bottom: 10px;
+  background-color: #00000050;
+  padding: 0px 6px;
+  box-shadow: inset 0px 0px 6px black, 0px 0px 2px black;
+  transition: all 0.25s ease-in-out;
 }
 
 .edit-col-button:hover {
-  background-color: #d6e7f7;
+  background-color: #00000000;
+  box-shadow: none;
 }
 
 .dropdown-edit-column {
   display: none;
   position: absolute;
-  margin-left: -50px;
-  background-color: yellow;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px gray;
+  margin-left: -172px;
+  width: 200px;
   z-index: 1;
+
+  background-color: #999999;
+  color: white;
+  font-size: 16px;
+  box-shadow: 0px 6px 6px black, inset 0 0 2px black;
+  border-radius: 8px;
+  height: fit-content;
 }
 
 .dropdown-edit-column a {
-  color: black;
-  padding: 12px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 0px;
+  height: 28px;
   text-decoration: none;
-  display: block;
 }
 
 .dropdown-edit-column a:hover {
-  background-color: rgb(202, 201, 196);
+  background-color: #00000050;
+  padding: 16px 0px;
+  font-size: 24px;
 }
 
 .edit-col-button:hover .dropdown-edit-column {
@@ -521,14 +662,18 @@ select {
 }
 
 .edit-name-window {
-  background-color: rgb(250, 248, 248);
-  width: 250px;
+  background-color: #999999;
+  color: white;
+  width: 180px;
   padding: 20px;
   position: absolute;
-  align-self: flex-end;
-  float: right;
-  margin-left: 60vw;
-  box-shadow: 5px 8px 16px 5px gray;
+  right: 230px;
+  top: 180px;
+  box-shadow: 0px 6px 6px black, inset 0 0 2px black;
+  font-size: 18px;
+  border-radius: 5px;
+  text-shadow: 0px 0px 1px white, 0px 0px 8px black;
+  font-family: "Josefin Slab";
 }
 
 .new-name {
@@ -542,9 +687,7 @@ select {
 
 .edit-col-name-window {
   position: absolute;
-  margin-left: 30px;
-  margin-top: 50px;
-  background-color: #aaaaaa;
+  background-color: #999999;
   box-shadow: 0px 2px 16px black, inset 0px 0px 2px black,
     inset 0px 1px 2px white;
   padding: 25px;
@@ -553,7 +696,7 @@ select {
   height: max-content;
   color: white;
   font-size: 18px;
-  border-radius: 0px 0px 8px 8px;
+  border-radius: 8px;
 }
 
 .permission-label {
@@ -570,7 +713,7 @@ select {
 
 #dialog-window {
   position: absolute;
-  width: 130px;
+  width: 180px;
   margin-left: 60vw;
   border-style: none;
   box-shadow: 5px 8px 16px 5px gray;
@@ -603,9 +746,11 @@ select {
   margin-top: 3px;
 }
 
-.user-settings-window {
+.user-settings-window,
+#create-board-window {
   position: absolute;
-  background-color: #aaaaaa;
+  right: 28vw;
+  background-color: #999999;
   color: white;
   padding: 25px;
   font-size: 18px;
@@ -613,43 +758,82 @@ select {
     inset 0px 1px 2px white;
   border-radius: 8px;
   height: fit-content;
+  z-index: 2;
 }
 
-.user-settings-window button {
-  top: -20px;
+.user-settings-window button,
+.edit-name-window button,
+.edit-col-name-window button,
+#create-board-window button {
+  top: -15px;
   left: 0px;
   border-radius: 30px;
   color: rgb(255, 44, 114);
   width: 50px;
   height: 50px;
   padding: 0;
-  background-color: #aaaaaa;
+  background-color: #999999;
   box-shadow: 0px 2px 16px black, inset 0px 0px 1px black;
   text-shadow: 0px 0px 1px rgb(255, 44, 114);
+  font-size: 24px;
+  z-index: inherit;
+}
+.edit-name-window button {
+  left: -70px;
+  top: -20px;
+}
+.edit-col-name-window button {
+  left: 10px;
+  top: -20px;
 }
 
-.user-settings-window button:hover {
+.user-settings-window button:hover,
+.edit-name-window button:hover,
+.edit-col-name-window button:hover,
+#create-board-window button:hover {
   margin: 0;
   color: white;
   background-color: rgb(255, 44, 114);
   text-shadow: 0px 0px 2px white;
   box-shadow: 0px 3px 10px black;
 }
+.edit-name-window button:hover,
+.edit-col-name-window button:hover,
+#create-board-window button:hover {
+  top: -30px;
+}
 
-#setting-submit-btn {
+#setting-submit-btn,
+#collab-submit,
+#submit-btn-name,
+#submit-btn-index,
+#add-board-btn {
   background-color: #888888;
   border-radius: 4px;
   padding: 8px;
   font-family: inherit;
-  font-size: 16px;
+  font-size: 18px;
   text-shadow: 0px 0px 1px white, 0px 0px 5px black;
   color: white;
   box-shadow: 0px 2px 2px black;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   transition: all 0.25s ease-in-out;
 }
-
-#setting-submit-btn:hover {
+#collab-submit {
+  margin: 10px 0px 0px 0px;
+}
+#submit-btn-name,
+#add-board-btn {
+  margin-left: 20px;
+}
+#submit-btn-index {
+  right: 20px;
+}
+#setting-submit-btn:hover,
+#collab-submit:hover,
+#submit-btn-name:hover,
+#submit-btn-index:hover,
+#add-board-btn:hover {
   cursor: pointer;
   color: rgb(255, 220, 70);
   text-shadow: 0px 0px 1px rgb(255, 195, 40), 0px 0px 5px black;
@@ -659,27 +843,63 @@ select {
 #dropdown-edit-delete {
   color: rgb(255, 91, 143);
   text-shadow: 0px 0px 1px crimson, 0px 0px 5px black;
-  font-weight: 600;
+}
+
+#delete-account-btn:hover,
+#dropdown-edit-delete:hover {
+  border-radius: 0 0 8px 8px;
+  background-color: rgba(255, 0, 81, 0.7);
+  color: white;
+  text-shadow: 0px 0px 1px white;
+  padding: 16px 0px;
+}
+#delete-account-btn:hover {
+  border-radius: 8px;
+  padding: 16px 0;
 }
 
 #workers-list {
   display: flex;
   flex-direction: row;
-  background-color: #dad8d1;
+  background-color: #999999;
+  border-radius: 8px;
   width: fit-content;
+  margin-bottom: 16px;
 }
 
 #workers-list a {
   font-size: medium;
-  border: 1px solid black;
-  box-shadow: 0px 5px 5px 1px rgb(104, 96, 96);
+  padding: 10px;
+  margin: 0 2px;
+}
+
+#workers-button {
+  font-size: 20px;
+}
+
+#dialog-window {
+  background-color: #aaaaaa;
+  border-radius: 8px;
+  color: white;
+  text-shadow: 0px 0px 1px white, 0px 0px 5px black;
+  box-shadow: 0 4px 8px black, inset 0 2px 2px #ffffff50;
+  font-size: 24px;
+  font-family: "Josefin Slab";
   padding: 10px;
 }
 
-#worker-button {
-  background-color: rgb(225, 231, 231);
-  font-size: medium;
-  color: black;
-  padding: 10px;
-  box-shadow: 0px 5px 5px 1px rgb(104, 96, 96);
+.dialog-button {
+  background-color: #888888;
+  color: rgb(255, 44, 114);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px black, inset 0 2px 2px #ffffff50;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 10px;
+  text-shadow: 0px 0px 1px crimson, 0px 0px 5px black;
+}
+.dialog-button:hover {
+  background-color: rgba(255, 0, 81, 0.7);
+  color: white;
+  text-shadow: 0px 0px 1px white;
 }
