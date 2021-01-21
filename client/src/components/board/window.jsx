@@ -20,16 +20,24 @@ const Window=({show, status, item, color, deleteItem, boardID, onClose, workersL
         if (!loading) setLoading(true);
 
         async function getCreatorAndWorker(){
+            console.log(item.userId)
             try{
+                if(item.workerId!==undefined){
                 var worker = await httpClient.getUserDetails({
                     userId: item.workerId
                 });
+            }
+            else{
+                var worker = workersList[0]
+            }
                 var creator = await httpClient.getUserDetails({
-                    userId: item.creatorId
+                    userId: item.userId
                 });
                 setWorker(worker);
                 setWorkerName(worker.username);
                 setCreator(creator);
+                console.log(creator.username)
+                console.log(item.name)
 
             }
             catch(err){
@@ -77,8 +85,8 @@ const Window=({show, status, item, color, deleteItem, boardID, onClose, workersL
                 setWorker(wlist[i]);
                 setWorkerName(worker.username);
                 document.getElementById("workers-list").innerHTML = "";
-                //document.getElementById("worker-button").innerText
-                saveChanges();
+                document.getElementById("worker-button").textContent = workerName;
+                //saveChanges();
             })
    
             document.getElementById("workers-list").appendChild(option);
@@ -88,7 +96,7 @@ const Window=({show, status, item, color, deleteItem, boardID, onClose, workersL
     
 
     return(
-        <Modal isOpen={showWindow = show} onRequestClose={saveChanges} className={"modal"} id="item-window" overlayClassName={"overlay"} >
+        <Modal isOpen={showWindow = show} onRequestClose={onClose} className={"modal"} id="item-window" overlayClassName={"overlay"} >
             <div className={"close-btn-ctn"}>
                 <h1 id="title-field" style={{flex: "1 90%"}} contentEditable="true">{item.name}</h1>
                 <button className="closes-btn" onClick={onClose}>X</button>

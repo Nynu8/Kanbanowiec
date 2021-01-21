@@ -120,8 +120,8 @@ class HttpClient {
     return this.httpClient.post("boards/change-task-column", payload);
   }
 
-  editTask(params) {
-    return this.httpClient.post("boards/edit-task", { params });
+  editTask(payload) {
+    return this.httpClient.post("boards/edit-task", payload);
   }
 
 }

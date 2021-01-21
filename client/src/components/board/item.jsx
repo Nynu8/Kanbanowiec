@@ -65,8 +65,8 @@ const Item = ({item, index, moveItem, status, deleteItem, editItemWindowClose, b
             workerId: workersList[0].id,
             name: item.name,
             description: item.description,
-            boardId: boardID
-        
+            boardId: boardID,
+            taskId: item.id
         });
         }
         catch(err){
