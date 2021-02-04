@@ -377,6 +377,23 @@ catch(err){
   }
 }
 
+function BoardClick(s, e)
+{
+  e.preventDefault();
+  var columns = document.getElementsByClassName("col-wrapper")
+  var dropwraps = document.getElementsByClassName("drop-wrapper")
+  
+  if(window.innerWidth < window.innerHeight){
+  for (let i = 0; i < columns.length; i++)
+  {
+    if (i != s.index || dropwraps[i].style.display == "flex")  
+      dropwraps[i].style.display = "none";
+    else  
+      dropwraps[i].style.display = "flex";
+  }
+}
+}
+
   function addColumn(e) {
     e.preventDefault();
 
@@ -493,7 +510,7 @@ catch(err){
                       value="Confirm"
                     />
                   </div>
-                  <div className="col-header-div">
+                  <div className="col-header-div" onClick={(e)=>BoardClick(s, e)}>
                     <button
                       className="col-icon-button"
                       onClick={(e) => editColumnIcon(s, e)}
@@ -523,7 +540,7 @@ catch(err){
                       </div>
                     </button>
                   </div>
-                  <DropWrapper onDrop={onDrop} id={s.id}>
+                  <DropWrapper onDrop={onDrop} id={s.id} className="drop-wrapper">
                     <Column status={s}>
                       {items
                         .filter((i) => i.columnId === s.id)
