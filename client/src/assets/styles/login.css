@@ -98,3 +98,132 @@ body {
 .footer {
   margin-top: 3em;
 }
+
+/*  Phone Portrait  */
+@media only screen and (max-height: 900px) and (max-width: 500px) {
+  .base-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+  }
+
+  .header {
+    font-size: 24px;
+    padding-top: 20px;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .image {
+    width: 256px;
+    margin-top: 10px;
+  }
+
+  .form {
+    margin: 8px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: fit-content;
+    margin-bottom: 8px;
+  }
+
+  .form-group label {
+    font-size: 16px;
+    display: none;
+  }
+
+  .form-group input {
+    margin-top: 4px;
+    height: 32px;
+    padding: 0px 10px;
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .footer {
+    margin: 0;
+  }
+}
+
+/*  Phone Landscape  */
+@media only screen and (max-height: 600px) and (max-width: 900px) {
+  .base-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: unset;
+    padding: 16px 0;
+  }
+
+  .header {
+    position: absolute;
+    left: 360px;
+    top: 75px;
+    font-size: 24px;
+    padding-top: 0;
+
+    display: none;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: unset;
+  }
+
+  .image {
+    position: absolute;
+    width: 256px;
+    left: 360px;
+    top: 100px;
+  }
+
+  .form {
+    margin: 0px;
+    margin-left: 20px;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: unset;
+    align-items: unset;
+    margin-bottom: 0px;
+  }
+
+  .form-group label {
+    font-size: 16px;
+    display: none;
+  }
+
+  .form-group input {
+    margin-top: 0px;
+    display: flex;
+    height: 28px;
+    padding: 0px 10px;
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  input.btn {
+  }
+
+  .footer {
+    margin: 0;
+  }
+}
