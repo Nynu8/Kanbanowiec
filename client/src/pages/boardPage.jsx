@@ -377,9 +377,12 @@ catch(err){
   }
 }
 
-function BoardClick(s, e)
+function BoardClick(s, element, e)
 {
   e.preventDefault();
+  
+  if(element.target.className !== "col-header")
+    return;
   var dropwraps = document.getElementsByClassName("drop-wrapper")
   
   if(window.innerWidth < window.innerHeight){
@@ -510,7 +513,7 @@ function BoardClick(s, e)
                       value="Confirm"
                     />
                   </div>
-                  <div className="col-header-div" onClick={(e)=>BoardClick(s, e)}>
+                  <div className="col-header-div" onClick={(e)=>BoardClick(s,e , e)}>
                     <button
                       className="col-icon-button"
                       onClick={(e) => editColumnIcon(s, e)}
