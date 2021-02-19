@@ -39,7 +39,6 @@ const BoardPage = (props) => {
   var [name, setName] = useState("");
   var [userName, setUserName] = useState("");
   var [userId, setUserId] = useState("");
-  console.log(boardID);
 
   useEffect(() => {
     loadBoardData();
@@ -60,14 +59,16 @@ const BoardPage = (props) => {
 
         var user = await httpClient.getUserDetails();
         setName(user.name);
-        setUserName(user.username)
-        var userTmpID = data.collaborators.find((c)=>c.username == user.username).id
+        setUserName(user.username);
+        var userTmpID = data.collaborators.find(
+          (c) => c.username == user.username
+        ).id;
         setUserId(userTmpID);
 
         for (var i = 0; i < statuses.length; i++) {
-            columnNameWindows[i] = "hidden";
-            columnIndexWindows[i] = "hidden";
-          }
+          columnNameWindows[i] = "hidden";
+          columnIndexWindows[i] = "hidden";
+        }
 
         setLoading(false);
       } catch (err) {
@@ -83,16 +84,14 @@ const BoardPage = (props) => {
   const onDrop = async (item, monitor, columnId) => {
     const mapping = statuses.find((si) => si.id == columnId);
 
-    try{
-        await httpClient.changeTaskColumn({
-            columnId: columnId,
-            taskId: item.id
-        });
-        console.log(boardData.collaborators)
-        setLoading(true);
-    }
-    catch(err){
-        console.error(err.message);
+    try {
+      await httpClient.changeTaskColumn({
+        columnId: columnId,
+        taskId: item.id,
+      });
+      setLoading(true);
+    } catch (err) {
+      console.error(err.message);
     }
   };
 
@@ -114,65 +113,78 @@ const BoardPage = (props) => {
       Blue: "Blue",
       Purple: "Purple",
       Black: "Black",
-      White: "White"
+      White: "White",
     };
 
     var currentColor = s.color;
-    switch(s.color){
-        case "Red":
-            currentColor = ColumnColor.Orange;
-            break;
-            case "Orange":
-            currentColor = ColumnColor.Yellow;
-            break;
-            case "Yellow":
-            currentColor = ColumnColor.Green;
-            break;
-            case "Green":
-            currentColor = ColumnColor.Blue;
-            break;
-            case "Blue":
-            currentColor = ColumnColor.Purple;
-            break;
-            case "Purple":
-            currentColor = ColumnColor.White;
-            break;
-            case "White":
-            currentColor = ColumnColor.Black;
-            break;
-            case "Black":
-            currentColor = ColumnColor.Red;
-            break;
+    switch (s.color) {
+      case "Red":
+        currentColor = ColumnColor.Orange;
+        break;
+      case "Orange":
+        currentColor = ColumnColor.Yellow;
+        break;
+      case "Yellow":
+        currentColor = ColumnColor.Green;
+        break;
+      case "Green":
+        currentColor = ColumnColor.Blue;
+        break;
+      case "Blue":
+        currentColor = ColumnColor.Purple;
+        break;
+      case "Purple":
+        currentColor = ColumnColor.White;
+        break;
+      case "White":
+        currentColor = ColumnColor.Black;
+        break;
+      case "Black":
+        currentColor = ColumnColor.Red;
+        break;
     }
-    
 
     try {
       await httpClient.editColumn({
         columnId: s.id,
         newName: s.name,
-        color: currentColor
-    });
-        
+        color: currentColor,
+      });
     } catch (err) {
       console.error(err.message);
     }
 
     setLoading(true);
   }
-  function ActualCurrentColor(s)
-  {
-    switch(s){
-      case "Red":    return "crimson"; break;
-      case "Orange": return "coral"; break;
-      case "Yellow": return "gold"; break;
-      case "Green":  return "seagreen"; break;
-      case "Blue":   return "royalblue"; break;
-      case "Purple": return "orchid"; break;
-      case "White":  return "white"; break;
-      case "Black":  return "black"; break;
+  function ActualCurrentColor(s) {
+    switch (s) {
+      case "Red":
+        return "crimson";
+        break;
+      case "Orange":
+        return "coral";
+        break;
+      case "Yellow":
+        return "gold";
+        break;
+      case "Green":
+        return "seagreen";
+        break;
+      case "Blue":
+        return "royalblue";
+        break;
+      case "Purple":
+        return "orchid";
+        break;
+      case "White":
+        return "white";
+        break;
+      case "Black":
+        return "black";
+        break;
     }
   }
-  
+
   function setColumnNameWindowVisible(s, e) {
     e.preventDefault();
     const editedColumnIndex = s.index;
@@ -198,12 +210,6 @@ const BoardPage = (props) => {
     var newName = document.getElementsByClassName("new-column-name")[s.index]
       .value;
     var prevStatus = s.name;
-    //s.name = newName;
-    //statuses[editedColumnId].name = s.name;
-    console.log(s.id);
-    console.log(s.index);
-    console.log(newName);
-    console.log(s.color);
 
     await httpClient.editColumn({
       columnId: s.id,
@@ -240,22 +246,20 @@ const BoardPage = (props) => {
     e.preventDefault();
 
     const editedColumnIndex = s.index;
-    const selectedIndex = document.getElementsByClassName("new-column-index")[editedColumnIndex].value;
+    const selectedIndex = document.getElementsByClassName("new-column-index")[
+      editedColumnIndex
+    ].value;
 
-    console.log(editedColumnIndex)
-    console.log(selectedIndex)
-    try{
-        
-        await httpClient.editColumn({
-            columnId: s.id,
-            newName: s.name,
-            color: s.color,
-            index: selectedIndex
-        })
-        setLoading(true);
-    }
-    catch(err){
-        console.error(err.message);
+    try {
+      await httpClient.editColumn({
+        columnId: s.id,
+        newName: s.name,
+        color: s.color,
+        index: selectedIndex,
+      });
+      setLoading(true);
+    } catch (err) {
+      console.error(err.message);
     }
 
     setColumnIndexWindowHidden(s, e);
@@ -277,28 +281,28 @@ const BoardPage = (props) => {
     });
   }
 
-  function updateIndexInput(s,e) {
-      e.preventDefault();
-      console.log(s.index)
-    var indexValue = document.getElementsByClassName("new-column-index")[s.index].value;
-    document.getElementsByClassName("index-label")[s.index].textContent = indexValue;
+  function updateIndexInput(s, e) {
+    e.preventDefault();
+    var indexValue = document.getElementsByClassName("new-column-index")[
+      s.index
+    ].value;
+    document.getElementsByClassName("index-label")[
+      s.index
+    ].textContent = indexValue;
   }
 
   async function addItem(s, e) {
     e.preventDefault();
-    console.log(userId, userName)
-    try{
-    await httpClient.addTask({
-      name: "New task",
-      description: "Add description",
-      columnId: s.id
-    });
-    setLoading(true);
-}
-catch(err){
-    console.error(err.message)
-}
-    
+    try {
+      await httpClient.addTask({
+        name: "New task",
+        description: "Add description",
+        columnId: s.id,
+      });
+      setLoading(true);
+    } catch (err) {
+      console.error(err.message);
+    }
   }
 
   function deleteItem(itemId, item, e) {
@@ -325,8 +329,6 @@ catch(err){
 
     no.onclick = function () {
       dialog.close();
-      console.log(item.userId)
-      console.log(item.id)
     };
     yes.onclick = async function () {
       dialog.close();
@@ -365,33 +367,29 @@ catch(err){
     };
     yes.onclick = async function () {
       dialog.close();
-      try{
-      await httpClient.deleteColumn({
-        columnId: s.id
-      });
-      setLoading(true);
-    }
-    catch(err){
-      console.error(err.message)
+      try {
+        await httpClient.deleteColumn({
+          columnId: s.id,
+        });
+        setLoading(true);
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+  }
+
+  function BoardClick(s, element, e) {
+    e.preventDefault();
+
+    if (element.target.className !== "col-header") return;
+    var dropwraps = document.getElementsByClassName("drop-wrapper");
+
+    if (window.innerWidth < window.innerHeight) {
+      if (dropwraps[s.index].style.display != "flex")
+        dropwraps[s.index].style.display = "flex";
+      else dropwraps[s.index].style.display = "none";
     }
   }
-}
-
-function BoardClick(s, element, e)
-{
-  e.preventDefault();
-  
-  if(element.target.className !== "col-header")
-    return;
-  var dropwraps = document.getElementsByClassName("drop-wrapper")
-  
-  if(window.innerWidth < window.innerHeight){
-    if(dropwraps[s.index].style.display != "flex")
-      dropwraps[s.index].style.display = "flex";
-    else
-    dropwraps[s.index].style.display = "none";
-}
-}
 
   function addColumn(e) {
     e.preventDefault();
@@ -439,9 +437,8 @@ function BoardClick(s, element, e)
   }
 
   const opts = {
-    enableMouseEvents: true
-    }
-
+    enableMouseEvents: true,
+  };
 
   return (
     <div>
@@ -499,7 +496,7 @@ function BoardClick(s, element, e)
                       className="new-column-index"
                       id="index"
                       min={0}
-                      max={statuses.length-1}
+                      max={statuses.length - 1}
                       name="index"
                       onChange={(e) => updateIndexInput(s, e)}
                     />
@@ -513,12 +510,20 @@ function BoardClick(s, element, e)
                       value="Confirm"
                     />
                   </div>
-                  <div className="col-header-div" onClick={(e)=>BoardClick(s,e , e)}>
+                  <div
+                    className="col-header-div"
+                    onClick={(e) => BoardClick(s, e, e)}
+                  >
                     <button
                       className="col-icon-button"
                       onClick={(e) => editColumnIcon(s, e)}
                     >
-                      <div className="icon-div" style={{backgroundColor: `${ActualCurrentColor(s.color)}`}}></div>
+                      <div
+                        className="icon-div"
+                        style={{
+                          backgroundColor: `${ActualCurrentColor(s.color)}`,
+                        }}
+                      ></div>
                     </button>
                     <div
                       className={"col-header"}
@@ -535,7 +540,8 @@ function BoardClick(s, element, e)
                         <a onClick={(e) => setColumnIndexWindowVisible(s, e)}>
                           Change position
                         </a>
-                        <a id="dropdown-edit-delete"
+                        <a
+                          id="dropdown-edit-delete"
                           onClick={(e) => deleteColumn(s, e)}
                         >
                           &#10005; Delete column
@@ -543,7 +549,11 @@ function BoardClick(s, element, e)
                       </div>
                     </button>
                   </div>
-                  <DropWrapper onDrop={onDrop} id={s.id} className="drop-wrapper">
+                  <DropWrapper
+                    onDrop={onDrop}
+                    id={s.id}
+                    className="drop-wrapper"
+                  >
                     <Column status={s}>
                       {items
                         .filter((i) => i.columnId === s.id)
