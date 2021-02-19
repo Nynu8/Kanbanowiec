@@ -10,7 +10,7 @@ const Item = ({item,  index, moveItem, status, deleteItem, editItemWindowClose, 
 
     const [, drop] = useDrop({                                                  //drag&drop logic
         accept: ITEM_TYPE,
-        onTouchStart(item, monitor){
+        onClick(item, monitor){
             if(!ref.current){
                 return;
             }

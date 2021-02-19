@@ -436,11 +436,7 @@ function BoardClick(s, e)
   }
 
   const opts = {
-    enableMouseEvents: true,
-    scrollAngleRanges: [
-      { start: 30, end: 150 },
-      { start: 210, end: 330 }
-    ]
+    enableMouseEvents: true
     }
 
 
