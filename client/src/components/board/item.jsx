@@ -1,9 +1,7 @@
 import React, { Fragment, useRef, useState } from "react";
-import {useDrag, useDrop} from "react-dnd";
+import {useDrag, useDrop, DragPreviewImage } from "react-dnd";
 import Window from "./window";
-import ITEM_TYPE from "../../data/types"
-import { data } from "../../data";
-import httpClient from "../../tools/httpClient"
+import ITEM_TYPE from "../../data/types";
 
 const Item = ({item,  index, moveItem, status, deleteItem, editItemWindowClose, boardID, workersList, barColor}) =>{
 
@@ -12,7 +10,7 @@ const Item = ({item,  index, moveItem, status, deleteItem, editItemWindowClose, 
 
     const [, drop] = useDrop({                                                  //drag&drop logic
         accept: ITEM_TYPE,
-        hover(item, monitor){
+        onTouchStart(item, monitor){
             if(!ref.current){
                 return;
             }
@@ -68,7 +66,7 @@ const Item = ({item,  index, moveItem, status, deleteItem, editItemWindowClose, 
 
     return(
         <Fragment>
-            <div ref={ref} style={{ opacity: isDragging? 0 : 1}} className={"item"} onClick={onOpen}>
+            <div ref={ref} style={{ opacity: isDragging? 0.3 : 1}} className={"item"} onClick={onOpen}>
                 <div className={"color-bar"} style={{ backgroundColor: barColor}} />  
                 <p className={"item-title"}>{item.name}</p>
             </div>

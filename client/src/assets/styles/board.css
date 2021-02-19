@@ -1,3 +1,7 @@
+html{
+  overflow-x: hidden;
+}
+
 body {
   color: var(--text-color);
   font-family: sans-serif;
@@ -295,6 +299,7 @@ select {
   font-family: "Josefin Slab";
   font-size: 24px;
   height: fit-content;
+  overflow-y: auto;
 }
 
 .overlay {

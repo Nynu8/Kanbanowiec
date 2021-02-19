@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Header from "../components/board/header";
 import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { TouchBackend } from "react-dnd-touch-backend";
 import Item from "../components/board/item";
 import DropWrapper from "../components/board/dropWrapper";
 import Column from "../components/board/column";
@@ -380,17 +380,13 @@ catch(err){
 function BoardClick(s, e)
 {
   e.preventDefault();
-  var columns = document.getElementsByClassName("col-wrapper")
   var dropwraps = document.getElementsByClassName("drop-wrapper")
   
   if(window.innerWidth < window.innerHeight){
-  for (let i = 0; i < columns.length; i++)
-  {
-    if (i != s.index || dropwraps[i].style.display == "flex")  
-      dropwraps[i].style.display = "none";
-    else  
-      dropwraps[i].style.display = "flex";
-  }
+    if(dropwraps[s.index].style.display != "flex")
+      dropwraps[s.index].style.display = "flex";
+    else
+    dropwraps[s.index].style.display = "none";
 }
 }
 
@@ -439,11 +435,19 @@ function BoardClick(s, e)
     };
   }
 
+  const opts = {
+    enableMouseEvents: true,
+    scrollAngleRanges: [
+      { start: 30, end: 150 },
+      { start: 210, end: 330 }
+    ]
+    }
+
 
   return (
     <div>
       <Navbar name={name} />
-      <DndProvider backend={HTML5Backend}>
+      <DndProvider backend={TouchBackend} options={opts}>
         <Header name={boardName} boardID={boardID.id} />
         <button id="add-col-btn" onClick={(e) => addColumn(e)}>
           +
